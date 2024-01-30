@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// App.tsx
+import React from 'react';
+import BarNavigation from './components/BarNavigation';
+import SectionHeaders from './components/SectionHeaders';
+import SectionHeader, { SectionHeaderProps as LocalSectionHeaderProps} from './components/SectionHeader';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import DashboardPage from './components/DashboardPage';
 
-function App() {
-  const [count, setCount] = useState(0)
+// Define the type for sectionHeaders
+export interface SectionHeaderProps {
+  text: string;
+  icon: React.ReactElement;
+  nestedItems?: string[];
+  open: boolean;
+  handleClick: () => void;
+}
+const App: React.FC = () => {
+  const sectionHeaders: LocalSectionHeaderProps[] = [
+    // Define your sectionHeaders array here
+  ];
 
   return (
-    <>
+    <Router>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+        <BarNavigation />
+        <SectionHeaders sectionHeaders={sectionHeaders} />
 
-export default App
+        {sectionHeaders.map((header, index) => (
+          <SectionHeader key={index} {...header} />
+        ))}
+
+
+        <Routes>
+  <Route path="/dashboard" element={<DashboardPage />} />
+
+</Routes>
+      </div>
+    </Router>
+  );
+};
+export default App;
