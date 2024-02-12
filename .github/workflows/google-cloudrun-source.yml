@@ -77,6 +77,10 @@ jobs:
       # Create a directory for build artifacts
       - run: mkdir -p ./artifacts
 
+      # List the contents of the romodo-fleet-manager directory
+      - name: List directory contents
+        run: ls -l ./romodo-fleet-manager
+
        # Generate the gh-build-artifact.tar file
       - name: Generate Artifact
         run: tar -cvf ./artifacts/gh-build-artifact.tar ./romodo-fleet-manager/build
