@@ -8,7 +8,7 @@ env:
   PROJECT_ID: romodo-fleets # Google Cloud project id
   SERVICE: fleet-manager # Cloud Run service name
   REGION: asia-northeast2 # Cloud Run service region
-  PUBLIC_BASE_PATH: "/fleet-manager" # Base path for the public URL
+  PUBLIC_BASE_PATH: "/" # Base path for the public URL
 
 jobs:
   setup:
@@ -58,7 +58,8 @@ jobs:
         uses: actions/checkout@v2 # This action checks out your repository
       - name: Decode GCP credentials
         id: decode
-        run: echo "${{ secrets.GCP_CREDENTIALS_SERVICE_ACCOUNT }}" | base64 --decode > gcp_credentials.json # This command decodes your GCP credentials
+        run: echo "${{ secrets.GCP_CREDENTIALS_SERVICE_ACCOUNT }}" | base32 --decode > gcp_credentials.json # This command decodes your GCP credentials
+
       - name: Authenticate to Google Cloud
         id: auth
         uses: google-github-actions/auth@v2.1.1 # This action authenticates to Google Cloud
