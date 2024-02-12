@@ -1,44 +1,64 @@
-# Name of the workflow
+# This workflow deploys an application to Google Cloud Run when a push is made to the "main" branch
 name: Deploy to Cloud Run from Source
 
-# This workflow gets triggered on push to the 'main' branch
 on:
   push:
     branches: ["main"]
 
-# Environment variables used in the workflow
+# Environment variables used throughout the workflow
 env:
   PROJECT_ID: romodo-fleets
   SERVICE: fleet-manager
   REGION: asia-northeast2
   PUBLIC_BASE_PATH: "/"
 
-# Jobs that the workflow will run
 jobs:
-  # Setup job
+  # The setup job prepares the environment for the build and deploy jobs
   setup:
-    # This job runs on the latest version of Ubuntu
     runs-on: ubuntu-latest
     permissions:
       contents: "read"
       id-token: "write"
     steps:
-      # Step to checkout the repository
+      # Checkout the repository to the runner
       - name: Checkout repository
         uses: actions/checkout@v3
-
-  # Build job
+     
+  # The build job builds the application and uploads the build artifact
   build:
     permissions:
       contents: "read"
       id-token: "write"
     runs-on: ubuntu-latest
     steps:
-      # Step to checkout the repository
+      # Checkout the repository to the runner
       - name: Checkout
         uses: actions/checkout@v3
+      
+      # Setup Node.js environment with the version specified in package.json
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version-file: ./romodo-fleet-manager/package.json
+          cache-dependency-path: ./romodo-fleet-manager/package-lock.json
+          check-latest: true
 
-      # Step to install 'pack' (a tool for building apps using Buildpacks)
+      # Install the latest version of npm
+      - name: Install NPM
+        run: npm install -g npm@latest
+        working-directory: ./romodo-fleet-manager
+
+      # Install the latest version of Vite
+      - name: Install Vite
+        run: npm install -g vite@latest
+        working-directory: ./romodo-fleet-manager
+
+      # Install React and related packages
+      - name: Install React
+        run: npm install react react-dom react-router-dom
+        working-directory: ./romodo-fleet-manager
+
+      # Install Pack, a tool for building apps using Buildpacks
       - name: Install Pack
         run: |
           sudo wget https://github.com/buildpacks/pack/releases/download/v0.20.0/pack-v0.20.0-linux.tgz
@@ -47,43 +67,75 @@ jobs:
           sudo mv /tmp/pack /usr/local/bin/pack
           pack version
 
-      # Step to build and push Docker image
+        # Build and push the Docker image to Google Container Registry
       - name: Build and Push Docker image
         run: |
           pack build gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest --path ./romodo-fleet-manager/ --builder heroku/buildpacks:20
           docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest
 
-  # Deploy job
+       # Build the Node.js app
+      - run: npm run build
+        working-directory: ./romodo-fleet-manager
+
+      # Create a directory for build artifacts
+      - run: mkdir -p ./artifacts
+
+       # Generate the gh-build-artifact.tar file
+      - name: Generate Artifact
+        run: tar -czvf ./artifacts/gh-build-artifact.tar.gz ./romodo-fleet-manager/dist/
+
+      # Upload the build artifact for use in the deploy job
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: gh-build-artifact.tar.gz
+          path: ./artifacts/
+          retention-days: 3
+          overwrite: false
+
+  # The deploy job deploys the application to Google Cloud Run
   deploy:
-    # This job needs the 'build' job to complete successfully before it can run
     needs: build
     permissions:
       contents: "read"
       id-token: "write"
     runs-on: ubuntu-latest
     steps:
-      # Step to checkout the repository
+      # Checkout the repository to the runner
       - name: Checkout
         uses: actions/checkout@v3
 
-      # Step to authenticate to Google Cloud
+      # Download the build artifact
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v4.1.2
+        with:
+          name: gh-build-artifact.tar.gz
+          path: ./artifacts/
+
+      # Extract the .tar.gz file
+      - name: Extract Artifact
+        run: |
+          mkdir -p ./artifacts/extracted/
+          tar -xzvf ./artifacts/gh-build-artifact.tar.gz -C ./artifacts/extracted/
+
+      # Authenticate to Google Cloud using the provided credentials
       - name: Authenticate to Google Cloud
         id: auth
         uses: google-github-actions/auth@v2.1.1
         with:
           credentials_json: ${{ secrets.GCP_CRED_NEW }}
 
-      # Step to install Google Cloud SDK
+      # Install the Google Cloud SDK  
       - name: Install Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2.1.0
         with:
           project_id: ${{ env.PROJECT_ID }}
 
-      # Step to use gcloud CLI
+        # Use the gcloud CLI to verify the authentication
       - name: 'Use gcloud CLI'
         run: 'gcloud info'
-
-      # Step to deploy to Cloud Run
+          
+      # Deploy the application to Google Cloud Run
       - name: Deploy to Cloud Run
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v2.2.0
@@ -92,6 +144,7 @@ jobs:
           region: ${{ env.REGION }}
           image: gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest
 
-      # Step to show the output (URL of the deployed service)
+
+      # Print the URL of the deployed application
       - name: Show Output
         run: echo ${{ steps.deploy.outputs.url }}
