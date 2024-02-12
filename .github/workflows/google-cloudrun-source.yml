@@ -44,6 +44,8 @@ jobs:
         working-directory: ./romodo-fleet-manager
       - run: npm install -g vite@latest # This command installs the required dependencies
         working-directory: ./romodo-fleet-manager
+      - run: npm install react react-dom react-router-dom
+        working-directory: ./romodo-fleet-manager      
       - run: npm run build # This command builds your Node.js app
         working-directory: ./romodo-fleet-manager
 
