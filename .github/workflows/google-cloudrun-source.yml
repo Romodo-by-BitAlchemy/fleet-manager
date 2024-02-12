@@ -33,12 +33,15 @@ jobs:
       id-token: "write"
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2 # This action checks out your repository
+      - run: pwd
+      - run: ls
       # - run: npm install -g vite # This command installs the required dependencies
       - run: npm vite build # This command builds your Node.js app
         env:
           build_path: /romodo-fleet-manager/
-      - run: pwd
-      - run: ls
+
 
       - run: mkdir -p ./artifacts # This command creates a directory for build artifacts
       - name: Upload a Build Artifact
@@ -65,7 +68,6 @@ jobs:
         id: auth
         uses: google-github-actions/auth@v2.1.1 # This action authenticates to Google Cloud
         with:
-          # credentials_json: ${{ steps.decode.outputs.gcp_credentials }}
           credentials_json: ${{ secrets.GCP_CRED_NEW }}
       - name: Deploy to Cloud Run
         id: deploy
