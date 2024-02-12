@@ -56,6 +56,18 @@ env:
   REGION: asia-northeast2 # updated Cloud Run service region
 
 jobs:
+  build:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    runs-on: ubuntu-latest
+    steps:
+    - name: Vite Github Pages Deployer
+    # You may pin to the exact commit or the version.
+    # uses: skywarth/vite-github-pages-deployer@b3605fe88b6949cd7095af46764c243e1805cf49
+      uses: skywarth/vite-github-pages-deployer@v1.3.0
+
   deploy:
     # Add 'id-token' with the intended permissions for workload identity federation
     permissions:
