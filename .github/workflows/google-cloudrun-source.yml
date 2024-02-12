@@ -41,6 +41,7 @@ jobs:
         with:
           node-version-file: ./romodo-fleet-manager/package.json
           cache-dependency-path: ./romodo-fleet-manager/package-lock.json
+          check-latest: true
 
       # Setup Go environment
       - name: Setup Go environment
@@ -102,19 +103,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install Google Cloud SDK
-        run: |
-          export CLOUD_SDK_REPO="cloud-sdk-focal"
-          echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-          curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-          sudo apt-get update && sudo apt-get install google-cloud-sdk
-
       # Download the build artifact
       - name: Download a Build Artifact
         uses: actions/download-artifact@v4.1.2
         with:
           name: gh-build-artifact.tar.gz
           path: ./artifacts/
+
       # Extract the .tar.gz file
       - name: Extract Artifact
         run: |
@@ -128,6 +123,16 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_CRED_NEW }}
 
+      # Install the Google Cloud SDK  
+      - name: Install Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2.1.0
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+        # Use the gcloud CLI to verify the authentication
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
+          
       # Deploy the application to Google Cloud Run
       - name: Deploy to Cloud Run
         id: deploy
