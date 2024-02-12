@@ -1,87 +1,118 @@
+# This workflow deploys an application to Google Cloud Run when a push is made to the "main" branch
 name: Deploy to Cloud Run from Source
 
 on:
   push:
-    branches: ["main"] # This workflow is triggered when a push is made to the "main" branch
+    branches: ["main"]
 
+# Environment variables used throughout the workflow
 env:
-  PROJECT_ID: romodo-fleets # Google Cloud project id
-  SERVICE: fleet-manager # Cloud Run service name
-  REGION: asia-northeast2 # Cloud Run service region
-  PUBLIC_BASE_PATH: "/" # Base path for the public URL
+  PROJECT_ID: romodo-fleets
+  SERVICE: fleet-manager
+  REGION: asia-northeast2
+  PUBLIC_BASE_PATH: "/"
 
 jobs:
+  # The setup job prepares the environment for the build and deploy jobs
   setup:
-    runs-on: ubuntu-latest # This job runs on an Ubuntu latest environment
+    runs-on: ubuntu-latest
     permissions:
       contents: "read"
       id-token: "write"
     steps:
+      # Checkout the repository to the runner
       - name: Checkout repository
-        uses: actions/checkout@v3 # This action checks out the repository
+        uses: actions/checkout@v3
+
+      # Setup Node.js environment with the version specified in package.json
       - name: Setup Node.js environment
-        uses: actions/setup-node@v4.0.2 # This action sets up a Node.js environment
+        uses: actions/setup-node@v4.0.2
         with:
           node-version-file: ./romodo-fleet-manager/package.json
           cache-dependency-path: ./romodo-fleet-manager/package-lock.json
-      - name: Setup Go environment
-        uses: actions/setup-go@v5.0.0 # This action sets up a Go environment
 
+      # Setup Go environment
+      - name: Setup Go environment
+        uses: actions/setup-go@v5.0.0
+
+      # Install the latest version of npm
+      - name: Install NPM
+        run: npm install -g npm@latest
+        working-directory: ./romodo-fleet-manager
+
+      # Install the latest version of Vite
+      - name: Install Vite
+        run: npm install -g vite@latest
+        working-directory: ./romodo-fleet-manager
+
+      # Install React and related packages
+      - name: Install React
+        run: npm install react react-dom react-router-dom
+        working-directory: ./romodo-fleet-manager
+
+      # Install Pack, a tool for building apps using Buildpacks
+      - name: Install Pack
+        run: |
+          sudo wget https://github.com/buildpacks/pack/releases/download/v0.20.0/pack-v0.20.0-linux.tgz
+          sudo tar xvfz pack-v0.20.0-linux.tgz -C /tmp
+          sudo rm pack-v0.20.0-linux.tgz
+          sudo mv /tmp/pack /usr/local/bin/pack
+          pack version
+
+  # The build job builds the application and uploads the build artifact
   build:
     permissions:
       contents: "read"
       id-token: "write"
     runs-on: ubuntu-latest
     steps:
+      # Checkout the repository to the runner
       - name: Checkout
-        uses: actions/checkout@v2 # This action checks out your repository
-      # - run: pwd
-      # - run: ls
-      # - run: cd romodo-fleet-manager
-      # - run: npm uninstall -g vite # This command uninstalls the Vite dependency
-      #   working-directory: ./romodo-fleet-manager
-      - run: npm install -g npm@latest # This command installs the required dependencies
-        working-directory: ./romodo-fleet-manager
-      - run: npm install -g vite@latest # This command installs the required dependencies
-        working-directory: ./romodo-fleet-manager
-      - run: npm install react react-dom react-router-dom
-        working-directory: ./romodo-fleet-manager      
-      - run: npm run build # This command builds your Node.js app
+        uses: actions/checkout@v2
+
+      # Build the Node.js app
+      - run: npm run build
         working-directory: ./romodo-fleet-manager
 
+      # Create a directory for build artifacts
+      - run: mkdir -p ./artifacts
 
-      - run: mkdir -p ./artifacts # This command creates a directory for build artifacts
+      # Upload the build artifact for use in the deploy job
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4.3.1 # This action uploads build artifacts
+        uses: actions/upload-artifact@v4.3.1
         with:
-          name: gh-build-artifact
+          name: gh-build-artifact.tar
           path: ./artifacts/
           retention-days: 3
           overwrite: false
 
+  # The deploy job deploys the application to Google Cloud Run
   deploy:
     permissions:
       contents: "read"
       id-token: "write"
     runs-on: ubuntu-latest
     steps:
+      # Checkout the repository to the runner
       - name: Checkout
-        uses: actions/checkout@v2 # This action checks out your repository
-      # - name: Decode GCP credentials
-      #   id: decode
-      #   run: echo "${{ secrets.GCP_CREDENTIALS_SERVICE_ACCOUNT }}" | base32 --decode > gcp_credentials.json # This command decodes your GCP credentials
+        uses: actions/checkout@v2
 
+      # Authenticate to Google Cloud using the provided credentials
       - name: Authenticate to Google Cloud
         id: auth
-        uses: google-github-actions/auth@v2.1.1 # This action authenticates to Google Cloud
+        uses: google-github-actions/auth@v2.1.1
         with:
           credentials_json: ${{ secrets.GCP_CRED_NEW }}
+
+      # Deploy the application to Google Cloud Run
       - name: Deploy to Cloud Run
         id: deploy
-        uses: "google-github-actions/deploy-cloudrun@v2" # This action deploys your app to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
           source: ./artifacts/gh-build-artifact.tar
+
+      # Print the URL of the deployed application
       - name: Show Output
-        run: echo ${{ steps.deploy.outputs.url }} # This command prints the URL of your deployed app
+        run: echo ${{ steps.deploy.outputs.url }}
