@@ -17,6 +17,8 @@ jobs:
       contents: "read"
       id-token: "write"
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3 # This action checks out the repository
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.0.2 # This action sets up a Node.js environment
         with:
@@ -35,7 +37,6 @@ jobs:
         uses: skywarth/vite-github-pages-deployer@v1.3.0 # This action deploys your Vite app to GitHub Pages
       - name: Install Dependencies
         run: npm install -g vite # This command installs the required dependencies
-        working-directory: ${{ env.build_path }}
       - run: npm vite build # This command builds your Node.js app
         env:
           build_path: ./romodo-fleet-manager/
@@ -60,7 +61,7 @@ jobs:
         uses: actions/checkout@v2 # This action checks out your repository
       - name: Decode GCP credentials
         id: decode
-        run: echo "${{ secrets.GCP_CREDENTIALS }}" | base64 --decode > gcp_credentials.json # This command decodes your GCP credentials
+        run: echo "GCP_CREDENTIALS_VALUE" | base64 --decode > gcp_credentials.json # This command decodes your GCP credentials
       - name: Authenticate to Google Cloud
         id: auth
         uses: google-github-actions/auth@v2.1.1 # This action authenticates to Google Cloud
