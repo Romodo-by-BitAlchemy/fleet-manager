@@ -56,15 +56,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2 # This action checks out your repository
-      - name: Decode GCP credentials
-        id: decode
-        run: echo "${{ secrets.GCP_CREDENTIALS_SERVICE_ACCOUNT }}" | base32 --decode > gcp_credentials.json # This command decodes your GCP credentials
+      # - name: Decode GCP credentials
+      #   id: decode
+      #   run: echo "${{ secrets.GCP_CREDENTIALS_SERVICE_ACCOUNT }}" | base32 --decode > gcp_credentials.json # This command decodes your GCP credentials
 
       - name: Authenticate to Google Cloud
         id: auth
         uses: google-github-actions/auth@v2.1.1 # This action authenticates to Google Cloud
         with:
-          credentials_json: ${{ steps.decode.outputs.gcp_credentials }}
+          # credentials_json: ${{ steps.decode.outputs.gcp_credentials }}
+          credentials_json: ${{ secrets.GCP_CRED_NEW }}
       - name: Deploy to Cloud Run
         id: deploy
         uses: "google-github-actions/deploy-cloudrun@v2" # This action deploys your app to Cloud Run
