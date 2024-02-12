@@ -79,13 +79,13 @@ jobs:
 
        # Generate the gh-build-artifact.tar file
       - name: Generate Artifact
-        run: tar -cvf ./artifacts/gh-build-artifact.tar ./romodo-fleet-manager/dist/
+        run: tar -cvf ./artifacts/gh-build-artifact.tar.gz ./romodo-fleet-manager/dist/
 
       # Upload the build artifact for use in the deploy job
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4.3.1
         with:
-          name: gh-build-artifact.tar
+          name: gh-build-artifact.tar.gz
           path: ./artifacts/
           retention-days: 3
           overwrite: false
@@ -106,7 +106,7 @@ jobs:
       - name: Download a Build Artifact
         uses: actions/download-artifact@v4.1.2
         with:
-          name: gh-build-artifact.tar
+          name: gh-build-artifact.tar.gz
           path: ./artifacts/
 
       # Authenticate to Google Cloud using the provided credentials
@@ -123,7 +123,7 @@ jobs:
         with:
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
-          source: ./artifacts/gh-build-artifact.tar
+          source: ./artifacts/gh-build-artifact.tar.gz
 
       # Print the URL of the deployed application
       - name: Show Output
