@@ -23,7 +23,18 @@ jobs:
       # Checkout the repository to the runner
       - name: Checkout repository
         uses: actions/checkout@v3
-
+     
+  # The build job builds the application and uploads the build artifact
+  build:
+    permissions:
+      contents: "read"
+      id-token: "write"
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository to the runner
+      - name: Checkout
+        uses: actions/checkout@v3
+      
       # Setup Node.js environment with the version specified in package.json
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.0.2
@@ -58,17 +69,6 @@ jobs:
           sudo rm pack-v0.20.0-linux.tgz
           sudo mv /tmp/pack /usr/local/bin/pack
           pack version
-
-  # The build job builds the application and uploads the build artifact
-  build:
-    permissions:
-      contents: "read"
-      id-token: "write"
-    runs-on: ubuntu-latest
-    steps:
-      # Checkout the repository to the runner
-      - name: Checkout
-        uses: actions/checkout@v2
 
       # Build the Node.js app
       - run: npm run build
