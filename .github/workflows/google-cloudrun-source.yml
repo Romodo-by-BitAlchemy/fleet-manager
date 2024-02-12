@@ -36,9 +36,9 @@ jobs:
       # - run: npm install -g vite # This command installs the required dependencies
       - run: npm vite build # This command builds your Node.js app
         env:
-          build_path: romodo-fleet-manager/
-          base: romodo-fleet-manager/
-        working-directory: ${{ env.build_path }}
+          build_path: /romodo-fleet-manager/
+      - run: pwd
+      - run: ls
       - run: mkdir -p ./artifacts # This command creates a directory for build artifacts
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4.3.1 # This action uploads build artifacts
@@ -72,6 +72,6 @@ jobs:
         with:
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
-          source: ./
+          source: ./artifacts/gh-build-artifact
       - name: Show Output
         run: echo ${{ steps.deploy.outputs.url }} # This command prints the URL of your deployed app
