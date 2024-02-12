@@ -59,6 +59,7 @@ jobs:
       - name: Decode GCP credentials
         id: decode
         run: echo "${{ secrets.GCP_CREDENTIALS_SERVICE_ACCOUNT }}" | base32 --decode > gcp_credentials.json # This command decodes your GCP credentials
+
       - name: Authenticate to Google Cloud
         id: auth
         uses: google-github-actions/auth@v2.1.1 # This action authenticates to Google Cloud
