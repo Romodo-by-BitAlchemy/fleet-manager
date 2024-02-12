@@ -39,6 +39,7 @@ jobs:
           build_path: /romodo-fleet-manager/
       - run: pwd
       - run: ls
+
       - run: mkdir -p ./artifacts # This command creates a directory for build artifacts
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4.3.1 # This action uploads build artifacts
