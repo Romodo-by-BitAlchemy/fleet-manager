@@ -108,6 +108,9 @@ jobs:
         with:
           name: gh-build-artifact.tar.gz
           path: ./artifacts/
+      # Extract the .tar.gz file
+      - name: Extract Artifact
+        run: tar -xzvf ./artifacts/gh-build-artifact.tar.gz -C ./artifacts/
 
       # Authenticate to Google Cloud using the provided credentials
       - name: Authenticate to Google Cloud
@@ -123,7 +126,7 @@ jobs:
         with:
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
-          source: ./artifacts/gh-build-artifact.tar.gz
+          source: ./artifacts/gh-build-artifact/
 
       # Print the URL of the deployed application
       - name: Show Output
