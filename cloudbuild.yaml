@@ -2,6 +2,7 @@ apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   name: fleet-manager
+  wait-for: ["-"]
   namespace: '390204966554'
   selfLink: /apis/serving.knative.dev/v1/namespaces/390204966554/services/fleet-manager
   uid: 86533395-ae78-458e-afb5-cda0289c7949
