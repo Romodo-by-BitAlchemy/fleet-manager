@@ -33,7 +33,7 @@ jobs:
       id-token: "write"
     runs-on: ubuntu-latest
     steps:
-      - run: npm install -g vite # This command installs the required dependencies
+      # - run: npm install -g vite # This command installs the required dependencies
       - run: npm vite build # This command builds your Node.js app
         env:
           build_path: romodo-fleet-manager/
