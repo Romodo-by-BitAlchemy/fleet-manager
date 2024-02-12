@@ -56,17 +56,44 @@ env:
   REGION: asia-northeast2 # updated Cloud Run service region
 
 jobs:
-  build:
+  setup:
+    runs-on: ubuntu-latest
     permissions:
       contents: 'read'
       id-token: 'write'
-
+    steps:
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.0.2
+        with:        
+          node-version-file: ./romodo-fleet-manager/package.json
+          cache-dependency-path: ./romodo-fleet-manager/package-lock.json
+      - name: Setup Go environment
+        uses: actions/setup-go@v5.0.0       
+          
+  build:
+    permissions:
+      contents: 'read'
+      id-token: 'write'   
+    
     runs-on: ubuntu-latest
     steps:
     - name: Vite Github Pages Deployer
     # You may pin to the exact commit or the version.
     # uses: skywarth/vite-github-pages-deployer@b3605fe88b6949cd7095af46764c243e1805cf49
       uses: skywarth/vite-github-pages-deployer@v1.3.0
+      with:
+        path: ./romodo-fleet-manager/
+    - run: npm run build
+
+    - run: mkdir -p ./artifacts
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.3.1
+      with:
+        # Artifact name
+        name: gh-build-artifact 
+        path: ./artifacts/
+        retention-days: 3
+        overwrite: false              
 
   deploy:
     # Add 'id-token' with the intended permissions for workload identity federation
@@ -87,15 +114,15 @@ jobs:
       #     service_account: '${{ secrets.WIF_SERVICE_ACCOUNT }}' # e.g. - my-service-account@my-project.iam.gserviceaccount.com
 
       # NOTE: Alternative option - authentication via credentials json
-      - name: Google Auth
+      - name: Authenticate to Google Cloud
         id: auth
-        uses: 'google-github-actions/auth@v0'
+        uses: google-github-actions/auth@v2.1.1
         with:
           credentials_json: '${{ secrets.GCP_CREDENTIALS_SERVICE_ACCOUNT }}'
 
       - name: Deploy to Cloud Run
         id: deploy
-        uses: google-github-actions/deploy-cloudrun@v0
+        uses: 'google-github-actions/deploy-cloudrun@v2'
         with:
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
