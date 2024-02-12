@@ -72,6 +72,6 @@ jobs:
         with:
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
-          source: ./artifacts/gh-build-artifact
+          source: ./artifacts/gh-build-artifact.tar
       - name: Show Output
         run: echo ${{ steps.deploy.outputs.url }} # This command prints the URL of your deployed app
