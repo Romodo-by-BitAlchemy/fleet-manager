@@ -8,6 +8,7 @@ env:
   PROJECT_ID: romodo-fleets # Google Cloud project id
   SERVICE: fleet-manager # Cloud Run service name
   REGION: asia-northeast2 # Cloud Run service region
+  PUBLIC_BASE_PATH: "/fleet-manager" # Base path for the public URL
 
 jobs:
   setup:
@@ -19,8 +20,8 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.0.2 # This action sets up a Node.js environment
         with:
-          node-version-file: ./package.json
-          cache-dependency-path: ./package-lock.json
+          node-version-file: ./romodo-fleet-manager/package.json
+          cache-dependency-path: ./romodo-fleet-manager/package-lock.json
       - name: Setup Go environment
         uses: actions/setup-go@v5.0.0 # This action sets up a Go environment
 
@@ -33,12 +34,13 @@ jobs:
       - name: Vite Github Pages Deployer
         uses: skywarth/vite-github-pages-deployer@v1.3.0 # This action deploys your Vite app to GitHub Pages
       - name: Install Dependencies
-        run: npm install # This command installs the required dependencies
+        run: npm install -g vite # This command installs the required dependencies
         working-directory: ${{ env.build_path }}
-      - run: npm run build # This command builds your Node.js app
+      - run: npm vite build # This command builds your Node.js app
         env:
           build_path: ./romodo-fleet-manager/
           base: ./romodo-fleet-manager/
+        working-directory: ${{ env.build_path }}
       - run: mkdir -p ./artifacts # This command creates a directory for build artifacts
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4.3.1 # This action uploads build artifacts
