@@ -36,8 +36,8 @@ jobs:
       - run: npm install -g vite # This command installs the required dependencies
       - run: npm vite build # This command builds your Node.js app
         env:
-          build_path: ./romodo-fleet-manager/
-          base: ./romodo-fleet-manager/
+          build_path: /romodo-fleet-manager/
+          base: /romodo-fleet-manager/
         working-directory: ${{ env.build_path }}
       - run: mkdir -p ./artifacts # This command creates a directory for build artifacts
       - name: Upload a Build Artifact
