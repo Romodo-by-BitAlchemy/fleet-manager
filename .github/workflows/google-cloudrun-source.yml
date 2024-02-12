@@ -39,9 +39,10 @@ jobs:
       - run: ls
       - run: cd romodo-fleet-manager
       - run: npm add # This command installs the required dependencies
+        working-directory: ./romodo-fleet-manager
       - run: npm run build # This command builds your Node.js app
-        # env:
-        #   build_path: /romodo-fleet-manager/
+        env:
+          build_path: /romodo-fleet-manager/
 
 
       - run: mkdir -p ./artifacts # This command creates a directory for build artifacts
