@@ -38,7 +38,11 @@ jobs:
       # - run: pwd
       # - run: ls
       # - run: cd romodo-fleet-manager
-      - run: npm add # This command installs the required dependencies
+      # - run: npm uninstall -g vite # This command uninstalls the Vite dependency
+      #   working-directory: ./romodo-fleet-manager
+      - run: npm install -g npm@latest # This command installs the required dependencies
+        working-directory: ./romodo-fleet-manager
+      - run: npm install -g vite@latest # This command installs the required dependencies
         working-directory: ./romodo-fleet-manager
       - run: npm build # This command builds your Node.js app
         working-directory: ./romodo-fleet-manager
