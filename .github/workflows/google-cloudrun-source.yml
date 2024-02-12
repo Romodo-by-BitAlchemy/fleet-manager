@@ -37,8 +37,6 @@ jobs:
       - run: npm vite build # This command builds your Node.js app
         env:
           build_path: romodo-fleet-manager/
-          base: romodo-fleet-manager/
-        working-directory: ${{ env.build_path }}
       - run: mkdir -p ./artifacts # This command creates a directory for build artifacts
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4.3.1 # This action uploads build artifacts
