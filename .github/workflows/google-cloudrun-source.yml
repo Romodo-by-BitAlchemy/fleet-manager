@@ -92,6 +92,7 @@ jobs:
 
   # The deploy job deploys the application to Google Cloud Run
   deploy:
+    needs: build
     permissions:
       contents: "read"
       id-token: "write"
