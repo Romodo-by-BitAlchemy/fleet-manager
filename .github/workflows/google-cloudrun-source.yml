@@ -35,6 +35,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      # Authenticate to Google Cloud using the provided credentials
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2.1.1
+        with:
+          credentials_json: ${{ secrets.GCP_CRED_NEW }}
+
       # Setup Node.js environment with the version specified in package.json
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.0.2
@@ -131,7 +138,7 @@ jobs:
         with:
           project_id: ${{ env.PROJECT_ID }}
 
-        # Use the gcloud CLI to verify the authentication
+      # Use the gcloud CLI to verify the authentication
       - name: Use gcloud CLI
         run: gcloud info
 
