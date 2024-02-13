@@ -74,6 +74,11 @@ jobs:
           sudo mv /tmp/pack /usr/local/bin/pack
           pack version
 
+      # Configure Docker to use gcloud as a credential helper
+      - name: Configure Docker
+        run: |
+          gcloud auth configure-docker
+
         # Build and push the Docker image to Google Container Registry
       - name: Build and Push Docker image
         run: |
