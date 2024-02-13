@@ -77,8 +77,8 @@ jobs:
     - name: Configure Docker
       # Configure Docker to use gcloud as a credential helper
       run: |
-        printf "%s" "${{ secrets.GCP_CRED_NEW }}" | gcloud auth activate-service-account 390204966554-compute@developer.gserviceaccount.com --key-file=-
-        gcloud auth configure-docker -q
+        echo -n "${{ secrets.GCP_CRED_NEW_ENC}}" | base64 --decode > /tmp/srv.json
+        gcloud auth activate-service-account 390204966554-compute@developer.gserviceaccount.com --key-file=/tmp/srv.json
 
       # Build and push the Docker image to Google Container Registry
     - name: Build and Push Docker image
