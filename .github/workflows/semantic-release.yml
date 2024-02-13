@@ -19,6 +19,9 @@ jobs:
         node-version: 14
 
     - name: Install dependencies
+      env:
+        CI: true
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: npm ci
 
     - name: Semantic Release
