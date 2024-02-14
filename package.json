@@ -1,0 +1,19 @@
+{
+  "name": "fleet-manager",
+  "version": "1.0.0",
+  "description": "Romodo for Passenger Fleets. React + TS",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \\\"Error\\\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "/mnt/c/Users/Sayu/romodo/fleet-manager"
+  },
+  "author": "",
+  "license": "ISC"
+}
