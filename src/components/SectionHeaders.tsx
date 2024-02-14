@@ -1,17 +1,20 @@
 // SectionHeaders.tsx
-import React from 'react';
-import SectionHeader, { SectionHeaderProps } from './SectionHeader'; 
+import React from "react";
+import SectionHeader, { SectionHeaderProps } from "./SectionHeader";
 
 interface SectionHeadersProps {
-  sectionHeaders: SectionHeaderProps[];
+	sectionHeaders: SectionHeaderProps[];
 }
 
 const SectionHeaders: React.FC<SectionHeadersProps> = ({ sectionHeaders }) => (
-  <>
-    {sectionHeaders.map((header, index) => (
-      <SectionHeader key={index} {...header} />
-    ))}
-  </>
+	<>
+		{sectionHeaders.map((header, index) => (
+			<SectionHeader
+				key={index}
+				{...header}
+			/>
+		))}
+	</>
 );
 
 export default SectionHeaders;
