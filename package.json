@@ -1,24 +1,28 @@
 {
-	"name": "fleet-manager",
-	"version": "1.0.0",
-	"description": "Romodo for Passenger Fleets. React + TS",
-	"main": "index.js",
-	"directories": {
-		"doc": "docs"
-	},
-	"devDependencies": {},
-	"scripts": {
-		"start": "node index.js",
-		"dev": "vite",
-		"build": "tsc && vite build",
-		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-		"preview": "vite preview",
-		"pack": "pack build gcr.io/${PROJECT_ID}/${SERVICE}:latest --path . --builder heroku/builder:22"
-	},
-	"repository": {
-		"type": "git",
-		"url": "/mnt/c/Users/Sayu/romodo/fleet-manager"
-	},
-	"author": "",
-	"license": "ISC"
+  "name": "fleet-manager",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.0"
+  }
 }
