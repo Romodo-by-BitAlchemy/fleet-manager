@@ -51,19 +51,14 @@ jobs:
         cache-dependency-path: ./package-lock.json
         check-latest: true
 
-    # Install the latest version of npm
-    - name: Install NPM
-      run: npm install -g npm@latest
+    # Install the latest version of yarn
+    - name: Install Yarn
+      run: npm install -g yarn@latest
       working-directory: ./
 
-    # Install the latest version of Vite
-    - name: Install Vite
-      run: npm install -g vite@latest
-      working-directory: ./
-
-    # Install React and related packages
+    # Install React and related packages using yarn
     - name: Install React
-      run: npm install react react-dom react-router-dom
+      run: yarn add react react-dom react-router-dom
       working-directory: ./
 
     # Install Pack, a tool for building apps using Buildpacks
