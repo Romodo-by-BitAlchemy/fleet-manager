@@ -1,4 +1,3 @@
-# FILEPATH: /c:/Users/Sayu/romodo/fleet-manager/.github/workflows/google-cloudrun-source.yml
 # This workflow deploys an application to Google Cloud Run when a push is made to the "main" branch
 name: Deploy to Cloud Run from Source
 
@@ -77,8 +76,7 @@ jobs:
       # Build and push the Docker image to Google Container Registry
     - name: Build and Push Docker image
       run: |
-        pack build gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest --path ./ --builder heroku/buildpacks:22
-        docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest
+        pack build gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest --path ./ --builder heroku/buildpacks:22 --publish
 
       # Build the Node.js app
     - run: npm run build
