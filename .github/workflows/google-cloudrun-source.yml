@@ -61,17 +61,18 @@ jobs:
       run: yarn add react react-dom react-router-dom --dev
       working-directory: ./
 
-    # Use a Docker image that includes the `pack` tool
-    - name: Use Docker image with `pack` tool
-      uses: docker://buildpacks/pack:v0.20.0
-      with:
-        args: version
+    # Install the `pack` tool
+    - name: Install `pack` tool
+      run: |
+        curl -sSL "https://github.com/buildpacks/pack/releases/download/v0.20.0/pack-v0.20.0-linux.tgz" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv pack
 
     - name: Configure Docker
       # Configure Docker to use gcloud as a credential helper
       run: |
         echo -n "${{ secrets.GCP_CRED_NEW_ENC}}" | base64 --decode > /tmp/srv.json
         gcloud auth activate-service-account 390204966554-compute@developer.gserviceaccount.com --key-file=/tmp/srv.json
+        gcloud auth configure-docker gcr.io
+
 
       # Build and push the Docker image to Google Container Registry
     - name: Build and Push Docker image
