@@ -1,3 +1,5 @@
+# FILEPATH: /c:/Users/Sayu/romodo/fleet-manager/.github/workflows/google-cloudrun-source.yml
+# BEGIN: ed8c6549bwf9
 # This workflow deploys an application to Google Cloud Run when a push is made to the "main" branch
 name: Deploy to Cloud Run from Source
 
@@ -94,7 +96,7 @@ jobs:
     - run: mkdir -p ./artifacts
       # Generate the gh-build-artifact.tar file
     - name: Generate Artifact
-      run: tar -czvf ./artifacts/gh-build-artifact.tar.gz ./fleet-manager/build/
+      run: tar -czvf ./artifacts/gh-build-artifact.tar.gz ./fleet-manager/dist/
 
     # Upload the build artifact for use in the deploy job
     - name: Upload a Build Artifact
@@ -159,3 +161,4 @@ jobs:
     # Print the URL of the deployed application
     - name: Show Output
       run: echo ${{ steps.deploy.outputs.url }}
+# END: ed8c6549bwf9
