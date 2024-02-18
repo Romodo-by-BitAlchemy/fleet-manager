@@ -141,7 +141,7 @@ jobs:
 
     # Deploy the application to Google Cloud Run
     - name: Configure Docker on gcloud
-      run: gcloud auth configure-docker gcr.io
+      run: gcloud auth configure-docker asia-northeast2-docker.pkg.dev
     - name: Deploy to Cloud Run
       id: deploy
       uses: google-github-actions/deploy-cloudrun@v2.2.0
