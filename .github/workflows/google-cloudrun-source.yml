@@ -148,7 +148,7 @@ jobs:
       with:
         service: ${{ env.SERVICE }}
         region: ${{ env.REGION }}
-        image: asia-northeast2-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/romodo-frontend:latest/
+        image: asia-northeast2-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/romodo-frontend:latest
 
     # Print the URL of the deployed application
     - name: Show Output
