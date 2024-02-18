@@ -76,7 +76,7 @@ jobs:
       # Build and push the Docker image to Google Container Registry
     - name: Build and Push Docker image
       run: |
-        pack build asia-northeast2-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy:latest --path ./ --builder heroku/buildpacks:20 --publish
+        pack build asia-northeast2-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/romodo-frontend:latest --path ./ --builder heroku/buildpacks:20 --publish
 
       # Build the Node.js app
     - run: npm run build
@@ -148,7 +148,7 @@ jobs:
       with:
         service: ${{ env.SERVICE }}
         region: ${{ env.REGION }}
-        image: asia-northeast2-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy:latest/
+        image: asia-northeast2-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/romodo-frontend:latest/
 
     # Print the URL of the deployed application
     - name: Show Output
