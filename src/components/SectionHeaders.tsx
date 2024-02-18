@@ -1,5 +1,5 @@
 // SectionHeaders.tsx
-import React from "react";
+import * as React from "react";
 import SectionHeader, { SectionHeaderProps } from "./SectionHeader";
 
 interface SectionHeadersProps {
