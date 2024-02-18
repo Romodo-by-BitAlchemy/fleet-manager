@@ -76,7 +76,7 @@ jobs:
       # Build and push the Docker image to Google Container Registry
     - name: Build and Push Docker image
       run: |
-        pack build gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest --path ./ --builder heroku/buildpacks:22 --publish
+        pack build gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest --path ./ --builder heroku/buildpacks:20 --publish
 
       # Build the Node.js app
     - run: npm run build
