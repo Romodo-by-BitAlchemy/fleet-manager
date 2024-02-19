@@ -142,6 +142,8 @@ jobs:
     # Deploy the application to Google Cloud Run
     - name: Configure Docker on gcloud
       run: gcloud auth configure-docker asia-northeast2-docker.pkg.dev
+    - name: Set project in gcloud
+      run: gcloud config set project ${{ env.PROJECT_ID }}
     - name: Deploy to Cloud Run
       id: deploy
       uses: google-github-actions/deploy-cloudrun@v2.2.0
