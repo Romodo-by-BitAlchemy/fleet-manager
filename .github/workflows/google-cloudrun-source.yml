@@ -150,7 +150,8 @@ jobs:
       with:
         service: ${{ env.SERVICE }}
         region: ${{ env.REGION }}
-        image: asia-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/romodo-frontend:latest
+        # image: asia-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/romodo-frontend:latest
+        image: ./artifacts/extracted/gh-build-artifact.tar
         flags: "--platform managed --set-env-vars=PUBLIC_BASE_PATH=${{ env.PUBLIC_BASE_PATH }} --format json"
 
     # Print the URL of the deployed application
