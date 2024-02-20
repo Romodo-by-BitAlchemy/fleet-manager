@@ -76,7 +76,7 @@ jobs:
       # Build and push the Docker image to Google Container Registry
     - name: Build and Push Docker image
       run: |
-        pack build asia-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/romodo-frontend:latest --path ./ --builder heroku/buildpacks:20 --publish
+        pack build asia-docker.pkg.dev/${{ env.PROJECT_ID }}/romodo-frontend:latest --path ./ --builder heroku/buildpacks:20 --publish
 
       # Build the Node.js app
     - run: npm run build
