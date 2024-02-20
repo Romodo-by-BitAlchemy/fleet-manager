@@ -70,13 +70,13 @@ jobs:
       run: |
         echo -n "${{ secrets.GCP_CRED_NEW_ENC}}" | base64 --decode > /tmp/srv.json
         gcloud auth activate-service-account 390204966554-compute@developer.gserviceaccount.com --key-file=/tmp/srv.json
-        gcloud auth configure-docker asia-northeast2-docker.pkg.dev
+        gcloud auth configure-docker asia-docker.pkg.dev
 
 
       # Build and push the Docker image to Google Container Registry
     - name: Build and Push Docker image
       run: |
-        pack build asia-northeast2-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/romodo-frontend:latest --path ./ --builder heroku/buildpacks:20 --publish
+        pack build asia-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/romodo-frontend:latest --path ./ --builder heroku/buildpacks:20 --publish
 
       # Build the Node.js app
     - run: npm run build
@@ -141,7 +141,7 @@ jobs:
 
     # Deploy the application to Google Cloud Run
     - name: Configure Docker on gcloud
-      run: gcloud auth configure-docker asia-northeast2-docker.pkg.dev
+      run: gcloud auth configure-docker asia-docker.pkg.dev
     - name: Set project in gcloud
       run: gcloud config set project ${{ env.PROJECT_ID }}
     - name: Deploy to Cloud Run
@@ -150,7 +150,7 @@ jobs:
       with:
         service: ${{ env.SERVICE }}
         region: ${{ env.REGION }}
-        image: asia-northeast2-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/romodo-frontend:latest
+        image: asia-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/romodo-frontend:latest
         flags: "--platform managed --set-env-vars=PUBLIC_BASE_PATH=${{ env.PUBLIC_BASE_PATH }} --format json"
 
     # Print the URL of the deployed application
