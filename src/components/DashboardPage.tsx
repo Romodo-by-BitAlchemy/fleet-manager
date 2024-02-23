@@ -7,11 +7,8 @@ const DashboardPage: React.FC = () => {
 
 	return (
 		<div>
-			{text && (
-				<h1>{text} Page</h1>
-				// ... Add more content specific to the section
-			)}
-			{/* Add your specific content for the Dashboard section here */}
+			{<h1>{text} Page</h1>}
+			{<p>hiiiiiiiiiiiiiiiiiiii. this is the dashboard page :)</p>}
 			<h1>Dashboard Page</h1>
 		</div>
 	);
