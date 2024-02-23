@@ -1,8 +1,5 @@
 FROM node:20-alpine
 
-RUN adduser -D appuser
-USER appuser
-
 WORKDIR /
 VOLUME /node_modules
 
