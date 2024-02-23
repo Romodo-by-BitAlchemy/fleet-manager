@@ -1,6 +1,6 @@
 FROM node:20-alpine
 
-WORKDIR /
+WORKDIR ./
 VOLUME /node_modules
 
 COPY package*.json yarn.lock ./
