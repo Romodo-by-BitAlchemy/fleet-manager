@@ -70,8 +70,8 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 const AppBar = styled(MuiAppBar, {
-	shouldForwardProp: (prop: string) => prop !== "open",
-})<AppBarProps>(({ theme, open }: { theme: Theme; open: boolean }) => ({
+	shouldForwardProp: (prop) => prop !== "open",
+})<AppBarProps>(({ theme, open }) => ({
 	zIndex: theme.zIndex.drawer + 1,
 	transition: theme.transitions.create(["width", "margin"], {
 		easing: theme.transitions.easing.sharp,
@@ -310,6 +310,7 @@ export default function MiniDrawer() {
 				</Toolbar>
 			</AppBar>
 			<Drawer
+				theme={theme}
 				variant="permanent"
 				open={open}
 			>
