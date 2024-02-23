@@ -28,4 +28,4 @@ jobs:
     - name: Semantic Release
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      run: npx semantic-release --repository-url https://github.com/Romodo-by-BitAlchemy/fleet-manager --force
+      run: npx semantic-release --branches dev --repository-url https://github.com/Romodo-by-BitAlchemy/fleet-manager --force
