@@ -27,6 +27,7 @@ interface AppBarProps extends MuiAppBarProps {
 	handleMenu: (event: React.MouseEvent<HTMLElement>) => void;
 	handleClose: () => void;
 	handleNotificationClose: () => void;
+	handleAppBarHeadingClick: () => void;
 }
 
 /**
@@ -102,6 +103,7 @@ export const AppBarStyled: React.FC<AppBarProps> = (props) => {
 					variant="h6"
 					noWrap
 					component="div"
+					onClick={props.handleAppBarHeadingClick} // Call the handleAppBarHeadingClick function when the Typography component is clicked
 				>
 					ROMODO
 				</Typography>
@@ -113,8 +115,8 @@ export const AppBarStyled: React.FC<AppBarProps> = (props) => {
 						onClick={props.handleNotificationClick}
 					>
 						<Badge
-							badgeContent={props.notificationCount}
-							color="secondary"
+							badgeContent={props.notificationCount + 1}
+							color="warning"
 						>
 							<NotificationsActiveIcon />
 						</Badge>

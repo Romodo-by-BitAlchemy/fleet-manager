@@ -212,6 +212,9 @@ export default function MiniDrawer() {
 
 	const openNotification = Boolean(notificationAnchorEl);
 
+	const handleAppBarHeadingClick = () => {
+		history.push(`/`);
+	};
 	return (
 		<Stack>
 			<AppBar
@@ -235,6 +238,7 @@ export default function MiniDrawer() {
 						variant="h6"
 						noWrap
 						component="div"
+						onClick={handleAppBarHeadingClick}
 					>
 						ROMODO
 					</Typography>
@@ -245,10 +249,7 @@ export default function MiniDrawer() {
 							aria-label="notifications"
 							onClick={handleNotificationClick}
 						>
-							<Badge
-								badgeContent={4}
-								color="secondary"
-							>
+							<Badge>
 								<NotificationsActiveIcon />
 							</Badge>
 						</IconButton>
