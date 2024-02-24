@@ -1,4 +1,3 @@
-// AppBar.tsx
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
@@ -11,12 +10,16 @@ import Badge from "@mui/material/Badge";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import Popover from "@mui/material/Popover";
 import List from "@mui/material/List";
-import { ListItemButton, ListItemText } from "@mui/material";
+import { ListItemButton, ListItemText, Theme } from "@mui/material";
 
+/**
+ * Props for the AppBar component
+ */
 interface AppBarProps extends MuiAppBarProps {
 	open: boolean;
 	drawerWidth: number;
 	handleDrawerOpen: () => void;
+	handleDrawerClose: () => void;
 	notificationCount: number;
 	notificationAnchorEl: HTMLElement | null;
 	anchorEl: HTMLElement | null;
@@ -25,6 +28,37 @@ interface AppBarProps extends MuiAppBarProps {
 	handleClose: () => void;
 	handleNotificationClose: () => void;
 }
+
+/**
+ * Mixin for the opened state of the AppBar
+ */
+const openedMixin = (theme: Theme, drawerWidth: number) => ({
+	width: drawerWidth,
+	transition: theme.transitions.create("width", {
+		easing: theme.transitions.easing.sharp,
+		duration: theme.transitions.duration.enteringScreen,
+	}),
+	overflowX: "hidden",
+});
+
+/**
+ * Mixin for the closed state of the AppBar
+ */
+const closedMixin = (theme: Theme) => ({
+	transition: theme.transitions.create("width", {
+		easing: theme.transitions.easing.sharp,
+		duration: theme.transitions.duration.leavingScreen,
+	}),
+	overflowX: "hidden",
+	width: `calc(${theme.spacing(7)} + 1px)`,
+	[theme.breakpoints.up("sm")]: {
+		width: `calc(${theme.spacing(8)} + 1px)`,
+	},
+});
+
+/**
+ * Styled AppBar component
+ */
 const StyledAppBar = styled(MuiAppBar, {
 	shouldForwardProp: (prop) => prop !== "open",
 })<AppBarProps>(({ theme, open, drawerWidth }) => ({
@@ -43,8 +77,12 @@ const StyledAppBar = styled(MuiAppBar, {
 	}),
 }));
 
+/**
+ * Custom AppBar component
+ */
 export const AppBarStyled: React.FC<AppBarProps> = (props) => {
 	const openNotification = Boolean(props.notificationAnchorEl);
+
 	return (
 		<StyledAppBar {...props}>
 			<Toolbar>

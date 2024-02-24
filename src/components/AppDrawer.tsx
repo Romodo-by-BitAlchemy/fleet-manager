@@ -1,105 +1,131 @@
-// DrawerComponent.tsx
+// AppDrawer.tsx
 import * as React from "react";
-import { styled, Theme } from "@mui/material/styles";
-import { DrawerProps } from "@mui/material/Drawer";
-import MuiDrawer from "@mui/material/Drawer";
+import { styled, useTheme } from "@mui/material/styles";
+import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
-import SectionHeader from "./SectionHeader";
-import { SectionHeaderProps } from "./SectionHeader";
+import {
+	Box,
+	CssBaseline,
+	ListItem,
+	ListItemButton,
+	ListItemIcon,
+	ListItemText,
+} from "@mui/material";
+import InboxIcon from "@mui/icons-material/Inbox";
+import MailIcon from "@mui/icons-material/Mail";
 
-interface StyledDrawerProps extends DrawerProps {
-	theme: Theme;
+// Styled component for the drawer header
+const DrawerHeader = styled("div")(({ theme }) => ({
+	display: "flex",
+	alignItems: "center",
+	justifyContent: "flex-end",
+	padding: theme.spacing(0, 1),
+	// necessary for content to be below app bar
+	...theme.mixins.toolbar,
+}));
+
+interface AppDrawerProps {
 	open: boolean;
-	display: "flex";
-	drawerWidth: number;
-	handleDrawerClose: () => void;
-	sectionHeaders: SectionHeaderProps[];
-	handleSectionHeaderClick: (sectionHeaderText: string) => void;
 }
 
-const openedMixin = (theme: Theme, drawerWidth: number) => ({
-	width: drawerWidth,
-	transition: theme.transitions.create("width", {
-		easing: theme.transitions.easing.sharp,
-		duration: theme.transitions.duration.enteringScreen,
-	}),
-	overflowX: "hidden",
-});
+// Main component
+export const AppDrawer: React.FC<AppDrawerProps> = () => {
+	// Use theme for styling
+	const theme = useTheme();
+	// State for drawer open/close
+	const [open, setOpen] = React.useState(false);
 
-const closedMixin = (theme: Theme) => ({
-	transition: theme.transitions.create("width", {
-		easing: theme.transitions.easing.sharp,
-		duration: theme.transitions.duration.leavingScreen,
-	}),
-	overflowX: "hidden",
-	width: `calc(${theme.spacing(7)} + 1px)`,
-	[theme.breakpoints.up("sm")]: {
-		width: `calc(${theme.spacing(8)} + 1px)`,
-	},
-});
+	// Handler for closing the drawer
+	const handleDrawerClose = () => {
+		setOpen(false);
+	};
 
-const DrawerStyled = styled(MuiDrawer, {
-	shouldForwardProp: (prop) => prop !== "open",
-})<{ theme: Theme; open: boolean; drawerWidth: number }>(
-	({ theme, open, drawerWidth }) => ({
-		width: drawerWidth,
-		flexShrink: 0,
-		whiteSpace: "nowrap",
-		boxSizing: "border-box",
-		variants: {
-			// Add the missing variants property
-			open: {
-				...openedMixin(theme, drawerWidth),
-				"& .MuiDrawer-paper": openedMixin(theme, drawerWidth),
-			},
-			closed: {
-				...closedMixin(theme),
-				"& .MuiDrawer-paper": closedMixin(theme),
-			},
-		},
-		...(open ? { open: true } : { closed: true }), // Use the variants to apply the correct styles
-	})
-);
+	// Handler for opening the drawer
+	const handleDrawerOpen = () => {
+		setOpen(true);
+	};
 
-export const AppDrawer: React.FC<StyledDrawerProps> = ({
-	theme,
-	open,
-	handleDrawerClose,
-	sectionHeaders,
-	handleSectionHeaderClick,
-}) => {
-	const drawerWidth = screen.width * 0.2;
-
+	// Component return
 	return (
-		<DrawerStyled
-			theme={theme}
-			open={open}
-			drawerWidth={drawerWidth}
-			variant="permanent"
-		>
-			<div>
-				<IconButton onClick={handleDrawerClose}>
-					{theme.direction === "rtl" ? (
-						<ChevronRightIcon />
-					) : (
-						<ChevronLeftIcon />
-					)}
-				</IconButton>
-			</div>
-			<Divider />
-			<List>
-				{sectionHeaders.map((sectionHeader, index) => (
-					<SectionHeader
-						key={index}
-						{...sectionHeader}
-						handleClick={() => handleSectionHeaderClick(sectionHeader.text)}
-					/>
-				))}
-			</List>
-		</DrawerStyled>
+		<Box sx={{ display: "flex" }}>
+			<CssBaseline />
+			<Drawer open={open}>
+				<DrawerHeader>
+					<IconButton onClick={handleDrawerClose}>
+						{theme.direction === "rtl" ? (
+							<ChevronRightIcon />
+						) : (
+							<ChevronLeftIcon />
+						)}
+					</IconButton>
+				</DrawerHeader>
+				<List>
+					{/* Map over list items */}
+					{["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+						<ListItem
+							key={text}
+							disablePadding
+							sx={{ display: "block" }}
+						>
+							<ListItemButton
+								sx={{
+									minHeight: 48,
+									justifyContent: open ? "initial" : "center",
+									px: 2.5,
+								}}
+							>
+								<ListItemIcon
+									sx={{
+										minWidth: 0,
+										mr: open ? 3 : "auto",
+										justifyContent: "center",
+									}}
+								>
+									{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+								</ListItemIcon>
+								<ListItemText
+									primary={text}
+									sx={{ opacity: open ? 1 : 0 }}
+								/>
+							</ListItemButton>
+						</ListItem>
+					))}
+					{/* Map over list items */}
+					{["All mail", "Trash", "Spam"].map((text, index) => (
+						<ListItem
+							key={text}
+							disablePadding
+							sx={{ display: "block" }}
+						>
+							<ListItemButton
+								sx={{
+									minHeight: 48,
+									justifyContent: open ? "initial" : "center",
+									px: 2.5,
+								}}
+							>
+								<ListItemIcon
+									sx={{
+										minWidth: 0,
+										mr: open ? 3 : "auto",
+										justifyContent: "center",
+									}}
+								>
+									{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+								</ListItemIcon>
+								<ListItemText
+									primary={text}
+									sx={{ opacity: open ? 1 : 0 }}
+								/>
+							</ListItemButton>
+						</ListItem>
+					))}
+				</List>
+			</Drawer>
+		</Box>
 	);
 };
+export default AppDrawer;
