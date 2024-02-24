@@ -28,6 +28,7 @@ import { ListItemButton, ListItemText, Stack } from "@mui/material";
 import type { SectionHeaderProps } from "./SectionHeader";
 import SectionHeader from "./SectionHeader";
 import { createBrowserHistory } from "history";
+// import { AppBarStyled } from "./AppBar";
 
 const drawerWidth = 240;
 const history = createBrowserHistory();
@@ -215,6 +216,11 @@ export default function MiniDrawer() {
 	const handleAppBarHeadingClick = () => {
 		history.push(`/`);
 	};
+
+	let notificationCount = () => {
+		return 1 + 1;
+	};
+
 	return (
 		<Stack>
 			<AppBar
@@ -249,7 +255,10 @@ export default function MiniDrawer() {
 							aria-label="notifications"
 							onClick={handleNotificationClick}
 						>
-							<Badge>
+							<Badge
+								badgeContent={notificationCount()}
+								color="warning"
+							>
 								<NotificationsActiveIcon />
 							</Badge>
 						</IconButton>
