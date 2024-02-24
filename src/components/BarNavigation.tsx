@@ -1,11 +1,9 @@
 // BarNavigation.tsx
 import * as React from "react";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
@@ -26,13 +24,10 @@ import Badge from "@mui/material/Badge";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import Popover from "@mui/material/Popover";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import { ListItemText } from "@mui/material";
+import { ListItemButton, ListItemText, Stack } from "@mui/material";
 import type { SectionHeaderProps } from "./SectionHeader";
 import SectionHeader from "./SectionHeader";
 import { createBrowserHistory } from "history";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import DashboardPage from "./DashboardPage";
 
 const drawerWidth = 240;
 const history = createBrowserHistory();
@@ -114,6 +109,7 @@ export default function MiniDrawer() {
 
 	const handleDrawerClose = () => {
 		setOpen(false);
+		sectionHeaders[4].open = false;
 	};
 
 	const handleSectionHeaderClick = (sectionHeaderText: string) => {
@@ -128,6 +124,10 @@ export default function MiniDrawer() {
 				!updatedSectionHeaders[sectionIndex].open;
 			setSectionHeaders(updatedSectionHeaders);
 		}
+
+		if (sectionIndex === 4) {
+			setOpen(true);
+		} else setOpen(open);
 	};
 
 	const [sectionHeaders, setSectionHeaders] = React.useState<
@@ -213,8 +213,7 @@ export default function MiniDrawer() {
 	const openNotification = Boolean(notificationAnchorEl);
 
 	return (
-		<Box sx={{ display: "flex" }}>
-			<CssBaseline />
+		<Stack>
 			<AppBar
 				position="fixed"
 				open={open}
@@ -267,15 +266,15 @@ export default function MiniDrawer() {
 							}}
 						>
 							<List>
-								<ListItem button>
+								<ListItemButton>
 									<ListItemText primary="Notification 1" />
-								</ListItem>
-								<ListItem button>
+								</ListItemButton>
+								<ListItemButton>
 									<ListItemText primary="Notification 2" />
-								</ListItem>
-								<ListItem button>
+								</ListItemButton>
+								<ListItemButton>
 									<ListItemText primary="Notification 3" />
-								</ListItem>
+								</ListItemButton>
 							</List>
 						</Popover>
 						<IconButton
@@ -337,7 +336,7 @@ export default function MiniDrawer() {
 					))}
 				</List>
 			</Drawer>
-			<Box
+			{/* <Box
 				component="main"
 				sx={{ flexGrow: 1, p: 3 }}
 			>
@@ -351,7 +350,7 @@ export default function MiniDrawer() {
 						</Routes>
 					</Router>
 				}
-			</Box>
-		</Box>
+			</Box> */}
+		</Stack>
 	);
 }
