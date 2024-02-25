@@ -18,8 +18,14 @@ import Badge from "@mui/material/Badge";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import Popover from "@mui/material/Popover";
 import List from "@mui/material/List";
-import { ListItemButton, ListItemText, Stack } from "@mui/material";
-import { sectionHeaders, handleSectionHeaderClick } from "./SectionHeader";
+import {
+	Box,
+	Container,
+	ListItemButton,
+	ListItemText,
+	Stack,
+} from "@mui/material";
+import { useSectionHeaders } from "./SectionHeader";
 import SectionHeader from "./SectionHeader";
 import { createBrowserHistory } from "history";
 
@@ -97,6 +103,7 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer() {
 	const theme = useTheme();
 	const [open, setOpen] = React.useState(false);
+	const { sectionHeaders, handleSectionHeaderClick } = useSectionHeaders();
 
 	const handleDrawerOpen = () => {
 		setOpen(true);
@@ -104,7 +111,7 @@ export default function MiniDrawer() {
 
 	const handleDrawerClose = () => {
 		setOpen(false);
-		sectionHeaders[4].open = false;
+		handleSectionHeaderClick(sectionHeaders[4].text);
 	};
 
 	const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
@@ -134,7 +141,7 @@ export default function MiniDrawer() {
 		history.push(`/`);
 	};
 
-	let notificationCount = () => {
+	const notificationCount = () => {
 		return 1 + 1;
 	};
 
@@ -261,6 +268,7 @@ export default function MiniDrawer() {
 							handleClick={() => handleSectionHeaderClick(text)}
 						/>
 					))}
+					{}
 				</List>
 			</Drawer>
 		</Stack>
