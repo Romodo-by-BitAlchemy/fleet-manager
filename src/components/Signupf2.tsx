@@ -1,86 +1,113 @@
 //import TextField from "@mui/material/TextField";
-import "/Users/chamith/fleet-manager/romodo-fleet-manager/src/App.css";
-import {Box, Typography, Button} from "@mui/material";
-import BusImage from "../busimage.jpg";
-import Logo from "../Logo2.jpeg";
+import "../App.css";
+import { Box, Typography, Button } from "@mui/material";
+import BusImage from "../assets/busimage.jpg";
+import Logo from "../assets/Logo2.jpeg";
 import CheckboxesGroup from "./CheckboxesGroup";
 import CheckboxesGroup2 from "./CheckboxesGroup2";
-export default function Signupf2() {
+import { usePlacesAutocomplete } from "@react-google-maps/api";
+interface Signupf2Props {
+  onNext: () => void;
+  onBack: () => void;
+}
+
+const Signupf2: React.FC<Signupf2Props> = ({ onNext, onBack }) => {
+  const {
+    ready,
+    value,
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+  } = usePlacesAutocomplete();
   return (
     <div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        height: "100vh",
+        width: "1200px",
+      }}
+    >
+      {/* Left side with BusImage */}
       <Box
         sx={{
+          flex: 1,
+          backgroundImage: `url(${BusImage})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          position: "relative",
+        }}
+      ></Box>
+
+      <Box
+        sx={{
+          flex: 0.5,
           display: "flex",
-          flexDirection: "row",
-          height: "100vh",
-          width: "1200px",
+          flexDirection: "column",
         }}
       >
-        {/* Left side with BusImage */}
-        <Box
-          sx={{
-            flex: 1,
-            backgroundImage: `url(${BusImage})`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            position: "relative",
+        <img
+          src={Logo}
+          alt="Logo"
+          style={{
+            flex: 0.1,
+            width: "400px", // Adjust as needed
+            height: "10px", // Adjust as neededß
+            objectFit: "cover",
+            maskPosition: "center",
+            paddingRight: "50px",
+            marginRight: "-800px",
+            marginLeft: "250px",
+            marginTop: "20px",
+            marginBottom: "-30px",
+            paddingBottom: "-20px",
           }}
-        ></Box>
-
+        ></img>
+      </Box>
+      <form>
         <Box
           sx={{
-            flex: 0.5,
+            flex: 2,
             display: "flex",
             flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            //border: "2px solid purple",
+            //borderRadius: "50px",
+            paddingTop: "-50px",
+            marginTop: "-25px",
+            marginBottom: "-30px",
           }}
         >
-          <img
-            src={Logo}
-            alt="Logo"
-            style={{
-              flex: 0.1,
-              width: "450px", // Adjust as needed
-              height: "20px", // Adjust as neededß
-              objectFit: "cover",
-              maskPosition: "center",
-              paddingRight: "50px",
-              marginRight: "-800px",
-              marginLeft: "250px",
-              marginTop: "30px",
-            }}
-          ></img>
-        </Box>
-        <form>
-          <Box
+          <Typography
+            variant="h3"
             sx={{
-              flex: 1,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              //border: "2px solid purple",
-              //borderRadius: "50px",
-              marginTop: "20px",
-              marginBottom: "20px",
+              fontWeight: 900,
+              color: "purple",
+              marginTop: "-30px",
+              paddingTop: "-30px",
             }}
           >
-            <Typography
-              variant="h3"
-              sx={{
-                fontWeight: 900,
-                color: "purple",
-              }}
-            >
-              SIGN UP
-            </Typography>
-            <Typography variant="body2" sx={{fontWeight: 400, color: "black"}}>
+            SIGN UP
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              fontWeight: 200,
+              color: "black",
+              marginTop: "-20",
+              paddingTop: "-20px",
+              marginBottom: "-20px",
+            }}
+          >
               Further Settings
             </Typography>
             <br />
             <Typography
               variant="body2"
               sx={{
-                fontWeight: 400,
+                fontWeight: 200,
                 color: "black",
                 textAlign: "left",
                 paddingRight: "130px",
@@ -93,7 +120,7 @@ export default function Signupf2() {
             <Typography
               variant="body2"
               sx={{
-                fontWeight: 400,
+                fontWeight: 200,
                 color: "black",
                 textAlign: "left",
                 paddingRight: "130px",
@@ -106,7 +133,7 @@ export default function Signupf2() {
             <Typography
               variant="body2"
               sx={{
-                fontWeight: 400,
+                fontWeight: 200,
                 color: "black",
                 textAlign: "left",
                 paddingRight: "130px",
@@ -116,14 +143,19 @@ export default function Signupf2() {
               Seat Reservation
             </Typography>
             <CheckboxesGroup2 />
-            <Box sx={{display: "inline-block"}}>
-              <Button variant="contained" sx={{backgroundColor: "purple"}}>
+            <Box sx={{ display: "inline-block" }}>
+              <Button
+                variant="contained"
+                onClick={onNext}
+                sx={{ backgroundColor: "purple" }}
+              >
                 Next
               </Button>
               &nbsp;&nbsp;&nbsp;&nbsp;
               <Button
                 variant="contained"
-                sx={{color: "black", backgroundColor: "White"}}
+                onClick={onBack}
+                sx={{ color: "black", backgroundColor: "White" }}
               >
                 Back
               </Button>
@@ -133,4 +165,5 @@ export default function Signupf2() {
       </Box>
     </div>
   );
-}
+};
+export default Signupf2;

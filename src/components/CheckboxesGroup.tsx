@@ -6,6 +6,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import Checkbox from "@mui/material/Checkbox";
+import Typography from "@mui/material/Typography";
 
 export default function CheckboxesGroup() {
   const [state, setState] = React.useState({
@@ -20,21 +21,21 @@ export default function CheckboxesGroup() {
     });
   };
 
-  const {internal, external} = state;
+  const { internal, external } = state;
   const error = [internal, external].filter((v) => v).length !== 1;
 
   return (
-    <Box sx={{display: "flex"}}>
+    <Box sx={{ display: "flex" }}>
       <FormControl
         required
         error={error}
         component="fieldset"
-        sx={{m: 3}}
+        sx={{ m: 2 }}
         variant="standard"
       >
         <FormGroup>
           <FormControlLabel
-            sx={{color: "black"}}
+            sx={{ color: "black" }}
             control={
               <Checkbox
                 checked={internal}
@@ -42,10 +43,14 @@ export default function CheckboxesGroup() {
                 name="internal"
               />
             }
-            label="Internal Passenger"
+            label={
+              <Typography sx={{ fontSize: "small", color: "black" }}>
+                Internal Passenger
+              </Typography>
+            }
           />
           <FormControlLabel
-            sx={{color: "black"}}
+            sx={{ color: "black" }}
             control={
               <Checkbox
                 checked={external}
@@ -53,7 +58,11 @@ export default function CheckboxesGroup() {
                 name="external"
               />
             }
-            label="External Passenger"
+            label={
+              <Typography sx={{ fontSize: "small", color: "black" }}>
+                External Passenger
+              </Typography>
+            }
           />
         </FormGroup>
         <FormHelperText>

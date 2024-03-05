@@ -6,6 +6,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 //import FormHelperText from "@mui/material/FormHelperText";
 import Checkbox from "@mui/material/Checkbox";
+import Typography from "@mui/material/Typography";
 
 export default function CheckboxesGroup() {
   const [state, setState] = React.useState({
@@ -20,14 +21,19 @@ export default function CheckboxesGroup() {
     });
   };
 
-  const {groupseat, paymentgate} = state;
+  const { groupseat, paymentgate } = state;
 
   return (
-    <Box sx={{display: "flex"}}>
-      <FormControl required component="fieldset" sx={{m: 3}} variant="standard">
+    <Box sx={{ display: "flex" }}>
+      <FormControl
+        required
+        component="fieldset"
+        sx={{ m: 3 }}
+        variant="standard"
+      >
         <FormGroup>
           <FormControlLabel
-            sx={{color: "black"}}
+            sx={{ color: "black" }}
             control={
               <Checkbox
                 checked={groupseat}
@@ -35,10 +41,14 @@ export default function CheckboxesGroup() {
                 name="groupseat"
               />
             }
-            label="Allow Group Reservations"
+            label={
+              <Typography sx={{ fontSize: "small", color: "black" }}>
+                Allow Group Reservations
+              </Typography>
+            }
           />
           <FormControlLabel
-            sx={{color: "black"}}
+            sx={{ color: "black" }}
             control={
               <Checkbox
                 checked={paymentgate}
@@ -46,7 +56,11 @@ export default function CheckboxesGroup() {
                 name="paymentgate"
               />
             }
-            label="Enable Payment Gateway"
+            label={
+              <Typography sx={{ fontSize: "small", color: "black" }}>
+                Enable Group Reservation{" "}
+              </Typography>
+            }
           />
         </FormGroup>
       </FormControl>
