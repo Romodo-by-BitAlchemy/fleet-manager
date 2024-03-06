@@ -31,6 +31,8 @@ import { ListItemText } from "@mui/material";
 import type { SectionHeaderProps } from "./SectionHeader";
 import SectionHeader from "./SectionHeader";
 import { createBrowserHistory } from "history";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import DashboardPage from "./DashboardPage";
 
 const drawerWidth = 240;
 const history = createBrowserHistory();
@@ -55,7 +57,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
 	},
 });
 
-const DrawerHeader = styled("div")(({ theme }) => ({
+const DrawerHeader = styled("div")(({ theme }: { theme: Theme }) => ({
 	display: "flex",
 	alignItems: "center",
 	justifyContent: "flex-end",
@@ -86,8 +88,8 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const Drawer = styled(MuiDrawer, {
-	shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
+	shouldForwardProp: (prop: string) => prop !== "open",
+})(({ theme, open }: { theme: Theme; open: boolean }) => ({
 	width: drawerWidth,
 	flexShrink: 0,
 	whiteSpace: "nowrap",
@@ -308,6 +310,7 @@ export default function MiniDrawer() {
 				</Toolbar>
 			</AppBar>
 			<Drawer
+				theme={theme}
 				variant="permanent"
 				open={open}
 			>
@@ -338,7 +341,16 @@ export default function MiniDrawer() {
 				component="main"
 				sx={{ flexGrow: 1, p: 3 }}
 			>
-				{/* Add your specific content for each section here */}
+				{
+					<Router>
+						<Routes>
+							<Route
+								path="/dashboard"
+								element={<DashboardPage />}
+							/>
+						</Routes>
+					</Router>
+				}
 			</Box>
 		</Box>
 	);

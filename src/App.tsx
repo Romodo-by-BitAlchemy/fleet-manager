@@ -5,8 +5,6 @@ import SectionHeaders from "./components/SectionHeaders";
 import SectionHeader, {
 	SectionHeaderProps as LocalSectionHeaderProps,
 } from "./components/SectionHeader";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import DashboardPage from "./components/DashboardPage";
 
 // Define the type for sectionHeaders
 export interface SectionHeaderProps {
@@ -22,26 +20,17 @@ const App: React.FC = () => {
 	];
 
 	return (
-		<Router>
-			<div>
-				<BarNavigation />
-				<SectionHeaders sectionHeaders={sectionHeaders} />
+		<div>
+			<BarNavigation />
+			<SectionHeaders sectionHeaders={sectionHeaders} />
 
-				{sectionHeaders.map((header, index) => (
-					<SectionHeader
-						key={index}
-						{...header}
-					/>
-				))}
-
-				<Routes>
-					<Route
-						path="/dashboard"
-						element={<DashboardPage />}
-					/>
-				</Routes>
-			</div>
-		</Router>
+			{sectionHeaders.map((header, index) => (
+				<SectionHeader
+					key={index}
+					{...header}
+				/>
+			))}
+		</div>
 	);
 };
 export default App;
