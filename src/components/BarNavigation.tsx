@@ -12,25 +12,26 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import PersonIcon from "@mui/icons-material/Person";
-import PeopleIcon from "@mui/icons-material/People";
-import DriveEtaIcon from "@mui/icons-material/DriveEta";
-import TimeToLeaveIcon from "@mui/icons-material/TimeToLeave";
-import ArticleIcon from "@mui/icons-material/Article";
-import SettingsIcon from "@mui/icons-material/Settings";
+
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Badge from "@mui/material/Badge";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import Popover from "@mui/material/Popover";
 import List from "@mui/material/List";
-import { ListItemButton, ListItemText, Stack } from "@mui/material";
-import type { SectionHeaderProps } from "./SectionHeader";
+import {
+	Box,
+	Container,
+	ListItemButton,
+	ListItemText,
+	Stack,
+} from "@mui/material";
+import { useSectionHeaders } from "./SectionHeader";
 import SectionHeader from "./SectionHeader";
 import { createBrowserHistory } from "history";
 
 const drawerWidth = 240;
 const history = createBrowserHistory();
+
 const openedMixin = (theme: Theme): CSSObject => ({
 	width: drawerWidth,
 	transition: theme.transitions.create("width", {
@@ -102,6 +103,7 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer() {
 	const theme = useTheme();
 	const [open, setOpen] = React.useState(false);
+	const { sectionHeaders, handleSectionHeaderClick } = useSectionHeaders();
 
 	const handleDrawerOpen = () => {
 		setOpen(true);
@@ -109,85 +111,8 @@ export default function MiniDrawer() {
 
 	const handleDrawerClose = () => {
 		setOpen(false);
-		sectionHeaders[4].open = false;
+		handleSectionHeaderClick(sectionHeaders[4].text);
 	};
-
-	const handleSectionHeaderClick = (sectionHeaderText: string) => {
-		history.push(`/${sectionHeaderText.toLowerCase()}`);
-		const sectionIndex = sectionHeaders.findIndex(
-			(header) => header.text === sectionHeaderText
-		);
-
-		if (sectionIndex !== -1) {
-			const updatedSectionHeaders = [...sectionHeaders];
-			updatedSectionHeaders[sectionIndex].open =
-				!updatedSectionHeaders[sectionIndex].open;
-			setSectionHeaders(updatedSectionHeaders);
-		}
-
-		if (sectionIndex === 4) {
-			setOpen(true);
-		} else setOpen(open);
-	};
-
-	const [sectionHeaders, setSectionHeaders] = React.useState<
-		SectionHeaderProps[]
-	>([
-		{
-			text: "Dashboard",
-			icon: <DashboardIcon />,
-			nestedItems: [],
-			open: false,
-			handleClick: () => {},
-		},
-		{
-			text: "Drivers",
-			icon: <PersonIcon />,
-			nestedItems: [],
-			open: false,
-			handleClick: () => {},
-		},
-		{
-			text: "Vehicles",
-			icon: <DriveEtaIcon />,
-			nestedItems: [],
-			open: false,
-			handleClick: () => {},
-		},
-		{
-			text: "Passengers",
-			icon: <PeopleIcon />,
-			nestedItems: [],
-			open: false,
-			handleClick: () => {},
-		},
-		{
-			text: "Reports",
-			icon: <ArticleIcon />,
-			nestedItems: [
-				"Accident/malfunction report",
-				"Driver details report",
-				"Passenger details report",
-				"Vehicle details report",
-				"Distance report",
-				"Filtered reports",
-			],
-			open: false, // Added this to match the expected type
-			handleClick: () => handleSectionHeaderClick("Reports"),
-		},
-		{
-			text: "Trips",
-			icon: <TimeToLeaveIcon />,
-			open: false,
-			handleClick: () => {},
-		},
-		{
-			text: "Settings",
-			icon: <SettingsIcon />,
-			open: false,
-			handleClick: () => {},
-		},
-	]);
 
 	const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
@@ -212,6 +137,14 @@ export default function MiniDrawer() {
 
 	const openNotification = Boolean(notificationAnchorEl);
 
+	const handleAppBarHeadingClick = () => {
+		history.push(`/`);
+	};
+
+	const notificationCount = () => {
+		return 1 + 1;
+	};
+
 	return (
 		<Stack>
 			<AppBar
@@ -235,6 +168,7 @@ export default function MiniDrawer() {
 						variant="h6"
 						noWrap
 						component="div"
+						onClick={handleAppBarHeadingClick}
 					>
 						ROMODO
 					</Typography>
@@ -246,8 +180,8 @@ export default function MiniDrawer() {
 							onClick={handleNotificationClick}
 						>
 							<Badge
-								badgeContent={4}
-								color="secondary"
+								badgeContent={notificationCount()}
+								color="warning"
 							>
 								<NotificationsActiveIcon />
 							</Badge>
@@ -334,23 +268,9 @@ export default function MiniDrawer() {
 							handleClick={() => handleSectionHeaderClick(text)}
 						/>
 					))}
+					{}
 				</List>
 			</Drawer>
-			{/* <Box
-				component="main"
-				sx={{ flexGrow: 1, p: 3 }}
-			>
-				{
-					<Router>
-						<Routes>
-							<Route
-								path="/dashboard"
-								element={<DashboardPage />}
-							/>
-						</Routes>
-					</Router>
-				}
-			</Box> */}
 		</Stack>
 	);
 }
