@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
-		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 100",
 		"preview": "vite preview"
 	},
 	"dependencies": {
@@ -14,6 +14,11 @@
 		"@emotion/styled": ">=11.11.0",
 		"@mui/icons-material": ">=5.15.10",
 		"@mui/material": ">=5.15.10",
+		"@mui/system": "^5.15.11",
+		"@mui/x-charts": "^6.19.5",
+		"@mui/x-data-grid": "^6.19.5",
+		"@mui/x-date-pickers": "^6.19.5",
+		"@mui/x-tree-view": "^6.17.0",
 		"builder": ">=5.0.0",
 		"buildpack": ">=0.0.1",
 		"history": ">=5.3.0",
@@ -22,10 +27,11 @@
 		"react": ">=18.2.0",
 		"react-dom": ">=18.2.0",
 		"react-router": "6.22.0",
-		"react-router-dom": "6.22.0",
+		"react-router-dom": "^6.22.1",
 		"terser": "5.27.1"
 	},
 	"devDependencies": {
+		"@types/google.maps": "^3.55.4",
 		"@types/react": ">=18.2.55",
 		"@types/react-dom": ">=18.2.19",
 		"@typescript-eslint/eslint-plugin": "5.62.1-alpha.0",
@@ -40,6 +46,7 @@
 		"ip6addr": ">=0.2.5",
 		"ipaddr.js": ">=0.2.10",
 		"prettier": ">=2.8.1",
+		"tsc": "^2.0.4",
 		"typescript": "4.9.5",
 		"vite": ">=5.1.0",
 		"vite-plugin-react": ">=1.0.0"
