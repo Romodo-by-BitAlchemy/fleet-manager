@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import {
 	AppBar,
 	Box,
@@ -16,6 +17,8 @@ import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
  * Renders the landing page of the application.
  */
 const LandingPage: React.FC = () => {
+	const navigate = useNavigate();
+
 	return (
 		<Box sx={{ flexGrow: 1, minHeight: "100vh", width: "100vw" }}>
 			<AppBar position="sticky">
@@ -50,6 +53,7 @@ const LandingPage: React.FC = () => {
 						variant="contained"
 						startIcon={<RocketLaunchIcon />}
 						sx={{ mt: 3 }}
+						onClick={() => navigate("/signup")}
 					>
 						Get Started
 					</Button>
