@@ -1,5 +1,5 @@
 //import TextField from "@mui/material/TextField";
-import "/Users/chamith/fleet-manager/romodo-fleet-manager/src/App.css";
+import "../App.css";
 import { Box, Typography, Button } from "@mui/material";
 import BusImage from "../assets/busimage.jpg";
 import Logo from "../assets/Logo2.jpeg";
