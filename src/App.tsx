@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import "./App.css";
 import BarNavigation from "./components/BarNavigation";
 
+
 // Main App component
 const App: React.FC = () => {
 	return (
@@ -28,6 +29,7 @@ const App: React.FC = () => {
 				<Route
 					path="/myTestCompany"
 					element={<BarNavigation />}
+
 				/>
 			</Routes>
 		</BrowserRouter>
