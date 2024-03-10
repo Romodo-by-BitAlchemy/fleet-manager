@@ -16,22 +16,18 @@ import DirectionsCarFilledIcon from "@mui/icons-material/DirectionsCarFilled";
 
 const vehicles = [
 	{
-		name: "Electric Sedan",
+		name: "Bus",
 		description:
-			"A sleek and modern electric vehicle perfect for city driving.",
-		imageUrl: "https://example.com/electric-sedan.jpg",
+			"A large vehicle designed to transport passengers, typically along fixed routes.",
+		imageUrl: "https://example.com/bus.jpg",
+		modelNumber: "1234",
 	},
 	{
-		name: "Family SUV",
+		name: "Van",
 		description:
-			"Spacious and safe, ideal for family trips with plenty of cargo space.",
-		imageUrl: "https://example.com/family-suv.jpg",
-	},
-	{
-		name: "Sporty Convertible",
-		description:
-			"Experience thrilling drives with the top down in this sporty convertible.",
-		imageUrl: "https://example.com/sporty-convertible.jpg",
+			"A versatile vehicle with ample cargo space, suitable for various purposes.",
+		imageUrl: "https://example.com/van.jpg",
+		modelNumber: "5678",
 	},
 	// Add more vehicles as needed
 ];
