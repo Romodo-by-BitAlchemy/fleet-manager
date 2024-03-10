@@ -30,7 +30,12 @@ const LandingPage: React.FC = () => {
 					>
 						Romodo
 					</Typography>
-					<Button color="inherit">Login</Button>
+					<Button
+						color="inherit"
+						onClick={() => navigate("/login")}
+					>
+						Login
+					</Button>
 				</Toolbar>
 			</AppBar>
 			<Container sx={{ mt: 8, mb: 4 }}>
@@ -49,6 +54,7 @@ const LandingPage: React.FC = () => {
 					>
 						Your ultimate fleet management solution.
 					</Typography>
+
 					<Button
 						variant="contained"
 						startIcon={<RocketLaunchIcon />}
