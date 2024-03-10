@@ -21,6 +21,7 @@ import List from "@mui/material/List";
 import {
 	Box,
 	Container,
+	Grid,
 	ListItemButton,
 	ListItemText,
 	Stack,
@@ -100,7 +101,11 @@ const Drawer = styled(MuiDrawer, {
 	}),
 }));
 
-export default function MiniDrawer() {
+type MiniDrawerProps = {
+	children?: React.ReactNode;
+};
+
+export default function MiniDrawer({ children }: MiniDrawerProps) {
 	const theme = useTheme();
 	const [open, setOpen] = React.useState(false);
 	const { sectionHeaders, handleSectionHeaderClick } = useSectionHeaders();
@@ -242,35 +247,42 @@ export default function MiniDrawer() {
 					</div>
 				</Toolbar>
 			</AppBar>
-			<Drawer
-				theme={theme}
-				variant="permanent"
-				open={open}
-			>
-				<DrawerHeader>
-					<IconButton onClick={handleDrawerClose}>
-						{theme.direction === "rtl" ? (
-							<ChevronRightIcon />
-						) : (
-							<ChevronLeftIcon />
-						)}
-					</IconButton>
-				</DrawerHeader>
-				<Divider />
-				<List>
-					{sectionHeaders.map(({ text, icon, nestedItems, open }, index) => (
-						<SectionHeader
-							key={index}
-							text={text}
-							icon={icon}
-							nestedItems={nestedItems || []}
-							open={open}
-							handleClick={() => handleSectionHeaderClick(text)}
-						/>
-					))}
-					{}
-				</List>
-			</Drawer>
+			<Grid container>
+				<Grid item>
+					<Drawer
+						theme={theme}
+						variant="permanent"
+						open={open}
+					>
+						<DrawerHeader>
+							<IconButton onClick={handleDrawerClose}>
+								{theme.direction === "rtl" ? (
+									<ChevronRightIcon />
+								) : (
+									<ChevronLeftIcon />
+								)}
+							</IconButton>
+						</DrawerHeader>
+						<Divider />
+						<List>
+							{sectionHeaders.map(
+								({ text, icon, nestedItems, open }, index) => (
+									<SectionHeader
+										key={index}
+										text={text}
+										icon={icon}
+										nestedItems={nestedItems || []}
+										open={open}
+										handleClick={() => handleSectionHeaderClick(text)}
+									/>
+								)
+							)}
+							{}
+						</List>
+					</Drawer>
+				</Grid>
+				<Grid item> {children}</Grid>
+			</Grid>
 		</Stack>
 	);
 }
