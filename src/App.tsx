@@ -9,26 +9,30 @@ import DashboardPage from "./pages/DashboardPage";
 // Main App component
 const App: React.FC = () => {
 	return (
-		<BrowserRouter>
-			<Routes>
+		<>
+			<BrowserRouter>
+				<Routes>
+					<Route
+						path="/"
+						element={<LandingPage />}
+					/>
+					<Route
+						path="/signup"
+						element={<Signupf1 />}
+					/>
+					<Route
+						path="/login"
+						element={<Login />}
+					/>
+				</Routes>
+			</BrowserRouter>
+			<BrowserRouter basename="/myTestCompany">
 				<Route
-					path="/"
-					element={<LandingPage />}
-				/>
-				<Route
-					path="/signup"
-					element={<Signupf1 />}
-				/>
-				<Route
-					path="/login"
-					element={<Login />}
-				/>
-				<Route
-					path="/myTestCompany/dashboard" //TODO: Replace with actual dashboard URL with variable for company name
+					path="/dashboard"
 					element={<DashboardPage />}
 				/>
-			</Routes>
-		</BrowserRouter>
+			</BrowserRouter>
+		</>
 	);
 };
 
