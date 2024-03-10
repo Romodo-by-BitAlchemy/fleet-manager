@@ -35,25 +35,12 @@ const vehicles = [
 const Vehicles = () => {
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="static">
-				<Toolbar>
-					<DirectionsCarFilledIcon sx={{ mr: 2 }} />
-					<Typography
-						variant="h6"
-						component="div"
-						sx={{ flexGrow: 1 }}
-					>
-						Vehicle Showcase
-					</Typography>
-					<Button color="inherit">Login</Button>
-				</Toolbar>
-			</AppBar>
 			<Container sx={{ py: 8 }}>
 				<Typography
 					variant="h4"
 					gutterBottom
 				>
-					Explore Our Vehicles
+					Explore Your Vehicles
 				</Typography>
 				<Grid
 					container
