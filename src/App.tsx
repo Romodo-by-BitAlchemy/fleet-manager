@@ -9,30 +9,26 @@ import DashboardPage from "./pages/DashboardPage";
 // Main App component
 const App: React.FC = () => {
 	return (
-		<>
-			<BrowserRouter>
-				<Routes>
-					<Route
-						path="/"
-						element={<LandingPage />}
-					/>
-					<Route
-						path="/signup"
-						element={<Signupf1 />}
-					/>
-					<Route
-						path="/login"
-						element={<Login />}
-					/>
-				</Routes>
-			</BrowserRouter>
-			<BrowserRouter basename="/myTestCompany">
+		<BrowserRouter>
+			<Routes>
 				<Route
-					path="/dashboard"
+					path="/"
+					element={<LandingPage />}
+				/>
+				<Route
+					path="/signup"
+					element={<Signupf1 />}
+				/>
+				<Route
+					path="/login"
+					element={<Login />}
+				/>
+				<Route
+					path="/myTestCompany/dashboard"
 					element={<DashboardPage />}
 				/>
-			</BrowserRouter>
-		</>
+			</Routes>
+		</BrowserRouter>
 	);
 };
 

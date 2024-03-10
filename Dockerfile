@@ -16,4 +16,4 @@ RUN yarn add express
 EXPOSE 8080
 
 # Start an Express server to serve the built assets
-CMD ["node", "-e", "const express = require('express'); const path = require('path'); const app = express(); app.use(express.static('dist')); app.get('*', (req, res) => { res.sendFile(path.join(__dirname, 'dist', 'index.html')); }); app.listen(8080);"]
+CMD ["node", "-e", "const express = require('express'); const app = express(); app.use(express.static('dist')); app.listen(8080);"]
