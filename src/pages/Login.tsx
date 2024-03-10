@@ -2,11 +2,19 @@ import * as React from "react";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 
+/**
+ * Login component for user authentication.
+ */
 const Login: React.FC = () => {
 	const { handleSubmit, register } = useForm();
 	const [error, setError] = React.useState("");
 	const [loading, setLoading] = React.useState(false);
 
+	/**
+	 * Handle form submission.
+	 * @param data - Form data containing email and password.
+	 * @param event - Form submission event.
+	 */
 	const onSubmit = async (data: any, event: React.FormEvent) => {
 		event.preventDefault(); // Prevent default form submission behavior
 		setLoading(true);

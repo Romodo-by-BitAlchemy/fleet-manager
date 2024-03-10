@@ -27,9 +27,13 @@ import { useSectionHeaders } from "./SectionHeader";
 import SectionHeader from "./SectionHeader";
 import { createBrowserHistory } from "history";
 
+// Define the width of the drawer
 const drawerWidth = 240;
+
+// Create a browser history object
 const history = createBrowserHistory();
 
+// CSS mixins for the opened and closed states of the drawer
 const openedMixin = (theme: Theme): CSSObject => ({
 	width: drawerWidth,
 	transition: theme.transitions.create("width", {
@@ -51,6 +55,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
 	},
 });
 
+// Styled component for the header of the drawer
 const DrawerHeader = styled("div")(({ theme }: { theme: Theme }) => ({
 	display: "flex",
 	alignItems: "center",
@@ -59,6 +64,7 @@ const DrawerHeader = styled("div")(({ theme }: { theme: Theme }) => ({
 	...theme.mixins.toolbar,
 }));
 
+// Custom AppBar component that extends MuiAppBar
 interface AppBarProps extends MuiAppBarProps {
 	open?: boolean;
 }
@@ -81,6 +87,7 @@ const AppBar = styled(MuiAppBar, {
 	}),
 }));
 
+// Custom Drawer component that extends MuiDrawer
 const Drawer = styled(MuiDrawer, {
 	shouldForwardProp: (prop: string) => prop !== "open",
 })(({ theme, open }: { theme: Theme; open: boolean }) => ({
@@ -98,10 +105,12 @@ const Drawer = styled(MuiDrawer, {
 	}),
 }));
 
+// Props for the MiniDrawer component
 type MiniDrawerProps = {
 	children?: React.ReactNode;
 };
 
+// Main component
 export default function MiniDrawer({ children }: MiniDrawerProps) {
 	const theme = useTheme();
 	const [open, setOpen] = React.useState(false);
@@ -112,16 +121,19 @@ export default function MiniDrawer({ children }: MiniDrawerProps) {
 		toggleSectionOpen,
 	} = useSectionHeaders();
 
+	// Event handler for opening the drawer
 	const handleDrawerOpen = () => {
 		setOpen(true);
 		openAllSections();
 	};
 
+	// Event handler for closing the drawer
 	const handleDrawerClose = () => {
 		setOpen(false);
 		closeAllSections();
 	};
 
+	// State and event handlers for the notification popover
 	const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 	const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -129,6 +141,8 @@ export default function MiniDrawer({ children }: MiniDrawerProps) {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
+
+	// State and event handlers for the notification popover
 	const [notificationAnchorEl, setNotificationAnchorEl] =
 		React.useState<HTMLElement | null>(null);
 	const handleNotificationClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -138,9 +152,13 @@ export default function MiniDrawer({ children }: MiniDrawerProps) {
 		setNotificationAnchorEl(null);
 	};
 	const openNotification = Boolean(notificationAnchorEl);
+
+	// Event handler for clicking the app bar heading
 	const handleAppBarHeadingClick = () => {
 		history.push(`/`);
 	};
+
+	// Function to calculate the notification count
 	const notificationCount = () => {
 		return 1 + 1;
 	};

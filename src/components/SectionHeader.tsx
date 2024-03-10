@@ -16,6 +16,7 @@ import TimeToLeaveIcon from "@mui/icons-material/TimeToLeave";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Tooltip } from "@mui/material";
 
+// Define the props for the SectionHeader component
 interface SectionHeaderProps {
 	text: string;
 	icon: React.ReactElement;
@@ -24,6 +25,7 @@ interface SectionHeaderProps {
 	handleClick: () => void;
 }
 
+// SectionHeader component
 export const SectionHeader: React.FC<SectionHeaderProps> = ({
 	text,
 	icon,
@@ -32,31 +34,39 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 	handleClick,
 }) => (
 	<>
+		{/* Tooltip for displaying the text */}
 		<Tooltip title={text}>
+			{/* ListItemButton for the section header */}
 			<ListItemButton
 				sx={{ minHeight: 48, px: 2.5 }}
 				onClick={handleClick}
 			>
+				{/* Icon for the section header */}
 				<ListItemIcon sx={{ minWidth: 0, mr: 3, justifyContent: "center" }}>
 					{icon}
 				</ListItemIcon>
+				{/* Text for the section header */}
 				<ListItemText primary={text} />
 
+				{/* Show ExpandLess or ExpandMore icon based on the open state */}
 				{(nestedItems?.length || 0) > 0 &&
 					(open ? <ExpandLess /> : <ExpandMore />)}
 			</ListItemButton>
 		</Tooltip>
 
+		{/* Collapse component for the nested items */}
 		{nestedItems && (
 			<Collapse
 				in={open}
 				timeout="auto"
 				unmountOnExit
 			>
+				{/* List component for the nested items */}
 				<List
 					component="div"
 					disablePadding
 				>
+					{/* Render each nested item */}
 					{nestedItems.map((nestedItem, index) => (
 						<ListItemButton
 							key={index}
@@ -74,6 +84,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 	</>
 );
 
+// Custom hook for managing section headers
 export const useSectionHeaders = () => {
 	const [sectionHeaders, setSectionHeaders] = React.useState<
 		SectionHeaderProps[]
@@ -135,7 +146,6 @@ export const useSectionHeaders = () => {
 			icon: <TimeToLeaveIcon />,
 			open: false,
 			nestedItems: [],
-
 			handleClick: () => {
 				handleSectionHeaderClick("Trips");
 			},
@@ -145,13 +155,13 @@ export const useSectionHeaders = () => {
 			icon: <SettingsIcon />,
 			open: false,
 			nestedItems: [],
-
 			handleClick: () => {
 				handleSectionHeaderClick("Settings");
 			},
 		},
 	]);
 
+	// Toggle the open state of a section
 	const toggleSectionOpen = (text: string) => {
 		setSectionHeaders((currentHeaders) =>
 			currentHeaders.map((header) => {
@@ -163,6 +173,7 @@ export const useSectionHeaders = () => {
 		);
 	};
 
+	// Handle click on a section header
 	const handleSectionHeaderClick = (sectionHeaderText: string) => {
 		const updatedSectionHeaders = sectionHeaders.map((header) =>
 			header.text === sectionHeaderText
@@ -172,6 +183,7 @@ export const useSectionHeaders = () => {
 		setSectionHeaders(updatedSectionHeaders);
 	};
 
+	// Open all sections
 	const openAllSections = () => {
 		const openedSections = sectionHeaders.map((header) => ({
 			...header,
@@ -180,6 +192,7 @@ export const useSectionHeaders = () => {
 		setSectionHeaders(openedSections);
 	};
 
+	// Close all sections
 	const closeAllSections = () => {
 		const closedSections = sectionHeaders.map((header) => ({
 			...header,
@@ -188,7 +201,6 @@ export const useSectionHeaders = () => {
 		setSectionHeaders(closedSections);
 	};
 
-	// Return your hook data and functions
 	return {
 		sectionHeaders,
 		handleSectionHeaderClick,
