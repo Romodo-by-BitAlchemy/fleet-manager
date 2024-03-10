@@ -15,6 +15,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 import TimeToLeaveIcon from "@mui/icons-material/TimeToLeave";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Tooltip } from "@mui/material";
+import handleSectionClick, { MiniDrawerProps } from "./MiniDrawer";
 
 // Define the props for the SectionHeader component
 interface SectionHeaderProps {
@@ -181,6 +182,7 @@ export const useSectionHeaders = () => {
 				: header
 		);
 		setSectionHeaders(updatedSectionHeaders);
+		handleSectionClick();
 	};
 
 	// Open all sections
