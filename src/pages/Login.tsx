@@ -51,83 +51,79 @@ const Login: React.FC = () => {
 	return (
 		<Container
 			component="main"
-			maxWidth="xs"
 			sx={{
-				marginTop: 8,
-				display: "flex",
-				flexDirection: "column",
-				alignItems: "center",
-				justifyContent: "flex-end",
-				alignContent: "space-evenly",
+				display: "flex", // Establish a flex container
+				flexDirection: "column", // Stack children vertically
+				alignItems: "center", // Center children horizontally
+				height: "100vh", // Full viewport height
+				justifyContent: "center", // Center children vertically
 			}}
 		>
-			<Box
-				position={"inherit"}
+			{/* <Box
 				sx={{
-					marginTop: 8,
-					display: "flex",
-					flexDirection: "column",
-					alignItems: "center",
-					justifyContent: "center",
+					width: "100%", // Box takes up 100% of the container width
+					maxWidth: "sm", // Limit the maximum width
+					display: "flex", // Establish as flex container
+					flexDirection: "column", // Stack children vertically
+					alignItems: "center", // Center children horizontally
+					"& > *": { width: "100%" }, // Children take full width
 				}}
+			> */}
+			<Box
+				component="form"
+				noValidate
+				onSubmit={handleSubmit(onSubmit)}
 			>
 				<Typography
 					component="h1"
-					variant="h5"
+					variant="h3"
+					color={"HighlightText"}
 					sx={{ mb: 4 }}
 				>
 					Sign in
 				</Typography>
-				<Box
-					component="form"
-					noValidate
-					onSubmit={handleSubmit(onSubmit)}
-					sx={{
-						width: "100%",
-					}}
-				>
-					<TextField
-						margin="normal"
-						required
-						fullWidth
-						id="email"
-						label="Email Address"
-						autoComplete="email"
-						autoFocus
+				<TextField
+					margin="normal"
+					required
+					fullWidth
+					id="email"
+					label="Email Address"
+					autoComplete="email"
+					autoFocus
+					sx={{ mb: 2 }}
+					{...register("email")}
+				/>
+				<TextField
+					margin="normal"
+					required
+					fullWidth
+					label="Password"
+					type="password"
+					id="password"
+					autoComplete="current-password"
+					sx={{ mb: 2 }}
+					{...register("password")}
+				/>
+				{error && (
+					<Typography
+						variant="body2"
+						color="error"
 						sx={{ mb: 2 }}
-						{...register("email")}
-					/>
-					<TextField
-						margin="normal"
-						required
-						fullWidth
-						label="Password"
-						type="password"
-						id="password"
-						autoComplete="current-password"
-						sx={{ mb: 2 }}
-						{...register("password")}
-					/>
-					{error && (
-						<Typography
-							variant="body2"
-							color="error"
-							sx={{ mb: 2 }}
-						>
-							{error}
-						</Typography>
-					)}
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						sx={{ mb: 2 }}
-						disabled={loading}
 					>
-						{loading ? "Signing in..." : "Sign In"}
-					</Button>
-				</Box>
+						{error}
+					</Typography>
+				)}
+				<Button
+					type="submit"
+					fullWidth
+					variant="contained"
+					sx={{ mb: 2 }}
+					disabled={loading}
+				>
+					{loading ? "Signing in..." : "Sign In"}
+				</Button>
 			</Box>
+			{/* </Box> */}
 		</Container>
 	);
 };
