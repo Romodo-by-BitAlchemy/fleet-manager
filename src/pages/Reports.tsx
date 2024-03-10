@@ -35,7 +35,7 @@ const passengers = [
 	// Add more passengers as needed
 ];
 
-const Passengers = () => {
+const Reports = () => {
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position="static">
@@ -85,4 +85,4 @@ const Passengers = () => {
 	);
 };
 
-export default Passengers;
+export default Reports;
