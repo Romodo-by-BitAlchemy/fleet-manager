@@ -11,26 +11,27 @@ import BarNavigation from "./components/BarNavigation";
 // Main App component
 const App: React.FC = () => {
 	return (
-		<BrowserRouter>
-			<Routes>
-				<Route
-					path="/"
-					element={<LandingPage />}
-				/>
-				<Route
-					path="/signup"
-					element={<Signupf1 />}
-				/>
-				<Route
-					path="/login"
-					element={<Login />}
-				/>
-				<Route
-					path="/myTestCompany"
-					element={<BarNavigation />}
-				/>
-			</Routes>
-		</BrowserRouter>
+		<>
+			<BrowserRouter>
+				<Routes>
+					<Route
+						path="/"
+						element={<LandingPage />}
+					/>
+					<Route
+						path="/signup"
+						element={<Signupf1 />}
+					/>
+					<Route
+						path="/login"
+						element={<Login />}
+					/>
+					<Route path='/myTestCompany' element={<LandingPage />} />		
+					
+				</Routes>
+			</BrowserRouter>
+			
+		</>
 	);
 };
 
