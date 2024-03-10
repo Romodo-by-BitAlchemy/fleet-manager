@@ -1,6 +1,4 @@
-// SectionHeader.tsx
 import * as React from "react";
-import { useState } from "react";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -9,7 +7,6 @@ import List from "@mui/material/List";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
-import { createBrowserHistory } from "history";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from "@mui/icons-material/Person";
 import DriveEtaIcon from "@mui/icons-material/DriveEta";
@@ -17,15 +14,18 @@ import PeopleIcon from "@mui/icons-material/People";
 import ArticleIcon from "@mui/icons-material/Article";
 import TimeToLeaveIcon from "@mui/icons-material/TimeToLeave";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { Tooltip } from "@mui/material";
 
+// Define the props for the SectionHeader component
 interface SectionHeaderProps {
 	text: string;
 	icon: React.ReactElement;
-	nestedItems?: string[];
+	nestedItems: string[];
 	open: boolean;
 	handleClick: () => void;
 }
 
+// SectionHeader component
 export const SectionHeader: React.FC<SectionHeaderProps> = ({
 	text,
 	icon,
@@ -34,26 +34,39 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 	handleClick,
 }) => (
 	<>
-		<ListItemButton
-			sx={{ minHeight: 48, px: 2.5 }}
-			onClick={handleClick}
-		>
-			<ListItemIcon sx={{ minWidth: 0, mr: 3, justifyContent: "center" }}>
-				{icon}
-			</ListItemIcon>
-			<ListItemText primary={text} />
-			{text === "Reports" && (open ? <ExpandLess /> : <ExpandMore />)}
-		</ListItemButton>
+		{/* Tooltip for displaying the text */}
+		<Tooltip title={text}>
+			{/* ListItemButton for the section header */}
+			<ListItemButton
+				sx={{ minHeight: 48, px: 2.5 }}
+				onClick={handleClick}
+			>
+				{/* Icon for the section header */}
+				<ListItemIcon sx={{ minWidth: 0, mr: 3, justifyContent: "center" }}>
+					{icon}
+				</ListItemIcon>
+				{/* Text for the section header */}
+				<ListItemText primary={text} />
+
+				{/* Show ExpandLess or ExpandMore icon based on the open state */}
+				{(nestedItems?.length || 0) > 0 &&
+					(open ? <ExpandLess /> : <ExpandMore />)}
+			</ListItemButton>
+		</Tooltip>
+
+		{/* Collapse component for the nested items */}
 		{nestedItems && (
 			<Collapse
 				in={open}
 				timeout="auto"
 				unmountOnExit
 			>
+				{/* List component for the nested items */}
 				<List
 					component="div"
 					disablePadding
 				>
+					{/* Render each nested item */}
 					{nestedItems.map((nestedItem, index) => (
 						<ListItemButton
 							key={index}
@@ -71,24 +84,8 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 	</>
 );
 
+// Custom hook for managing section headers
 export const useSectionHeaders = () => {
-	const history = createBrowserHistory();
-	const handleSectionHeaderClick = (sectionHeaderText: string) => {
-		const sectionIndex = sectionHeaders.findIndex(
-			(header) => header.text === sectionHeaderText
-		);
-
-		if (sectionIndex !== -1) {
-			const updatedSectionHeaders = [...sectionHeaders];
-			updatedSectionHeaders[sectionIndex].open =
-				!updatedSectionHeaders[sectionIndex].open;
-
-			setSectionHeaders(updatedSectionHeaders);
-		}
-
-		history.push(`/${sectionHeaderText.toLowerCase()}`);
-	};
-
 	const [sectionHeaders, setSectionHeaders] = React.useState<
 		SectionHeaderProps[]
 	>([
@@ -139,7 +136,7 @@ export const useSectionHeaders = () => {
 				"Distance report",
 				"Filtered reports",
 			],
-			open: false, // Added this to match the expected type
+			open: false,
 			handleClick: () => {
 				handleSectionHeaderClick("Reports");
 			},
@@ -148,6 +145,7 @@ export const useSectionHeaders = () => {
 			text: "Trips",
 			icon: <TimeToLeaveIcon />,
 			open: false,
+			nestedItems: [],
 			handleClick: () => {
 				handleSectionHeaderClick("Trips");
 			},
@@ -156,13 +154,60 @@ export const useSectionHeaders = () => {
 			text: "Settings",
 			icon: <SettingsIcon />,
 			open: false,
+			nestedItems: [],
 			handleClick: () => {
 				handleSectionHeaderClick("Settings");
 			},
 		},
 	]);
 
-	return { sectionHeaders, handleSectionHeaderClick };
+	// Toggle the open state of a section
+	const toggleSectionOpen = (text: string) => {
+		setSectionHeaders((currentHeaders) =>
+			currentHeaders.map((header) => {
+				if (header.text === text) {
+					return { ...header, open: !header.open };
+				}
+				return header;
+			})
+		);
+	};
+
+	// Handle click on a section header
+	const handleSectionHeaderClick = (sectionHeaderText: string) => {
+		const updatedSectionHeaders = sectionHeaders.map((header) =>
+			header.text === sectionHeaderText
+				? { ...header, open: !header.open }
+				: header
+		);
+		setSectionHeaders(updatedSectionHeaders);
+	};
+
+	// Open all sections
+	const openAllSections = () => {
+		const openedSections = sectionHeaders.map((header) => ({
+			...header,
+			open: true,
+		}));
+		setSectionHeaders(openedSections);
+	};
+
+	// Close all sections
+	const closeAllSections = () => {
+		const closedSections = sectionHeaders.map((header) => ({
+			...header,
+			open: false,
+		}));
+		setSectionHeaders(closedSections);
+	};
+
+	return {
+		sectionHeaders,
+		handleSectionHeaderClick,
+		openAllSections,
+		closeAllSections,
+		toggleSectionOpen,
+	};
 };
 
 export default SectionHeader;

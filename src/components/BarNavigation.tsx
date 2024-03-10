@@ -1,4 +1,3 @@
-// BarNavigation.tsx
 import * as React from "react";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
@@ -8,30 +7,33 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Badge from "@mui/material/Badge";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import Popover from "@mui/material/Popover";
 import List from "@mui/material/List";
 import {
-	Box,
-	Container,
+	Grid,
 	ListItemButton,
 	ListItemText,
+	Menu,
+	MenuItem,
 	Stack,
 } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 import { useSectionHeaders } from "./SectionHeader";
 import SectionHeader from "./SectionHeader";
 import { createBrowserHistory } from "history";
 
+// Define the width of the drawer
 const drawerWidth = 240;
+
+// Create a browser history object
 const history = createBrowserHistory();
 
+// CSS mixins for the opened and closed states of the drawer
 const openedMixin = (theme: Theme): CSSObject => ({
 	width: drawerWidth,
 	transition: theme.transitions.create("width", {
@@ -53,6 +55,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
 	},
 });
 
+// Styled component for the header of the drawer
 const DrawerHeader = styled("div")(({ theme }: { theme: Theme }) => ({
 	display: "flex",
 	alignItems: "center",
@@ -61,6 +64,7 @@ const DrawerHeader = styled("div")(({ theme }: { theme: Theme }) => ({
 	...theme.mixins.toolbar,
 }));
 
+// Custom AppBar component that extends MuiAppBar
 interface AppBarProps extends MuiAppBarProps {
 	open?: boolean;
 }
@@ -83,6 +87,7 @@ const AppBar = styled(MuiAppBar, {
 	}),
 }));
 
+// Custom Drawer component that extends MuiDrawer
 const Drawer = styled(MuiDrawer, {
 	shouldForwardProp: (prop: string) => prop !== "open",
 })(({ theme, open }: { theme: Theme; open: boolean }) => ({
@@ -100,47 +105,60 @@ const Drawer = styled(MuiDrawer, {
 	}),
 }));
 
-export default function MiniDrawer() {
+// Props for the MiniDrawer component
+type MiniDrawerProps = {
+	children?: React.ReactNode;
+};
+
+// Main component
+export default function MiniDrawer({ children }: MiniDrawerProps) {
 	const theme = useTheme();
 	const [open, setOpen] = React.useState(false);
-	const { sectionHeaders, handleSectionHeaderClick } = useSectionHeaders();
+	const {
+		sectionHeaders,
+		openAllSections,
+		closeAllSections,
+		toggleSectionOpen,
+	} = useSectionHeaders();
 
+	// Event handler for opening the drawer
 	const handleDrawerOpen = () => {
 		setOpen(true);
+		openAllSections();
 	};
 
+	// Event handler for closing the drawer
 	const handleDrawerClose = () => {
 		setOpen(false);
-		handleSectionHeaderClick(sectionHeaders[4].text);
+		closeAllSections();
 	};
 
+	// State and event handlers for the notification popover
 	const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-
 	const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
-
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
 
+	// State and event handlers for the notification popover
 	const [notificationAnchorEl, setNotificationAnchorEl] =
 		React.useState<HTMLElement | null>(null);
-
 	const handleNotificationClick = (event: React.MouseEvent<HTMLElement>) => {
 		setNotificationAnchorEl(event.currentTarget);
 	};
-
 	const handleNotificationClose = () => {
 		setNotificationAnchorEl(null);
 	};
-
 	const openNotification = Boolean(notificationAnchorEl);
 
+	// Event handler for clicking the app bar heading
 	const handleAppBarHeadingClick = () => {
 		history.push(`/`);
 	};
 
+	// Function to calculate the notification count
 	const notificationCount = () => {
 		return 1 + 1;
 	};
@@ -157,10 +175,7 @@ export default function MiniDrawer() {
 						aria-label="open drawer"
 						onClick={handleDrawerOpen}
 						edge="start"
-						sx={{
-							marginRight: 5,
-							...(open && { display: "none" }),
-						}}
+						sx={{ marginRight: 5, ...(open && { display: "none" }) }}
 					>
 						<MenuIcon />
 					</IconButton>
@@ -190,14 +205,8 @@ export default function MiniDrawer() {
 							open={openNotification}
 							anchorEl={notificationAnchorEl}
 							onClose={handleNotificationClose}
-							anchorOrigin={{
-								vertical: "bottom",
-								horizontal: "left",
-							}}
-							transformOrigin={{
-								vertical: "top",
-								horizontal: "left",
-							}}
+							anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+							transformOrigin={{ vertical: "top", horizontal: "left" }}
 						>
 							<List>
 								<ListItemButton>
@@ -224,15 +233,9 @@ export default function MiniDrawer() {
 						<Menu
 							id="menu-appbar"
 							anchorEl={anchorEl}
-							anchorOrigin={{
-								vertical: "top",
-								horizontal: "right",
-							}}
+							anchorOrigin={{ vertical: "top", horizontal: "right" }}
 							keepMounted
-							transformOrigin={{
-								vertical: "top",
-								horizontal: "right",
-							}}
+							transformOrigin={{ vertical: "top", horizontal: "right" }}
 							open={Boolean(anchorEl)}
 							onClose={handleClose}
 						>
@@ -242,35 +245,51 @@ export default function MiniDrawer() {
 					</div>
 				</Toolbar>
 			</AppBar>
-			<Drawer
-				theme={theme}
-				variant="permanent"
-				open={open}
-			>
-				<DrawerHeader>
-					<IconButton onClick={handleDrawerClose}>
-						{theme.direction === "rtl" ? (
-							<ChevronRightIcon />
-						) : (
-							<ChevronLeftIcon />
-						)}
-					</IconButton>
-				</DrawerHeader>
-				<Divider />
-				<List>
-					{sectionHeaders.map(({ text, icon, nestedItems, open }, index) => (
-						<SectionHeader
-							key={index}
-							text={text}
-							icon={icon}
-							nestedItems={nestedItems || []}
-							open={open}
-							handleClick={() => handleSectionHeaderClick(text)}
-						/>
-					))}
-					{}
-				</List>
-			</Drawer>
+			<Grid container>
+				<Grid item>
+					<Drawer
+						theme={theme}
+						variant="permanent"
+						open={open}
+					>
+						<DrawerHeader>
+							<IconButton onClick={handleDrawerClose}>
+								{theme.direction === "rtl" ? (
+									<ChevronRightIcon />
+								) : (
+									<ChevronLeftIcon />
+								)}
+							</IconButton>
+						</DrawerHeader>
+						<Divider />
+						<List>
+							{sectionHeaders.map(
+								({ text, icon, nestedItems, open }, index) => (
+									<Tooltip
+										title={text}
+										key={index}
+									>
+										<SectionHeader
+											key={index}
+											text={text}
+											icon={icon}
+											nestedItems={nestedItems || []}
+											open={open}
+											handleClick={() => {
+												if (nestedItems.length > 0) {
+													setOpen(true);
+													toggleSectionOpen(text);
+												}
+											}}
+										/>
+									</Tooltip>
+								)
+							)}
+						</List>
+					</Drawer>
+				</Grid>
+				<Grid item>{children}</Grid>
+			</Grid>
 		</Stack>
 	);
 }
