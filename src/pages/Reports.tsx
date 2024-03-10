@@ -1,85 +1,94 @@
-// import * as React from 'react';
+import * as React from "react";
 import {
 	Container,
 	Typography,
-	List,
-	ListItem,
-	ListItemAvatar,
-	Avatar,
-	ListItemText,
-	ListItemSecondaryAction,
-	IconButton,
+	Grid,
+	Card,
+	CardContent,
+	CardActions,
+	Button,
 	AppBar,
 	Toolbar,
 	Box,
 } from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
-import InfoIcon from "@mui/icons-material/Info";
+import ReportIcon from "@mui/icons-material/Report";
 
-const passengers = [
+const reportTypes = [
 	{
-		id: 1,
-		name: "John Doe",
-		info: "Frequent traveler, prefers window seats.",
+		title: "Accident and Malfunction Report",
+		description:
+			"Detailed reports on accidents and malfunctions encountered by the fleet.",
 	},
 	{
-		id: 2,
-		name: "Jane Smith",
-		info: "Allergy to peanuts, requires special meal.",
+		title: "Driver Details Report",
+		description:
+			"Comprehensive information on drivers, including performance metrics.",
 	},
 	{
-		id: 3,
-		name: "Alice Johnson",
-		info: "Travels with a pet, needs extra space.",
+		title: "Passenger Details Report",
+		description: "Insights into passenger demographics and travel preferences.",
 	},
-	// Add more passengers as needed
+	{
+		title: "Vehicle Details Report",
+		description:
+			"In-depth details on each vehicle in the fleet, including maintenance history.",
+	},
+	{
+		title: "Distance Travelled Report",
+		description:
+			"Analysis of distances travelled by the fleet, optimizing for efficiency.",
+	},
+	// Add more report types as needed
 ];
 
 const Reports = () => {
 	return (
-		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="static">
-				<Toolbar>
-					<PersonIcon sx={{ mr: 2 }} />
-					<Typography
-						variant="h6"
-						component="div"
-						sx={{ flexGrow: 1 }}
-					>
-						Passenger List
-					</Typography>
-				</Toolbar>
-			</AppBar>
+		<Box
+			sx={{ flexGrow: 1 }}
+			position={"relative"}
+		>
 			<Container sx={{ py: 8 }}>
 				<Typography
 					variant="h4"
 					gutterBottom
 				>
-					Our Valued Passengers
+					Explore Fleet Reports
 				</Typography>
-				<List>
-					{passengers.map((passenger) => (
-						<ListItem key={passenger.id}>
-							<ListItemAvatar>
-								<Avatar>
-									<PersonIcon />
-								</Avatar>
-							</ListItemAvatar>
-							<ListItemText
-								primary={passenger.name}
-								secondary={passenger.info}
-							/>
-							<ListItemSecondaryAction>
-								<IconButton
-									edge="end"
-									aria-label="info"
-								>
-									<InfoIcon />
-								</IconButton>
-							</ListItemSecondaryAction>
-						</ListItem>
+				<Grid
+					container
+					spacing={4}
+				>
+					{reportTypes.map((report, index) => (
+						<Grid
+							item
+							key={index}
+							xs={12}
+							sm={6}
+							md={4}
+						>
+							<Card>
+								<CardContent>
+									<Typography
+										gutterBottom
+										variant="h5"
+										component="div"
+									>
+										{report.title}
+									</Typography>
+									<Typography
+										variant="body2"
+										color="text.secondary"
+									>
+										{report.description}
+									</Typography>
+								</CardContent>
+								<CardActions>
+									<Button size="small">View Report</Button>
+								</CardActions>
+							</Card>
+						</Grid>
 					))}
-				</List>
+				</Grid>
 			</Container>
 		</Box>
 	);
