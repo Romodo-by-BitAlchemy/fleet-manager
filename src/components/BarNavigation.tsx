@@ -1,4 +1,3 @@
-// BarNavigation.tsx
 import * as React from "react";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
@@ -8,22 +7,19 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Badge from "@mui/material/Badge";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import Popover from "@mui/material/Popover";
 import List from "@mui/material/List";
 import {
-	Box,
-	Container,
 	Grid,
 	ListItemButton,
 	ListItemText,
+	Menu,
+	MenuItem,
 	Stack,
 } from "@mui/material";
 import { useSectionHeaders } from "./SectionHeader";
@@ -108,44 +104,42 @@ type MiniDrawerProps = {
 export default function MiniDrawer({ children }: MiniDrawerProps) {
 	const theme = useTheme();
 	const [open, setOpen] = React.useState(false);
-	const { sectionHeaders, handleSectionHeaderClick } = useSectionHeaders();
+	const {
+		sectionHeaders,
+		openAllSections,
+		closeAllSections,
+		toggleSectionOpen,
+	} = useSectionHeaders();
 
 	const handleDrawerOpen = () => {
 		setOpen(true);
+		openAllSections();
 	};
 
 	const handleDrawerClose = () => {
 		setOpen(false);
-		handleSectionHeaderClick(sectionHeaders[4].text);
+		closeAllSections();
 	};
 
 	const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-
 	const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
-
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
-
 	const [notificationAnchorEl, setNotificationAnchorEl] =
 		React.useState<HTMLElement | null>(null);
-
 	const handleNotificationClick = (event: React.MouseEvent<HTMLElement>) => {
 		setNotificationAnchorEl(event.currentTarget);
 	};
-
 	const handleNotificationClose = () => {
 		setNotificationAnchorEl(null);
 	};
-
 	const openNotification = Boolean(notificationAnchorEl);
-
 	const handleAppBarHeadingClick = () => {
 		history.push(`/`);
 	};
-
 	const notificationCount = () => {
 		return 1 + 1;
 	};
@@ -162,10 +156,7 @@ export default function MiniDrawer({ children }: MiniDrawerProps) {
 						aria-label="open drawer"
 						onClick={handleDrawerOpen}
 						edge="start"
-						sx={{
-							marginRight: 5,
-							...(open && { display: "none" }),
-						}}
+						sx={{ marginRight: 5, ...(open && { display: "none" }) }}
 					>
 						<MenuIcon />
 					</IconButton>
@@ -195,14 +186,8 @@ export default function MiniDrawer({ children }: MiniDrawerProps) {
 							open={openNotification}
 							anchorEl={notificationAnchorEl}
 							onClose={handleNotificationClose}
-							anchorOrigin={{
-								vertical: "bottom",
-								horizontal: "left",
-							}}
-							transformOrigin={{
-								vertical: "top",
-								horizontal: "left",
-							}}
+							anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+							transformOrigin={{ vertical: "top", horizontal: "left" }}
 						>
 							<List>
 								<ListItemButton>
@@ -229,15 +214,9 @@ export default function MiniDrawer({ children }: MiniDrawerProps) {
 						<Menu
 							id="menu-appbar"
 							anchorEl={anchorEl}
-							anchorOrigin={{
-								vertical: "top",
-								horizontal: "right",
-							}}
+							anchorOrigin={{ vertical: "top", horizontal: "right" }}
 							keepMounted
-							transformOrigin={{
-								vertical: "top",
-								horizontal: "right",
-							}}
+							transformOrigin={{ vertical: "top", horizontal: "right" }}
 							open={Boolean(anchorEl)}
 							onClose={handleClose}
 						>
@@ -273,15 +252,19 @@ export default function MiniDrawer({ children }: MiniDrawerProps) {
 										icon={icon}
 										nestedItems={nestedItems || []}
 										open={open}
-										handleClick={() => handleSectionHeaderClick(text)}
+										handleClick={() => {
+											if (nestedItems.length > 0) {
+												setOpen(true);
+												toggleSectionOpen(text);
+											}
+										}}
 									/>
 								)
 							)}
-							{}
 						</List>
 					</Drawer>
 				</Grid>
-				<Grid item> {children}</Grid>
+				<Grid item>{children}</Grid>
 			</Grid>
 		</Stack>
 	);

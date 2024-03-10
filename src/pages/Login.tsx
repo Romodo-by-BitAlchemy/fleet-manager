@@ -44,8 +44,17 @@ const Login: React.FC = () => {
 		<Container
 			component="main"
 			maxWidth="xs"
+			sx={{
+				marginTop: 8,
+				display: "flex",
+				flexDirection: "column",
+				alignItems: "center",
+				justifyContent: "flex-end",
+				alignContent: "space-evenly",
+			}}
 		>
 			<Box
+				position={"inherit"}
 				sx={{
 					marginTop: 8,
 					display: "flex",

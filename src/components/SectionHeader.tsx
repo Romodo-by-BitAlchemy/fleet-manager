@@ -1,6 +1,4 @@
-// SectionHeader.tsx
 import * as React from "react";
-import { useState } from "react";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -9,7 +7,6 @@ import List from "@mui/material/List";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
-import { createBrowserHistory } from "history";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from "@mui/icons-material/Person";
 import DriveEtaIcon from "@mui/icons-material/DriveEta";
@@ -21,7 +18,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 interface SectionHeaderProps {
 	text: string;
 	icon: React.ReactElement;
-	nestedItems?: string[];
+	nestedItems: string[];
 	open: boolean;
 	handleClick: () => void;
 }
@@ -42,7 +39,8 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 				{icon}
 			</ListItemIcon>
 			<ListItemText primary={text} />
-			{text === "Reports" && (open ? <ExpandLess /> : <ExpandMore />)}
+			{(nestedItems?.length || 0) > 0 &&
+				(open ? <ExpandLess /> : <ExpandMore />)}
 		</ListItemButton>
 		{nestedItems && (
 			<Collapse
@@ -72,23 +70,6 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 );
 
 export const useSectionHeaders = () => {
-	const history = createBrowserHistory();
-	const handleSectionHeaderClick = (sectionHeaderText: string) => {
-		const sectionIndex = sectionHeaders.findIndex(
-			(header) => header.text === sectionHeaderText
-		);
-
-		if (sectionIndex !== -1) {
-			const updatedSectionHeaders = [...sectionHeaders];
-			updatedSectionHeaders[sectionIndex].open =
-				!updatedSectionHeaders[sectionIndex].open;
-
-			setSectionHeaders(updatedSectionHeaders);
-		}
-
-		history.push(`/${sectionHeaderText.toLowerCase()}`);
-	};
-
 	const [sectionHeaders, setSectionHeaders] = React.useState<
 		SectionHeaderProps[]
 	>([
@@ -139,7 +120,7 @@ export const useSectionHeaders = () => {
 				"Distance report",
 				"Filtered reports",
 			],
-			open: false, // Added this to match the expected type
+			open: false,
 			handleClick: () => {
 				handleSectionHeaderClick("Reports");
 			},
@@ -148,6 +129,8 @@ export const useSectionHeaders = () => {
 			text: "Trips",
 			icon: <TimeToLeaveIcon />,
 			open: false,
+			nestedItems: [],
+
 			handleClick: () => {
 				handleSectionHeaderClick("Trips");
 			},
@@ -156,13 +139,58 @@ export const useSectionHeaders = () => {
 			text: "Settings",
 			icon: <SettingsIcon />,
 			open: false,
+			nestedItems: [],
+
 			handleClick: () => {
 				handleSectionHeaderClick("Settings");
 			},
 		},
 	]);
 
-	return { sectionHeaders, handleSectionHeaderClick };
+	const toggleSectionOpen = (text: string) => {
+		setSectionHeaders((currentHeaders) =>
+			currentHeaders.map((header) => {
+				if (header.text === text) {
+					return { ...header, open: !header.open };
+				}
+				return header;
+			})
+		);
+	};
+
+	const handleSectionHeaderClick = (sectionHeaderText: string) => {
+		const updatedSectionHeaders = sectionHeaders.map((header) =>
+			header.text === sectionHeaderText
+				? { ...header, open: !header.open }
+				: header
+		);
+		setSectionHeaders(updatedSectionHeaders);
+	};
+
+	const openAllSections = () => {
+		const openedSections = sectionHeaders.map((header) => ({
+			...header,
+			open: true,
+		}));
+		setSectionHeaders(openedSections);
+	};
+
+	const closeAllSections = () => {
+		const closedSections = sectionHeaders.map((header) => ({
+			...header,
+			open: false,
+		}));
+		setSectionHeaders(closedSections);
+	};
+
+	// Return your hook data and functions
+	return {
+		sectionHeaders,
+		handleSectionHeaderClick,
+		openAllSections,
+		closeAllSections,
+		toggleSectionOpen,
+	};
 };
 
 export default SectionHeader;
