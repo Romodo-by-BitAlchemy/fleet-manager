@@ -39,7 +39,7 @@ const LandingPage: React.FC = () => {
 				</Toolbar>
 			</AppBar>
 			<Container sx={{ mt: 8, mb: 4 }}>
-				<Box sx={{ textAlign: "center", my: 8 }}>
+				<Box sx={{ textAlign: "center", my: 8, marginBottom: 5 }}>
 					<Typography
 						variant="h2"
 						component="h1"
@@ -58,13 +58,18 @@ const LandingPage: React.FC = () => {
 					<Button
 						variant="contained"
 						startIcon={<RocketLaunchIcon />}
-						sx={{ mt: 3 }}
+						sx={{
+							mt: 3,
+							WebkitTextFillColor: "white",
+							WebkitTextStrokeColor: "white",
+							marginBottom: 5,
+						}}
 						onClick={() => navigate("/signup")}
 					>
 						Get Started
 					</Button>
+					<Divider />
 				</Box>
-				<Divider />
 				<Grid
 					container
 					spacing={10}
