@@ -35,7 +35,7 @@ const Login: React.FC = () => {
 				(data.email === "team@romodo.live" && data.password === "romodo123")
 			) {
 				// Authentication successful, redirect to dashboard or home page
-				window.location.href = "/myTestCompany/dashboard"; //TODO: Replace with actual dashboard URL with variable for company name
+				window.location.href = "/myTestCompany"; //TODO: Replace with actual dashboard URL with variable for company name
 			} else {
 				// Authentication failed, display error message
 				setError("Invalid email or password");

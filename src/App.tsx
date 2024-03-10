@@ -4,8 +4,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import Signupf1 from "./pages/Signupf1";
 import Login from "./pages/Login";
-import DashboardPage from "./pages/DashboardPage";
+// import DashboardPage from "./pages/DashboardPage";
 import "./App.css";
+import BarNavigation from "./components/BarNavigation";
+
 
 // Main App component
 const App: React.FC = () => {
@@ -25,8 +27,9 @@ const App: React.FC = () => {
 					element={<Login />}
 				/>
 				<Route
-					path="/myTestCompany/dashboard"
-					element={<DashboardPage />}
+					path="/myTestCompany"
+					element={<BarNavigation />}
+
 				/>
 			</Routes>
 		</BrowserRouter>
