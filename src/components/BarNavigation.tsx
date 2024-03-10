@@ -22,6 +22,7 @@ import {
 	MenuItem,
 	Stack,
 } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 import { useSectionHeaders } from "./SectionHeader";
 import SectionHeader from "./SectionHeader";
 import { createBrowserHistory } from "history";
@@ -246,19 +247,24 @@ export default function MiniDrawer({ children }: MiniDrawerProps) {
 						<List>
 							{sectionHeaders.map(
 								({ text, icon, nestedItems, open }, index) => (
-									<SectionHeader
+									<Tooltip
+										title={text}
 										key={index}
-										text={text}
-										icon={icon}
-										nestedItems={nestedItems || []}
-										open={open}
-										handleClick={() => {
-											if (nestedItems.length > 0) {
-												setOpen(true);
-												toggleSectionOpen(text);
-											}
-										}}
-									/>
+									>
+										<SectionHeader
+											key={index}
+											text={text}
+											icon={icon}
+											nestedItems={nestedItems || []}
+											open={open}
+											handleClick={() => {
+												if (nestedItems.length > 0) {
+													setOpen(true);
+													toggleSectionOpen(text);
+												}
+											}}
+										/>
+									</Tooltip>
 								)
 							)}
 						</List>

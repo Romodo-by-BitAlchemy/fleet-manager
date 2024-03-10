@@ -14,6 +14,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import ArticleIcon from "@mui/icons-material/Article";
 import TimeToLeaveIcon from "@mui/icons-material/TimeToLeave";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { Tooltip } from "@mui/material";
 
 interface SectionHeaderProps {
 	text: string;
@@ -31,17 +32,21 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 	handleClick,
 }) => (
 	<>
-		<ListItemButton
-			sx={{ minHeight: 48, px: 2.5 }}
-			onClick={handleClick}
-		>
-			<ListItemIcon sx={{ minWidth: 0, mr: 3, justifyContent: "center" }}>
-				{icon}
-			</ListItemIcon>
-			<ListItemText primary={text} />
-			{(nestedItems?.length || 0) > 0 &&
-				(open ? <ExpandLess /> : <ExpandMore />)}
-		</ListItemButton>
+		<Tooltip title={text}>
+			<ListItemButton
+				sx={{ minHeight: 48, px: 2.5 }}
+				onClick={handleClick}
+			>
+				<ListItemIcon sx={{ minWidth: 0, mr: 3, justifyContent: "center" }}>
+					{icon}
+				</ListItemIcon>
+				<ListItemText primary={text} />
+
+				{(nestedItems?.length || 0) > 0 &&
+					(open ? <ExpandLess /> : <ExpandMore />)}
+			</ListItemButton>
+		</Tooltip>
+
 		{nestedItems && (
 			<Collapse
 				in={open}
