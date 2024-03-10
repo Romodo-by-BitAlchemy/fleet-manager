@@ -38,18 +38,6 @@ const passengers = [
 const Passengers = () => {
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="static">
-				<Toolbar>
-					<PersonIcon sx={{ mr: 2 }} />
-					<Typography
-						variant="h6"
-						component="div"
-						sx={{ flexGrow: 1 }}
-					>
-						Passenger List
-					</Typography>
-				</Toolbar>
-			</AppBar>
 			<Container sx={{ py: 8 }}>
 				<Typography
 					variant="h4"

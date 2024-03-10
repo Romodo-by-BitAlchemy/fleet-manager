@@ -38,18 +38,6 @@ const trips = [
 const Trips = () => {
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="static">
-				<Toolbar>
-					<DirectionsCarIcon sx={{ mr: 2 }} />
-					<Typography
-						variant="h6"
-						component="div"
-						sx={{ flexGrow: 1 }}
-					>
-						Fleet Journeys
-					</Typography>
-				</Toolbar>
-			</AppBar>
 			<Container sx={{ py: 8 }}>
 				<Typography
 					variant="h4"
