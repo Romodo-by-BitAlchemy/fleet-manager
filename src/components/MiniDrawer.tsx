@@ -106,6 +106,11 @@ export default function MiniDrawer() {
 			<AppBar
 				position="fixed"
 				open={open}
+				sx={{
+					height: " 10vh",
+					justifyContent: "center",
+					scale: 0.5,
+				}}
 			>
 				<Toolbar>
 					<IconButton
@@ -227,7 +232,15 @@ export default function MiniDrawer() {
 						</List>
 					</Drawer>
 				</Grid>
-				<Grid item>
+				<Grid
+					item
+					sx={{
+						flexGrow: 1,
+						flexShrink: 1,
+						maxWidth: "100%",
+						mt: "10vh",
+					}}
+				>
 					{activeSelection === "Drivers" && <Drivers />}
 					{activeSelection === "Passengers" && <Passengers />}
 					{activeSelection === "Settings" && <Settings />}

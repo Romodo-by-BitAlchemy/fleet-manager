@@ -89,16 +89,7 @@ export const Drawer = styled(MuiDrawer, {
 }));
 
 const BarNavigation: React.FC = () => {
-	return (
-		<MiniDrawer>
-			{/* <Login /> */}
-			{/* <Drivers /> */}
-			{/* <Passengers /> */}
-			{/* <Settings /> */}
-			{/* <Reports /> */}
-			{/* <Trips /> */}
-		</MiniDrawer>
-	);
+	return <MiniDrawer></MiniDrawer>;
 };
 
 export default BarNavigation;
