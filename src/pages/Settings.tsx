@@ -56,15 +56,6 @@ const ProfileSettingsForm: React.FC = () => {
 					<ToggleButton value="business">Business Settings</ToggleButton>
 				</ToggleButtonGroup>
 
-				<Typography
-					variant="h5"
-					component="h2"
-					sx={{ mb: 3 }}
-				>
-					Settings {">"}{" "}
-					{alignment.charAt(0).toUpperCase() + alignment.slice(1)} Settings
-				</Typography>
-
 				<Box
 					component="form"
 					onSubmit={handleSubmit(onSubmit)}
