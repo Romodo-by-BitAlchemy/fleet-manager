@@ -3,9 +3,7 @@ import * as React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import Signupf1 from "./pages/Signupf1";
-import Login from "./pages/Login";
 
-// import DashboardPage from "./pages/DashboardPage";
 import "./App.css";
 import BarNavigation from "./components/BarNavigation";
 import LoginPage from "./pages/LoginPage";
@@ -30,7 +28,7 @@ const App: React.FC = () => {
 					/>
 					<Route
 						path="/myTestCompany"
-						element={<LandingPage />}
+						element={<BarNavigation />} //navbar+dashboardcomponent
 					/>
 				</Routes>
 			</BrowserRouter>

@@ -41,6 +41,7 @@ const LoginPage = (): JSX.Element => {
 			if (username === hardcodedUsername && password === hardcodedPassword) {
 				setLoggedIn(true);
 				alert("Login successful!");
+				window.location.href = "/myTestCompany";
 			} else {
 				alert("Invalid username or password. Please try again.");
 			}
