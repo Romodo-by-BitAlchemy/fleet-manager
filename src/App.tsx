@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 // import DashboardPage from "./pages/DashboardPage";
 import "./App.css";
 import BarNavigation from "./components/BarNavigation";
+import LoginPage from "./pages/LoginPage";
 
 // Main App component
 const App: React.FC = () => {
@@ -25,7 +26,7 @@ const App: React.FC = () => {
 					/>
 					<Route
 						path="/login"
-						element={<Login />}
+						element={<LoginPage />}
 					/>
 					<Route
 						path="/myTestCompany"
