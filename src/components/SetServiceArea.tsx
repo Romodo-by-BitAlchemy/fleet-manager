@@ -2,7 +2,6 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import { TextField, Button, Box } from "@mui/material";
-import "../App.css";
 
 const SetServiceArea: React.FC = () => {
 	const [radius, setRadius] = useState<number>();
