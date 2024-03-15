@@ -7,6 +7,7 @@ import Signupf1 from "./pages/Signupf1";
 import "./App.css";
 import BarNavigation from "./components/BarNavigation";
 import LoginPage from "./pages/LoginPage";
+import SetServiceArea from "./components/SetServiceArea";
 
 // Main App component
 const App: React.FC = () => {
@@ -14,6 +15,10 @@ const App: React.FC = () => {
 		<>
 			<BrowserRouter>
 				<Routes>
+					<Route
+						path="*"
+						element={<h1>404 Not Found</h1>}
+					></Route>
 					<Route
 						path="/"
 						element={<LandingPage />}
@@ -29,6 +34,14 @@ const App: React.FC = () => {
 					<Route
 						path="/myTestCompany"
 						element={<BarNavigation />} //navbar+dashboardcomponent
+					/>
+					<Route
+						path="/serviceArea"
+						element={
+							<div className="App">
+								<SetServiceArea />
+							</div>
+						}
 					/>
 				</Routes>
 			</BrowserRouter>

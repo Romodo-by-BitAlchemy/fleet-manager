@@ -219,7 +219,6 @@ export default function MiniDrawer() {
 						<List>
 							{sectionHeaders.map(
 								({ text, icon, nestedItems, open }, index) => (
-									
 									<SectionHeader
 										key={index}
 										text={text}
@@ -233,7 +232,7 @@ export default function MiniDrawer() {
 											}
 											handleSectionClick(text);
 										}}
-								
+									/>
 								)
 							)}
 						</List>
