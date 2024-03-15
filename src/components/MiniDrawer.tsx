@@ -19,8 +19,8 @@ import {
 	Menu,
 	MenuItem,
 	Stack,
+	Tooltip,
 } from "@mui/material";
-import Tooltip from "@mui/material/Tooltip";
 import { useSectionHeaders } from "./SectionHeader";
 import SectionHeader from "./SectionHeader";
 import Drivers from "../pages/Drivers";
@@ -102,10 +102,16 @@ export default function MiniDrawer() {
 	};
 
 	return (
-		<Stack>
+		<Stack overflow={"visible"}>
 			<AppBar
 				position="fixed"
 				open={open}
+				sx={{
+					height: " 10vh",
+					maxHeight: "65px",
+					justifyContent: "center",
+					scale: 0.5,
+				}}
 			>
 				<Toolbar>
 					<IconButton
@@ -183,14 +189,24 @@ export default function MiniDrawer() {
 					</div>
 				</Toolbar>
 			</AppBar>
-			<Grid container>
+			<Grid
+				container
+				overflow={"auto"}
+			>
 				<Grid item>
 					<Drawer
 						theme={theme}
 						variant="permanent"
 						open={open}
 					>
-						<DrawerHeader>
+						<DrawerHeader
+							sx={{
+								// backgroundColor: "green", //debug
+								height: " 10vh",
+								maxHeight: "65px",
+								scale: 0.5,
+							}}
+						>
 							<IconButton onClick={handleDrawerClose}>
 								{theme.direction === "rtl" ? (
 									<ChevronRightIcon />
@@ -203,31 +219,34 @@ export default function MiniDrawer() {
 						<List>
 							{sectionHeaders.map(
 								({ text, icon, nestedItems, open }, index) => (
-									<Tooltip
-										title={text}
+									<SectionHeader
 										key={index}
-									>
-										<SectionHeader
-											key={index}
-											text={text}
-											icon={icon}
-											nestedItems={nestedItems || []}
-											open={open}
-											handleClick={() => {
-												if (nestedItems.length > 0) {
-													setOpen(true);
-													toggleSectionOpen(text);
-												}
-												handleSectionClick(text);
-											}}
-										/>
-									</Tooltip>
+										text={text}
+										icon={icon}
+										nestedItems={nestedItems || []}
+										open={open}
+										handleClick={() => {
+											if (nestedItems.length > 0) {
+												setOpen(true);
+												toggleSectionOpen(text);
+											}
+											handleSectionClick(text);
+										}}
+									/>
 								)
 							)}
 						</List>
 					</Drawer>
 				</Grid>
-				<Grid item>
+				<Grid
+					item
+					sx={{
+						flexGrow: 1,
+						flexShrink: 1,
+						maxWidth: "100%",
+						mt: "10vh",
+					}}
+				>
 					{activeSelection === "Drivers" && <Drivers />}
 					{activeSelection === "Passengers" && <Passengers />}
 					{activeSelection === "Settings" && <Settings />}
