@@ -2,33 +2,39 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import { TextField, Button, Box } from "@mui/material";
+import "../App.css";
 
 const SetServiceArea: React.FC = () => {
-	const [startPoint, setStartPoint] = useState("");
-	const [radius, setRadius] = useState<number>(0);
+	const [radius, setRadius] = useState<number>();
 	const mapRef = useRef<HTMLDivElement>(null);
+	const inputRef = useRef<HTMLInputElement>(null);
 	let map: google.maps.Map;
 	let circle: google.maps.Circle;
 
 	useEffect(() => {
 		if (mapRef.current && !map) {
 			map = new google.maps.Map(mapRef.current, {
-				center: { lat: -34.397, lng: 150.644 },
+				center: { lat: 6.9271, lng: 79.8612 },
 				zoom: 8,
 			});
 		}
-	}, []);
 
-	const handleSearch = () => {
-		const service = new google.maps.places.PlacesService(map);
-		service.findPlaceFromQuery(
-			{
-				query: startPoint,
-				fields: ["name", "geometry"],
-			},
-			(results, status) => {
-				if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-					const location = results[0]?.geometry?.location || { lat: 0, lng: 0 };
+		if (inputRef.current) {
+			const autocomplete = new google.maps.places.Autocomplete(
+				inputRef.current,
+				{
+					componentRestrictions: { country: "LK" },
+				}
+			);
+			autocomplete.bindTo("bounds", map);
+			autocomplete.addListener("place_changed", () => {
+				const place = autocomplete.getPlace();
+				if (!place.geometry) {
+					console.log("Returned place contains no geometry");
+					return;
+				}
+				const location = place.geometry.location;
+				if (location) {
 					map.setCenter(location);
 					if (circle) circle.setMap(null);
 					circle = new google.maps.Circle({
@@ -42,8 +48,22 @@ const SetServiceArea: React.FC = () => {
 						radius: radius,
 					});
 				}
-			}
-		);
+			});
+		}
+	}, [radius]);
+
+	const handleUpdateMap = () => {
+		if (circle) circle.setMap(null);
+		circle = new google.maps.Circle({
+			strokeColor: "#FF0000",
+			strokeOpacity: 0.8,
+			strokeWeight: 2,
+			fillColor: "#FF0000",
+			fillOpacity: 0.35,
+			map,
+			center: map.getCenter(),
+			radius: radius,
+		});
 	};
 
 	return (
@@ -51,21 +71,19 @@ const SetServiceArea: React.FC = () => {
 			<TextField
 				label="Start Point"
 				variant="outlined"
-				value={startPoint}
-				onChange={(e) => setStartPoint(e.target.value)}
+				inputRef={inputRef}
 			/>
 			<TextField
-				label="Radius (meters)"
+				label="Radius (KM)"
 				variant="outlined"
 				type="number"
-				value={radius}
-				onChange={(e) => setRadius(Number(e.target.value))}
+				onChange={(e) => setRadius(Number(e.target.value) * 1000)}
 			/>
 			<Button
 				variant="contained"
-				onClick={handleSearch}
+				onClick={handleUpdateMap}
 			>
-				Search
+				Update
 			</Button>
 			<div
 				ref={mapRef}

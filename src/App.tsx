@@ -37,11 +37,7 @@ const App: React.FC = () => {
 					/>
 					<Route
 						path="/serviceArea"
-						element={
-							<div className="App">
-								<SetServiceArea />
-							</div>
-						}
+						element={<SetServiceArea />}
 					/>
 				</Routes>
 			</BrowserRouter>
