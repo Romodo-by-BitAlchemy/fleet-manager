@@ -52,8 +52,10 @@ const SetServiceArea: React.FC = () => {
 		}
 	}, [radius]);
 
-	const handleUpdateMap = () => {
-		if (circle) circle.setMap(null);
+	const handleUpdateMap = (radiusInput: number): void => {
+		setRadius(radiusInput * 1000);
+		if (radius) circle.setMap(map);
+
 		circle = new google.maps.Circle({
 			strokeColor: "#FF0000",
 			strokeOpacity: 0.8,
@@ -66,6 +68,7 @@ const SetServiceArea: React.FC = () => {
 		});
 	};
 
+	const radiusInputRef = useRef<HTMLInputElement>(null);
 	return (
 		<Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
 			<TextField
@@ -77,11 +80,14 @@ const SetServiceArea: React.FC = () => {
 				label="Radius (KM)"
 				variant="outlined"
 				type="number"
-				onChange={(e) => setRadius(Number(e.target.value) * 1000)}
+				onChange={(e) => handleUpdateMap(Number(e.target.value))}
+				inputRef={radiusInputRef}
 			/>
 			<Button
 				variant="contained"
-				onClick={handleUpdateMap}
+				onClick={() => {
+					handleUpdateMap(Number(radiusInputRef.current));
+				}}
 			>
 				Update
 			</Button>
