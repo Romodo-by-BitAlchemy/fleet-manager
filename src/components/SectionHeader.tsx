@@ -36,7 +36,11 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 }) => (
 	<>
 		{/* Tooltip for displaying the text */}
-		<Tooltip title={text}>
+		<Tooltip
+			title={text}
+			arrow
+			placement="right"
+		>
 			{/* ListItemButton for the section header */}
 			<ListItemButton
 				sx={{ minHeight: 48, px: 2.5 }}
