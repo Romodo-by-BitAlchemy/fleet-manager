@@ -1,6 +1,7 @@
 {
 	"recommendations": [
 		"snyk-security.snyk-vulnerability-scanner",
-		"esbenp.prettier-vscode"
+		"esbenp.prettier-vscode",
+		"atlassian.atlascode"
 	]
 }
