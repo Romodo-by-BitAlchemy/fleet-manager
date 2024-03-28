@@ -2,6 +2,9 @@
 	"recommendations": [
 		"snyk-security.snyk-vulnerability-scanner",
 		"esbenp.prettier-vscode",
-		"atlassian.atlascode"
+		"dart-code.dart-code",
+		"dart-code.flutter",
+		"eamodio.gitlens",
+		"antfu.where-am-i"
 	]
 }
