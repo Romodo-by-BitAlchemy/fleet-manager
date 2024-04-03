@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import "../App.css";
+import SetServiceArea from "../components/SetServiceArea";
 
 interface IFormInput {
 	firstName: string;
@@ -155,6 +156,12 @@ const ProfileSettingsForm: React.FC = () => {
 									fullWidth
 									{...register("companyContact")}
 								/>
+							</Grid>
+							<Grid
+								item
+								xs={12}
+							>
+								<SetServiceArea></SetServiceArea>
 							</Grid>
 						</Grid>
 					)}

@@ -1,6 +1,10 @@
 {
 	"recommendations": [
 		"snyk-security.snyk-vulnerability-scanner",
-		"esbenp.prettier-vscode"
+		"esbenp.prettier-vscode",
+		"dart-code.dart-code",
+		"dart-code.flutter",
+		"eamodio.gitlens",
+		"antfu.where-am-i"
 	]
 }
