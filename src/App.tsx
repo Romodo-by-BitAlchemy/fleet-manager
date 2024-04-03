@@ -8,6 +8,7 @@ import "./App.css";
 import BarNavigation from "./components/BarNavigation";
 import LoginPage from "./pages/LoginPage";
 import SetServiceArea from "./components/SetServiceArea";
+import DriverReport from "./pages/reports/DriversReport";
 
 // Main App component
 const App: React.FC = () => {
@@ -39,6 +40,10 @@ const App: React.FC = () => {
 						path="/serviceArea"
 						element={<SetServiceArea />}
 					/>
+					<Route
+						path="/reports/drivers"
+						element={<DriverReport/>
+						}	/>
 				</Routes>
 			</BrowserRouter>
 		</>

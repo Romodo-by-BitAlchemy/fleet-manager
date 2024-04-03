@@ -32,6 +32,7 @@ import Passengers from "../pages/Passengers";
 import Settings from "../pages/Settings";
 import DashboardPage from "../pages/DashboardPage";
 import Vehicles from "../pages/Vehicles";
+import DriverReport from "../pages/reports/DriversReport";
 // import DashboardPage from "../pages/DashboardPage";
 
 // Props for the MiniDrawer component
@@ -250,11 +251,12 @@ export default function MiniDrawer() {
 					{activeSelection === "Drivers" && <Drivers />}
 					{activeSelection === "Passengers" && <Passengers />}
 					{activeSelection === "Settings" && <Settings />}
-					{activeSelection === "Reports" && <Reports />}
+					{activeSelection === "Reports" && <DriverReport />}
 					{activeSelection === "Trips" && <Trips />}
 					{activeSelection === "Vehicles" && <Vehicles />}
 					{activeSelection === "" && <DashboardPage />}
 					{activeSelection === "Dashboard" && <DashboardPage />}
+					{/* {activeSelection === "Driver details report" && <DriverReport />} */}
 				</Grid>
 			</Grid>
 		</Stack>
