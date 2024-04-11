@@ -1,5 +1,5 @@
 
-import React from 'react';
+import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import DashboardVehicleDetailsInfo from '../components/DashboardVehicleDetailsContainer';
 import DashboardDriversDetailsInfo from '../components/DashboardDriversDetailsInfo';
