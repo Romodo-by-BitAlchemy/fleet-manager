@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import DashboardVehicleDetailsInfo from '../components/DashboardVehicleDetailsContainer';
@@ -34,7 +35,7 @@ const DashboardPage: React.FC = () => {
   return (
     <Grid container justifyContent="center" alignItems="center" spacing={2}>
       {/* First Row */}
-    
+      <NavigationBar />
       <Grid item xs={12}>
         <Grid container justifyContent="center" spacing={2}>
           {/* Box 1: Details of Vehicles */}
