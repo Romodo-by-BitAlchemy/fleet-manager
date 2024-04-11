@@ -2,5 +2,16 @@
 	"workbench.colorCustomizations": {
 		"titleBar.activeBackground": "#01426d88",
 		"titleBar.inactiveBackground": "#01426d88"
-	}
+	},
+	"atlascode.bitbucket.enabled": false,
+	"atlascode.jira.jqlList": [
+		{
+			"id": "c043278d-ff75-473b-bea0-0c477f704e16",
+			"siteId": "ccd2b873-9724-4486-a881-06651120b79b",
+			"name": "Piranaavei's Issues in Current Sprint",
+			"query": "assignee =currentUser() AND Sprint in openSprints() AND resolution=Unresolved ORDER BY  priority DESC",
+			"enabled": true,
+			"monitor": true
+		}
+	]
 }
