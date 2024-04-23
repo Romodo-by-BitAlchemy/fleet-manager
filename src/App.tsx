@@ -19,7 +19,6 @@ export default function App() {
     </div>
   );
 }
-
 */
 import * as React from "react";
 import Signupf1 from "./components/Signupf1"; // Assuming correct relative path
