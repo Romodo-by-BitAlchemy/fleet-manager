@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react';
+import { useState, FormEvent } from 'react';
 import '../App.css';
 import Axios, { AxiosResponse }  from 'axios';
 import {  useNavigate } from 'react-router-dom';
@@ -25,7 +25,7 @@ const ForgotPassword: React.FC = () => {
             }
             
 
-        }).catch(err => {
+        }).catch((err: any) => {
             console.log(err);
         });
     };

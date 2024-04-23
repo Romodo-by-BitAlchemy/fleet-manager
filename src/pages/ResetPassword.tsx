@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react';
+import { useState, FormEvent } from 'react';
 import '../App.css';
 import Axios, { AxiosResponse } from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -37,7 +37,7 @@ const ResetPassword: React.FC = () => {
                 navigate('/login');
             }
             console.log(res.data);
-        }).catch((err) => {
+        }).catch((err: any) => {
             console.log(err);
         });
     };

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Axios, { AxiosResponse } from 'axios'; // Import AxiosResponse type
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
-function Logout() {
+function Home() {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
 
@@ -25,7 +25,7 @@ function Logout() {
                     console.log("User logged out successfully");
                     navigate('/login');
                 }
-            }).catch((err) => {
+            }).catch((err: any) => {
                 console.log(err);
             });
     };
@@ -46,7 +46,9 @@ function Logout() {
     
             return (
                 <div>
-                    
+                    <h2>Home</h2>
+                    <Button component={Link} to="/dashboard" variant="contained" color="primary">Dashboard</Button>
+                    <br /><br />
                     <Button onClick={handleLogout} variant="contained" color="secondary">Logout</Button>
         
                     <Dialog open={open} onClose={handleClose}>
@@ -69,4 +71,4 @@ function Logout() {
             );
         }
 
-export default Logout;
+export default Home;

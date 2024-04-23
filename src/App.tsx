@@ -6,7 +6,10 @@ import Signupf1 from "./pages/Signupf1";
 
 import "./App.css";
 import BarNavigation from "./components/BarNavigation";
-import LoginPage from "./pages/LoginPage";
+import Login from "./pages/Login";
+import ResetPassword from "./pages/ResetPassword";
+import ForgotPassword from "./pages/ForgotPassword";
+import Logout from "./pages/Logout";
 import SetServiceArea from "./components/SetServiceArea";
 import DriverReport from "./pages/reports/DriversReport";
 
@@ -30,7 +33,19 @@ const App: React.FC = () => {
 					/>
 					<Route
 						path="/login"
-						element={<LoginPage />}
+						element={<Login />}
+					/>
+					<Route
+						path="/resetPassword/:token"
+						element={<ResetPassword />}
+					/>
+					<Route
+						path="/forgotPassword"
+						element={<ForgotPassword />}
+					/>
+					<Route
+						path="/logout"
+						element={<Logout />}
 					/>
 					<Route
 						path="/myTestCompany"

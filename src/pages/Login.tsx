@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from "react";
+import { useState, FormEvent } from "react";
 import "../App.css";
 import Axios, { AxiosResponse } from "axios";
 import { useNavigate, Link } from "react-router-dom";
@@ -27,7 +27,7 @@ const Login: React.FC = () => {
         alert("User logged in successfully");
         navigate("/");
       }
-    }).catch((err) => {
+    }).catch((err: any) => {
       console.log(err);
       // Set error message for invalid data
       setErrorMessage("Invalid username or password. Please try again.");
@@ -82,7 +82,7 @@ const Login: React.FC = () => {
         <br/>
         
         <Typography>
-           <Link color="secondary" to="/forgotPassword"> Forgot Password?</Link>
+          Forgot Password?<Link  color="secondary" to="/forgotPassword"></Link>
         </Typography>
         
         
