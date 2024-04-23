@@ -40,6 +40,11 @@
 .read-the-docs {
   color: #888;
 }*/
+
+.container {
+  width: 1200px; /* Set a fixed width */
+  margin: 0 auto; /* Center the container horizontally */
+}
 #root {
   background-color: white;
 }
@@ -56,6 +61,6 @@ form {
   padding: 70px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 300px;
-  margin-top: 150px;
-  margin-bottom: 40px;
+  margin-top: 120px;
+  margin-bottom: 10px;
 }

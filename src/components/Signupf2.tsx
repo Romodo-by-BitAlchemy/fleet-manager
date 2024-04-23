@@ -5,102 +5,95 @@ import BusImage from "../assets/busimage.jpg";
 import Logo from "../assets/Logo2.jpeg";
 import CheckboxesGroup from "./CheckboxesGroup";
 import CheckboxesGroup2 from "./CheckboxesGroup2";
-import { usePlacesAutocomplete } from "@react-google-maps/api";
 interface Signupf2Props {
   onNext: () => void;
   onBack: () => void;
 }
 
 const Signupf2: React.FC<Signupf2Props> = ({ onNext, onBack }) => {
-  const {
-    ready,
-    value,
-    suggestions: { status, data },
-    setValue,
-    clearSuggestions,
-  } = usePlacesAutocomplete();
+  
   return (
     <div>
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        height: "100vh",
-        width: "1200px",
-      }}
-    >
-      {/* Left side with BusImage */}
       <Box
         sx={{
-          flex: 1,
-          backgroundImage: `url(${BusImage})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          position: "relative",
-        }}
-      ></Box>
-
-      <Box
-        sx={{
-          flex: 0.5,
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
+          height: "100vh",
+          width: "1200px",
         }}
       >
-        <img
-          src={Logo}
-          alt="Logo"
-          style={{
-            flex: 0.1,
-            width: "400px", // Adjust as needed
-            height: "10px", // Adjust as neededß
-            objectFit: "cover",
-            maskPosition: "center",
-            paddingRight: "50px",
-            marginRight: "-800px",
-            marginLeft: "250px",
-            marginTop: "20px",
-            marginBottom: "-30px",
-            paddingBottom: "-20px",
-          }}
-        ></img>
-      </Box>
-      <form>
+        {/* Left side with BusImage */}
         <Box
           sx={{
-            flex: 2,
+            flex: 1,
+            backgroundImage: `url(${BusImage})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            position: "relative",
+          }}
+        ></Box>
+
+        <Box
+          sx={{
+            flex: 0.5,
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            //border: "2px solid purple",
-            //borderRadius: "50px",
-            paddingTop: "-50px",
-            marginTop: "-25px",
-            marginBottom: "-30px",
           }}
         >
-          <Typography
-            variant="h3"
+          <img
+            src={Logo}
+            alt="Logo"
+            style={{
+              flex: 0.1,
+              width: "400px", // Adjust as needed
+              height: "10px", // Adjust as neededß
+              objectFit: "cover",
+              maskPosition: "center",
+              paddingRight: "50px",
+              marginRight: "-800px",
+              marginLeft: "250px",
+              marginTop: "20px",
+              marginBottom: "-30px",
+              paddingBottom: "-20px",
+            }}
+          ></img>
+        </Box>
+        <form>
+          <Box
             sx={{
-              fontWeight: 900,
-              color: "purple",
-              marginTop: "-30px",
-              paddingTop: "-30px",
+              flex: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              //border: "2px solid purple",
+              //borderRadius: "50px",
+              paddingTop: "-50px",
+              marginTop: "-25px",
+              marginBottom: "-30px",
             }}
           >
-            SIGN UP
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              fontWeight: 200,
-              color: "black",
-              marginTop: "-20",
-              paddingTop: "-20px",
-              marginBottom: "-20px",
-            }}
-          >
+            <Typography
+              variant="h3"
+              sx={{
+                fontWeight: 900,
+                color: "purple",
+                marginTop: "-30px",
+                paddingTop: "-30px",
+              }}
+            >
+              SIGN UP
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: 200,
+                color: "black",
+                marginTop: "-20",
+                paddingTop: "-20px",
+                marginBottom: "-20px",
+              }}
+            >
               Further Settings
             </Typography>
             <br />
