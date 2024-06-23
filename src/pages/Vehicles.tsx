@@ -123,7 +123,7 @@ const handleDeleteClick = () => {
     axios.delete(`http://localhost:3000/api/v1/vehicle/${v.id}`).then((r) => {
       if(r.status === 204) {
         Swal.fire({
-					title: "Good job!",
+					
 					text: "Vehicle deleted successfully!",
 					icon: "success"
 					});
