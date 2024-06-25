@@ -1,8 +1,9 @@
 //import React from 'react';
-import { Box, LinearProgress, Typography } from '@mui/material';
+import { Box, Typography, LinearProgress } from '@mui/material';
+import { LinearProgressProps } from '@mui/material/LinearProgress';
 
 interface PasswordStrengthMeterProps {
-    password: string;
+  password: string;
 }
 
 const PasswordStrengthMeter: React.FC<PasswordStrengthMeterProps> = ({ password }) => {
@@ -18,14 +19,16 @@ const PasswordStrengthMeter: React.FC<PasswordStrengthMeterProps> = ({ password 
 
     const strength = calculatePasswordStrength(password);
     const strengthLabel = ['Very Weak', 'Weak', 'Moderate', 'Strong', 'Very Strong'][strength];
-    const strengthColor = ['error', 'warning', 'info', 'success', 'success'][strength];
+    // Explicitly define the type for strengthColor to match LinearProgressProps['color']
+    const strengthColor: LinearProgressProps['color'][] = ['error', 'warning', 'info', 'success', 'success'];
+    const selectedColor = strengthColor[strength];
 
     return (
         <Box sx={{ marginY: 1 }}>
             <Typography variant="body2">Password Strength: {strengthLabel}</Typography>
-            <LinearProgress variant="determinate" value={(strength / 5) * 100} color={strengthColor} />
+            <LinearProgress variant="determinate" value={(strength / 5) * 100} color={selectedColor} />
         </Box>
     );
-};
+}
 
 export default PasswordStrengthMeter;
