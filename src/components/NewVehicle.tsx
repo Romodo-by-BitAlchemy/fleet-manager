@@ -1,11 +1,18 @@
-import { DialerSip } from "@mui/icons-material";
+//import { DialerSip } from "@mui/icons-material";
+
+// Import necessary components and modules
+
 import { Dialog ,  Grid, Button, DialogTitle, DialogContentText, DialogContent, TextField, MenuItem, DialogActions } from "@mui/material";
 import * as React from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+
+// Define interface for Vehicle
 export interface Vehicle  {
-    map(arg0: (row: any) => import("react/jsx-runtime").JSX.Element): React.ReactNode;
-	_id?:string,
+  //id: ReactNode;
+    //map(arg0: (row: any) => import("react/jsx-runtime").JSX.Element): React.ReactNode;
+	id:string,
+
     no: string,
     type: string,
     chassisNo: string,
@@ -16,6 +23,7 @@ export interface Vehicle  {
     fuelType: string,
     noOfSeats: number
 }
+
 interface NewDriverProps {
 	isOpen:boolean,
 	year:number,
@@ -34,11 +42,16 @@ interface NewDriverProps {
 
 }
 
+
 const vehicleNoRegex = /^([a-zA-Z]{1,3}|((?!0*-)[0-9]{1,3}))-[0-9]{4}(?<!0{4})/;
 const chassisNoRegex = /^[a-zA-Z0-9 ]{6,}$/;
 const brandRegex = /^[a-zA-Z0-9.,-\s]{6,}$/;
 const nuRegex = /^[0-9]{1,}$/
+
+// NewVehicle component
 function NewVehicle(props: NewDriverProps) {
+
+	 // State variables
 
 	const years = Array.from({ length: 100 }, (_, index) => new Date().getFullYear() - index);
 	const [selectedYear, setSelectedYear] = React.useState<number>(props.year);
@@ -57,6 +70,7 @@ function NewVehicle(props: NewDriverProps) {
 	const [brand, setBrand] = React.useState<string>(props.brand);
 	const [noOfSeats, setNoOfSeats] = React.useState<number>(props.noOfSeats);
 
+	  // Update state when props change
 	React.useEffect(() => {
 		setSelectedVehType(props.selVehType);
         setSelectedCondition(props.selCondition);
@@ -67,9 +81,23 @@ function NewVehicle(props: NewDriverProps) {
         setNoOfSeats(props.noOfSeats);
 		setSelectedYear(props.year);
 		setId(props.id);
-    }, [props.selVehType, props.selCondition, props.selFuelType, props.vehNo, props.chassisNo, props.brand, props.noOfSeats]);
+    }, [props.selVehType, 
+		props.selCondition, 
+		props.selFuelType, 
+		props.vehNo, 
+		props.chassisNo, 
+		props.brand, 
+		props.noOfSeats
+	]);
 
+	 // Validation function
 	const checkValidation = () : boolean => {
+
+		 // Validation checks for each field
+        // Display error message using SweetAlert2 if validation fails
+        // Return false if any validation fails, otherwise return true
+
+
 		if (!vehicleNoRegex.test(vehicleNo)) {
 			Swal.fire({
 				icon: "error",
@@ -138,7 +166,16 @@ function NewVehicle(props: NewDriverProps) {
 
 		return true;
 	}
+
+	// Add vehicle function
 	const handleAddVehicle = () => {
+
+		// Check validation before adding vehicle
+        // If validation passes, construct vehicle object and make POST request
+        // Display success or error message using SweetAlert2
+        // Close dialog and clear fields after successful addition
+
+
 		if (checkValidation()) {
 			const vehicle = {
 			no: vehicleNo,
@@ -163,7 +200,7 @@ function NewVehicle(props: NewDriverProps) {
 				clearFields();
 				props.getAll();
 			}
-		}).catch((error) => {
+		}).catch((/*error*/) => {
 			Swal.fire({
 				title: "Oops...",
 				text: "Something went wrong !",
@@ -172,7 +209,16 @@ function NewVehicle(props: NewDriverProps) {
 		});
 		}
 	}
+
+	// Update vehicle function
 	const handleUpdateVehicle = () => {
+
+		// Check validation before updating vehicle
+        // If validation passes, construct vehicle object and make PATCH request
+        // Display success or error message using SweetAlert2
+        // Close dialog and clear fields after successful update
+
+
 		if (checkValidation()) {
 		const vehicle = {
 			no: vehicleNo,
@@ -184,10 +230,13 @@ function NewVehicle(props: NewDriverProps) {
 			fuelType: selectedFuelType,
 			noOfSeats: !noOfSeats ? 0 : noOfSeats
 		}
-			axios.patch(`http://localhost:3000/api/v1/vehicle/${id}`, vehicle).then((response) => {
+			
+			//axios.put(`http://localhost:3000/api/v1/vehicle`, vehicle).then((response) => {	
+			axios.put(`http://localhost:3000/api/v1/vehicle/${id}`, vehicle).then((response) => {
 			console.log(response);
 
-				if (response.status === 204) {
+				if (response.status === 200) {
+
 					Swal.fire({
 					title: "Good job!",
 					text: "Vehicle update successfully!",
@@ -197,7 +246,8 @@ function NewVehicle(props: NewDriverProps) {
 					clearFields();
 				props.getAll();
 				}
-			}).catch((error) => {
+			}).catch((/*error*/) => {
+
 			Swal.fire({
 				title: "Oops...",
 				text: "Something went wrong !",
@@ -206,23 +256,33 @@ function NewVehicle(props: NewDriverProps) {
 			});
 		}
 	}
+
+	  // Clear all fields
 	const clearFields = () => {
+
+		// Reset all state variables to empty or default values
 		setVehicleNo("");
         setChassisNo("");
         setBrand("");
-        setNoOfSeats(undefined);
+        setNoOfSeats(0);
+
 		setSelectedFuelType("")
     }
 	return (
 		<div>
 
+			{/* Dialog component for adding or updating vehicle */}
 			<Dialog open={props.isOpen} onClose={() =>  props.close()} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
 				<DialogTitle id="alert-dialog-title">
-					{"Add Vehicle"}
+					{"Vehicle Details"}
+
 				</DialogTitle>
 				<DialogContent>
 					<br />
 					<DialogContentText id="alert-dialog-description">
+						{/* Form fields for adding or updating vehicle */}
+                        {/* Display input fields using Grid layout */}
+
 						<Grid container spacing={2}>
 							<Grid item xs={12} sm={6}>
 								<TextField
@@ -327,7 +387,11 @@ function NewVehicle(props: NewDriverProps) {
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
+
+					{/* Add or Update button */}
 					<Button onClick={props.isUpdate?  handleUpdateVehicle:handleAddVehicle}>{props.isUpdate? "Update": "Add"}</Button>
+					{/* Cancel button */}
+
 					<Button onClick={() => props.close()}>Cancel</Button>
 				</DialogActions>
 			</Dialog>
@@ -336,3 +400,4 @@ function NewVehicle(props: NewDriverProps) {
 }
 
 export default NewVehicle
+

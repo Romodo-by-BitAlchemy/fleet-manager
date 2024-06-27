@@ -7,10 +7,17 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import Swal from "sweetalert2";
 
+
+
+// Define interface for Driver
 export interface Driver  {
+  isActive: any;
+  date: string | number | Date;
+  availability: boolean;
 	_id?:string,
 	no?:string,
-	date: Date,
+	dateOfJoined: Date,
+
 	firstName: string,
 	lastName: string,
 	nic: string,
@@ -22,35 +29,41 @@ export interface Driver  {
 	licenseExpireDate: Date,
 	medicalIssues: string,
 }
+
+// Define props interface for NewDriver component
 interface NewDriverProps {
-isOpen: boolean,
-no:string,
-firstName: string,
-lastName: string,
-nic: string,
-gender: string,
-dob: Date|null,
-contactNo: string,
-email: string,
-licenseNo: string,
-licenseExpireDate: Date|null,
-medicalIssues: string,
-open: () => void,
-close: () => void,
-getAll: () => void,
-isUpdate: boolean,
-id: string
+	isOpen: boolean,
+	no:string,
+	firstName: string,
+	lastName: string,
+	nic: string,
+	gender: string,
+	dob: Date,
+	contactNo: string,
+	email: string,
+	licenseNo: string,
+	licenseExpireDate: Date,
+	medicalIssues: string,
+	open: () => void,
+	close: () => void,
+	getAll: () => void,
+	isUpdate: boolean,
+	id: string	
 }
+
+// Regular expressions for validation
 const emailRegex = new RegExp(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/);
-const numberRegex = /[0-9]{3,}/;
+//const numberRegex = /D[0-9]{3,}/;
 const nameRegex = /[A-Za-z.]{3,}/;
 const nicRegex = /^(?:19|20)?\d{2}[0-9]{10}|[0-9]{9}[x|X|v|V]$/;
-const contactRegex = /^(?:7|0|(?:\+94))[0-9]{9,10}$/
-const licenseReges = /^[a-zA-Z0-9]{6,10}$/
-function NewDriver(props: NewDriverProps) {
+const contactRegex = /^(?:7|0|(?:\+94))[0-9]{9,10}$/;
+const licenseReges = /^[a-zA-Z0-9]{6,10}$/;
 
+
+function NewDriver(props: NewDriverProps) {
+	// State variables for form fields
 	const [id, setId] = React.useState<string>(props.id);
-	const [no, setNo] = React.useState<string>(props.no);
+	//const [no, setNo] = React.useState<string>(props.no);
 	const [fName, setFName] = React.useState<string>(props.firstName);
 	const [lName, setLName] = React.useState<string>(props.lastName);
 	const [dOfBirth, setDOfBirth] = React.useState<Date>(props.dob);
@@ -61,11 +74,14 @@ function NewDriver(props: NewDriverProps) {
 	const [lExDate, setLExDate] = React.useState<Date>(props.licenseExpireDate);
 	const [gender, setGender] = React.useState<string>(props.gender);
 	const [mediCondition, setMediCondition] = React.useState<string>(props.medicalIssues);
+	//const [errorMessage, setErrorMessage] = React.useState<string>("");
 
+	// Update state variables when props change
 	React.useEffect(() => {
 
 		setId(props.id);
-		setNo(props.no);
+		//setNo(props.no);
+
 		setFName(props.firstName);
 		setLName(props.lastName)
 		setDOfBirth(props.dob);
@@ -77,41 +93,69 @@ function NewDriver(props: NewDriverProps) {
 		setGender(props.gender);
 		setMediCondition(props.medicalIssues);
 
+    }, [
+		props.id, 
+		//props.no, 
+		props.firstName, 
+		props.lastName, 
+		props.nic, 
+		props.email, 
+		props.contactNo, 
+		props.licenseNo, 
+		props.gender, 
+		props.medicalIssues, 
+		props.dob, 
+		props.licenseExpireDate, 
+		props.isUpdate
+	]);
 
-    }, [props.id, props.no, props.firstName, props.lastName, props.nic, props.email, props.contactNo, props.licenseNo, props.gender, props.medicalIssues, props.dob, props.licenseExpireDate, props.isUpdate]);
+	// Function to check form field validation
 	const checkValidation = () : boolean => {
-		if (!numberRegex.test(no)) {
+		//let isValid = true;
+		// Validation checks for each field
+        // Display error message using SweetAlert2 if validation fails
+        // Return false if any validation fails, otherwise return true
+
+		/*if (!numberRegex.test(no)) {
 			Swal.fire({
 				icon: "error",
 				title: "Oops...",
-				text: "Invaliddu Driver No !"
+				text: "Invalid Driver No !"
 				});
 			return false;
-        }
+        }*/
+
+
 		if (!nameRegex.test(fName)){
 			Swal.fire({
 				icon: "error",
 				title: "Oops...",
-				text: "Invalidd First Name"
+				text: "Invalid First Name"
 				});
 			return false;
 		}
+
+
 		if (!nameRegex.test(lName)){
 			Swal.fire({
 				icon: "error",
 				title: "Oops...",
-				text: "Invalidd Last Name"
+				text: "Invalid Last Name"
 				});
 			return false;
 		}
+
+
 		if (!nicRegex.test(nic)){
 			Swal.fire({
 				icon: "error",
 				title: "Oops...",
-				text: "Invalidd NIC"
+				text: "Invalid NIC"
 				});
             return false;
         }
+
+
 		if (!emailRegex.test(email)) {
 			Swal.fire({
 				icon: "error",
@@ -120,22 +164,26 @@ function NewDriver(props: NewDriverProps) {
 				});
             return false;
         }
+
 		if (!contactRegex.test(contactNo)){
 			Swal.fire({
 				icon: "error",
 				title: "Oops...",
-				text: "Invalidd Contact Number"
+				text: "Invalid Contact Number"
 				});
             return false;
         }
+
 		if (!licenseReges.test(licenseNo)){
 			Swal.fire({
 				icon: "error",
 				title: "Oops...",
-				text: "Invalidd License Number"
+				text: "Invalid License Number"
 				});
             return false;
         }
+
+
 		if (gender.length === 0){
 			Swal.fire({
 				icon: "error",
@@ -144,6 +192,7 @@ function NewDriver(props: NewDriverProps) {
 				});
             return false;
         }
+
 		if (lExDate === null){
 			Swal.fire({
 				icon: "error",
@@ -152,6 +201,7 @@ function NewDriver(props: NewDriverProps) {
 				});
             return false;
         }
+
 		if (mediCondition.length === 0){
 			Swal.fire({
 				icon: "error",
@@ -160,6 +210,7 @@ function NewDriver(props: NewDriverProps) {
 				});
             return false;
         }
+
 		if (dOfBirth === null){
 			Swal.fire({
 				icon: "error",
@@ -168,12 +219,22 @@ function NewDriver(props: NewDriverProps) {
 				});
             return false;
         }
+
         return true;
 	}
+
+	// Function to handle adding a new driver
 	const handleAddDriver = () => {
+
+		// Check validation before adding driver
+        // If validation passes, construct driver object and make POST request
+        // Display success or error message using SweetAlert2
+        // Close dialog and clear fields after successful addition
+
 		if(checkValidation()){
 		const driver = {
-			no: no,
+			//no: no,
+
 			firstName: fName,
 			lastName: lName,
 			nic: nic,
@@ -197,7 +258,8 @@ function NewDriver(props: NewDriverProps) {
 				clearFields();
 				props.getAll();
 			}
-		}).catch((error) => {
+		}).catch((/*error*/) => {
+
 			Swal.fire({
 					title: "Oops...",
 					text: "Something went wrong !",
@@ -206,10 +268,20 @@ function NewDriver(props: NewDriverProps) {
 		});
 		}
 	}
+
+	
+	// Function to handle updating a driver
 	const handleUpdateVehicle = () => {
+
+		// Check validation before updating driver
+        // If validation passes, construct driver object and make PATCH request
+        // Display success or error message using SweetAlert2
+        // Close dialog and clear fields after successful update
+
 		if(checkValidation()){
 		const driver = {
-			no: no,
+			//no: no,
+
 			firstName: fName,
 			lastName: lName,
 			nic: nic,
@@ -221,10 +293,12 @@ function NewDriver(props: NewDriverProps) {
 			licenseExpireDate: lExDate,
 			medicalIssues: mediCondition
 		}
-			axios.patch(`http://localhost:3000/api/v1/driver/${id}`, driver).then((response) => {
+			axios.put(`http://localhost:3000/api/v1/driver/${id}`, driver).then((response) => {
+			
 			console.log(response);
 
-				if (response.status === 204) {
+				if (response.status === 200) {
+
 					Swal.fire({
 					title: "Good job!",
 					text: "Driver update successfully!",
@@ -235,7 +309,8 @@ function NewDriver(props: NewDriverProps) {
 					props.getAll();
 
 				}
-			}).catch((error) => {
+			}).catch((/*error */) => {
+
 			Swal.fire({
 				title: "Oops...",
 				text: "Something went wrong !",
@@ -244,9 +319,15 @@ function NewDriver(props: NewDriverProps) {
 			});
 		}
 	}
+
+	// Clear all fields
 	const clearFields = () => {
+
+		// Reset all state variables to empty or default values
+
 		setId("");
-		setNo("");
+		//setNo("");
+
 		setFName("");
 		setLName("")
 		setContactNo("")
@@ -254,30 +335,28 @@ function NewDriver(props: NewDriverProps) {
 		setLExDate(new Date())
 		setGender("")
 		setMediCondition("")
-
-
+		setNIC("")
+		setEmail("")
 
     }
 	return (
 		<div>
-
+			{/* Dialog component for adding or updating driver */}
 			<Dialog open={props.isOpen} onClose={() =>  props.close()} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
 				<DialogTitle id="alert-dialog-title">
-					{"Add Driver"}
+					{"Driver Details"}
+
 				</DialogTitle>
 				<DialogContent>
 					<br />
 					<DialogContentText id="alert-dialog-description">
+
+						{/* Form fields for adding or updating driver */}
+                        {/* Display input fields using Grid layout */}
+
 						<Grid container spacing={2}>
-							<Grid item xs={12} sm={6}>
-								<TextField
-									label="No"
-									variant="outlined"
-									fullWidth
-									value={no}
-									onChange={(event) => setNo(event.target.value)}
-								/>
-							</Grid>
+							
+
 							<Grid item xs={12} sm={6}>
 								<TextField
 									label="First Name"
@@ -309,6 +388,8 @@ function NewDriver(props: NewDriverProps) {
 									variant="outlined"
 									fullWidth
 									value={nic}
+									placeholder="ex: xxxxxxxxxV or xxxxxxxxxxxx "
+
 									onChange={(event) => setNIC(event.target.value)}
 								/>
 							</Grid>
@@ -318,6 +399,8 @@ function NewDriver(props: NewDriverProps) {
 									variant="outlined"
 									fullWidth
 									value={email}
+									placeholder="ex: abc@gmail.com"
+
 									onChange={(event) => setEmail(event.target.value)}
 								/>
 							</Grid>
@@ -326,6 +409,8 @@ function NewDriver(props: NewDriverProps) {
 									label="Contact Number"
 									variant="outlined"
 									fullWidth
+									placeholder="ex: 07xxxxxxxx"
+
 									value={contactNo}
 									onChange={(event) => setContactNo(event.target.value)}
 								/>
@@ -336,6 +421,8 @@ function NewDriver(props: NewDriverProps) {
 									variant="outlined"
 									fullWidth
 									value={licenseNo}
+									placeholder="ex: Bxxxxxxxxx"
+
 									onChange={(event) => setLicenseNo(event.target.value)}
 								/>
 							</Grid>
@@ -375,7 +462,10 @@ function NewDriver(props: NewDriverProps) {
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
+					{/* Button to add or update driver */}
 					<Button onClick={props.isUpdate?  handleUpdateVehicle:handleAddDriver}>{props.isUpdate? "Update": "Add"}</Button>
+					{/* Button to cancel operation */}
+
 					<Button onClick={() => props.close()}>Cancel</Button>
 				</DialogActions>
 			</Dialog>

@@ -1,12 +1,14 @@
-import React, { useState, FormEvent } from 'react';
+import /*React, */{ useState, FormEvent } from 'react';
 import '../App.css';
-import Axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Typography, TextField, Button, Alert } from '@mui/material';
+import { Typography, TextField, Button, Alert , Grid , Box} from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import BusImage from "../assets/busimage.jpg";
+
 
 const ResetPassword: React.FC = () => {
     const [password, setPassword] = useState<string>('');
@@ -18,17 +20,46 @@ const ResetPassword: React.FC = () => {
 
     const navigate = useNavigate();
 
+    // Password strength validation function
+    const isStrongPassword = (password: string): boolean => {
+        const uppercaseRegex = /[A-Z]/;
+        const lowercaseRegex = /[a-z]/;
+        const numberRegex = /[0-9]/;
+        const specialCharacterRegex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
+    
+        return (
+          password.length >= 8 &&
+          uppercaseRegex.test(password) &&
+          lowercaseRegex.test(password) &&
+          numberRegex.test(password) &&
+          specialCharacterRegex.test(password)
+        );
+    };
+
+    // Form submission handler
     const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
+
+        // check if passwords don't match
         if (password !== confirmPassword) {
             const error = "Passwords do not match";
             setErrorMessage(error);
             console.log(error);
             return;
-        }else {
+        }
+        else if (!isStrongPassword(password)) {
+            // Set error message if password is not strong
+            const error = "Password should contain at least 8 characters, including uppercase letters, lowercase letters, numbers, and special characters";
+            setErrorMessage(error);
+            console.log(error);
+            return;
+        }
+        else {
             setErrorMessage(""); // Reset error message when passwords match
         }
-        Axios.post("http://localhost:3000/auth/resetPassword/"+token, {
+
+        // API call to reset password
+        axios.post("http://localhost:3000/api/v1/user/resetPassword/"+token, {
             password,
         }).then((res: AxiosResponse<{ status: boolean }>) => {
             if (res.data.status) {
@@ -44,6 +75,41 @@ const ResetPassword: React.FC = () => {
 
     return (
         <div className='sign-up-container'>
+              <Box
+			sx={{
+				display: "flex",
+				flexDirection: "row",
+				height: "100vh",
+				width: "100vw",
+			}}
+		>
+			{/* Left side with BusImage */}
+			<Box
+				sx={{
+					flex: 1,
+					backgroundImage: `url(${BusImage})`,
+					backgroundRepeat: "no-repeat",
+					backgroundSize: "cover",
+					position: "relative",
+					minHeight: "100%",
+                    "@media (min-width: 200vh)": {
+                        flex: 0.4,
+                      },
+				}}
+			></Box>
+
+			<Grid
+				container
+				justifyContent="center"
+				alignItems="center"
+				sx={{
+					flex: 1,
+					padding: "20px",
+					"@media (min-width: 600px)": {
+						flex: 0.5,
+					},
+				}}
+			>
             <form className='sign-up-form' onSubmit={handleSubmit}>
                 <Typography variant="h4" component="h1" gutterBottom className="typoColor">
                     Reset Password
@@ -60,6 +126,7 @@ const ResetPassword: React.FC = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     margin="normal"
                     className="textfiledStyle"
+                    fullWidth
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
@@ -86,6 +153,7 @@ const ResetPassword: React.FC = () => {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     margin="normal"
                     className="textfiledStyle"
+                    fullWidth
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
@@ -109,10 +177,12 @@ const ResetPassword: React.FC = () => {
       
                 <Button 
                     type='submit'
-                    color="secondary" 
+                    color="primary" 
                     size="large" 
                     variant="contained" 
-                    className="button-instance" 
+                    className="button-instance"
+                    fullWidth
+                    sx={{ marginY: 2 }} 
                 >
                     RESET
                 </Button>
@@ -120,6 +190,8 @@ const ResetPassword: React.FC = () => {
 
                 
             </form>
+            </Grid>
+        </Box>
         </div>
     )
 }

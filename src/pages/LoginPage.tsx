@@ -1,176 +1,181 @@
-// src/LoginPage.tsx
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import {
-	Button,
-	TextField,
-	/*Container,*/ FormControlLabel,
-	Checkbox,
-	Paper,
-	/*Box*/ Typography,
-} from "@mui/material";
-import logo from "../assets/RomodoLogo.jpg";
+import { useState, FormEvent } from "react";
+import "../App.css";
+import axios, { AxiosResponse } from "axios";
+import { useNavigate, Link } from "react-router-dom";
+import { Typography, Button, Box, Grid, TextField, Alert, IconButton, InputAdornment } from "@mui/material";
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import BusImage from "../assets/busimage.jpg";
+import PasswordStrengthMeter from '../components/PasswordStrengthMeter'; // Import the PasswordStrengthMeter component
 
-const LoginPage = (): JSX.Element => {
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const [loggedIn, setLoggedIn] = useState(false);
-	const [usernameError, setUsernameError] = useState(false);
-	const [passwordError, setPasswordError] = useState(false);
+const Login: React.FC = () => {
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
-	const handleLogin = () => {
-		// Check if the username is entered
-		if (!username) {
-			setUsernameError(true);
-		} else {
-			setUsernameError(false);
-		}
+  const navigate = useNavigate();
 
-		// Check if the password is entered
-		if (!password) {
-			setPasswordError(true);
-		} else {
-			setPasswordError(false);
-		}
+  //axios.defaults.withCredentials = false;
 
-		// If both username and password are entered, attempt to log in
-		if (username && password) {
-			const hardcodedUsername = "demoUser";
-			const hardcodedPassword = "demoPassword";
+  // Password strength validation function
+  const isStrongPassword = (password: string): boolean => {
+    const uppercaseRegex = /[A-Z]/;
+    const lowercaseRegex = /[a-z]/;
+    const numberRegex = /[0-9]/;
+    const specialCharacterRegex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
 
-			if (username === hardcodedUsername && password === hardcodedPassword) {
-				setLoggedIn(true);
-				alert("Login successful!");
-				window.location.href = "/myTestCompany";
-			} else {
-				alert("Invalid username or password. Please try again.");
-			}
-		}
-	};
+    return (
+      password.length >= 8 &&
+      uppercaseRegex.test(password) &&
+      lowercaseRegex.test(password) &&
+      numberRegex.test(password) &&
+      specialCharacterRegex.test(password)
+    );
+  };
 
-	// Handle changes in the username field
-	const handleUsernameChange = (value: string) => {
-		setUsername(value);
-		setUsernameError(false); // Clear the error when the user types in the username field
-	};
+  // Handle form submission
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
 
-	// Handle changes in the password field
-	const handlePasswordChange = (value: string) => {
-		setPassword(value);
-		setPasswordError(false); // Clear the error when the user types in the password field
-	};
+    // Check if the password meets the strength criteria
+    if (!isStrongPassword(password)) {
+      setErrorMessage("Password should contain at least 8 characters, including uppercase letters, lowercase letters, numbers, and special characters");
+      return;
+    }
+    
+    // Send a POST request to the server to log in the user
+    axios.post("http://localhost:3000/api/v1/user/login", {
+      username,
+      password,
+    }).then((res: AxiosResponse<{ status: boolean , token: string}>) => {
+      if (res.data.status) {
+        console.log("User logged in successfully");
+        localStorage.setItem('token', res.data.token);
+        navigate("/myTestCompany");
+      }
+    }).catch((err) => {
+      // Display error messages based on the response from the server
+      console.log(err.response.data.message);
+      
+      if (err.response.data.message === "User is not registered") {
+        setErrorMessage("You need to sign up before logging in!");
+      } else {
+        setErrorMessage("Invalid username or password. Please try again.");
+      }
+    });
+  };
 
-	return (
-		<div className="container">
-			<div className="left"></div>
-			<div className="right">
-				<Paper
-					elevation={100}
-					className="form"
-					style={{ borderRadius: "100px" }}
-				>
-					<img
-						src={logo}
-						alt="Romodo Logo"
-						className="logo"
-					/>
+  return (
+    <div className="sign-up-container">
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          height: "100vh",
+          width: "100vw",
+        }}
+      >
+        {/* Left side with BusImage */}
+        <Box
+          sx={{
+            flex: 1,
+            backgroundImage: `url(${BusImage})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            position: "relative",
+            minHeight: "100vh",
+            "@media (min-width: 200vh)": {
+              flex: 0.4,
+            },
+          }}
+        ></Box>
 
-					<br></br>
-					<br></br>
+        <Grid
+          container
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            flex: 1,
+            padding: "20px",
+            "@media (min-width: 600px)": {
+              flex: 0.5,
+            },
+          }}
+        >
+          <form className="sign-up-form" onSubmit={handleSubmit}>
+            <Typography variant="h4" component="h1" gutterBottom className="typoColor">
+              Login
+            </Typography>
 
-					<Typography
-						variant="h4"
-						component="h1"
-						gutterBottom
-						className="typoColor"
-					>
-						Login
-					</Typography>
+            <TextField
+              required
+              type="text"
+              id="username"
+              label="Username"
+              variant="filled"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              margin="normal"
+              className="textfiledStyle"
+              fullWidth
+            />
 
-					{loggedIn ? (
-						<div>Welcome, {username}! You are logged in.</div>
-					) : (
-						<>
-							<TextField
-								required
-								id="username"
-								label="Username"
-								variant="filled"
-								value={username}
-								onChange={(e) => handleUsernameChange(e.target.value)}
-								margin="normal"
-								error={usernameError}
-								helperText={usernameError && "Enter username"}
-								className="textfiledStyle"
-								sx={{ marginX: "5px" }}
-							/>
+            <TextField
+              required
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              name="password"
+              label="Password"
+              variant="filled"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              margin="normal"
+              className="textfiledStyle"
+              fullWidth
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      onMouseDown={(e) => e.preventDefault()}
+                      edge="end"
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
 
-							<TextField
-								required
-								id="password"
-								label="Password"
-								type="password"
-								variant="filled"
-								value={password}
-								onChange={(e) => handlePasswordChange(e.target.value)}
-								margin="normal"
-								error={passwordError}
-								helperText={passwordError && "Enter password"}
-								className="textfiledStyle"
-								sx={{ marginX: "5px" }}
-							/>
+            {password && <PasswordStrengthMeter password={password} />} {/* Password strength meter */}
 
-							<br />
-							<Link
-								className="link-instance"
-								color="secondary"
-								to="/password-reset"
-							>
-								Forgot Password?
-							</Link>
+            <Typography variant="body2" align="right" sx={{ marginY: 1 }}>
+              <Link to="/forgotPassword">Forgot Password?</Link>
+            </Typography>
 
-							<br />
-
-							<FormControlLabel
-								control={<Checkbox color="secondary" />}
-								className="formcontrollabel-checkbox label-color"
-								disabled={false}
-								label="I accept the Terms and Conditions"
-								//labelPlacement="end"
-							/>
-
-							<br />
-							<br />
-
-							<Button
-								color="secondary"
-								size="large"
-								variant="contained"
-								className="button-instance"
-								onClick={handleLogin}
-							>
-								LOGIN
-							</Button>
-
-							<br />
-							<br />
-
-							<div className="span">
-								<div className="text-wrapper-2">New user?</div>
-								<Link
-									className="link3"
-									color="primary"
-									to="#"
-								>
-									Create an account
-								</Link>
-							</div>
-						</>
-					)}
-				</Paper>
-			</div>
-		</div>
-	);
+            {errorMessage && <Alert severity="error" sx={{ marginY: 2 }}>{errorMessage}</Alert>}
+            
+            <Button
+              type="submit"
+              color="primary"
+              size="large"
+              variant="contained"
+              className="button-instance"
+              fullWidth
+              sx={{ marginY: 2 }}
+            >
+              Login
+            </Button>
+            
+            <Typography variant="body2" align="center">
+              Don't have an account? <Link to="/signup">Sign Up</Link>
+            </Typography>
+          </form>
+        </Grid>
+      </Box>
+    </div>
+  );
 };
 
-export default LoginPage;
+export default Login;
