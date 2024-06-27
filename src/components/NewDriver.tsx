@@ -17,6 +17,7 @@ export interface Driver  {
 	_id?:string,
 	no?:string,
 	dateOfJoined: Date,
+
 	firstName: string,
 	lastName: string,
 	nic: string,
@@ -80,6 +81,7 @@ function NewDriver(props: NewDriverProps) {
 
 		setId(props.id);
 		//setNo(props.no);
+
 		setFName(props.firstName);
 		setLName(props.lastName)
 		setDOfBirth(props.dob);
@@ -123,6 +125,7 @@ function NewDriver(props: NewDriverProps) {
 			return false;
         }*/
 
+
 		if (!nameRegex.test(fName)){
 			Swal.fire({
 				icon: "error",
@@ -131,6 +134,7 @@ function NewDriver(props: NewDriverProps) {
 				});
 			return false;
 		}
+
 
 		if (!nameRegex.test(lName)){
 			Swal.fire({
@@ -141,6 +145,7 @@ function NewDriver(props: NewDriverProps) {
 			return false;
 		}
 
+
 		if (!nicRegex.test(nic)){
 			Swal.fire({
 				icon: "error",
@@ -149,6 +154,7 @@ function NewDriver(props: NewDriverProps) {
 				});
             return false;
         }
+
 
 		if (!emailRegex.test(email)) {
 			Swal.fire({
@@ -176,6 +182,7 @@ function NewDriver(props: NewDriverProps) {
 				});
             return false;
         }
+
 
 		if (gender.length === 0){
 			Swal.fire({
@@ -227,6 +234,7 @@ function NewDriver(props: NewDriverProps) {
 		if(checkValidation()){
 		const driver = {
 			//no: no,
+
 			firstName: fName,
 			lastName: lName,
 			nic: nic,
@@ -239,7 +247,6 @@ function NewDriver(props: NewDriverProps) {
 			medicalIssues: mediCondition
 		}
 
-		// POST request to add a new driver
 		axios.post('http://localhost:3000/api/v1/driver', driver).then((response) => {
 			if (response.status === 201) {
 				Swal.fire({
@@ -252,6 +259,7 @@ function NewDriver(props: NewDriverProps) {
 				props.getAll();
 			}
 		}).catch((/*error*/) => {
+
 			Swal.fire({
 					title: "Oops...",
 					text: "Something went wrong !",
@@ -273,6 +281,7 @@ function NewDriver(props: NewDriverProps) {
 		if(checkValidation()){
 		const driver = {
 			//no: no,
+
 			firstName: fName,
 			lastName: lName,
 			nic: nic,
@@ -289,6 +298,7 @@ function NewDriver(props: NewDriverProps) {
 			console.log(response);
 
 				if (response.status === 200) {
+
 					Swal.fire({
 					title: "Good job!",
 					text: "Driver update successfully!",
@@ -300,6 +310,7 @@ function NewDriver(props: NewDriverProps) {
 
 				}
 			}).catch((/*error */) => {
+
 			Swal.fire({
 				title: "Oops...",
 				text: "Something went wrong !",
@@ -316,6 +327,7 @@ function NewDriver(props: NewDriverProps) {
 
 		setId("");
 		//setNo("");
+
 		setFName("");
 		setLName("")
 		setContactNo("")
@@ -326,7 +338,6 @@ function NewDriver(props: NewDriverProps) {
 		setNIC("")
 		setEmail("")
 
-
     }
 	return (
 		<div>
@@ -334,6 +345,7 @@ function NewDriver(props: NewDriverProps) {
 			<Dialog open={props.isOpen} onClose={() =>  props.close()} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
 				<DialogTitle id="alert-dialog-title">
 					{"Driver Details"}
+
 				</DialogTitle>
 				<DialogContent>
 					<br />
@@ -344,6 +356,7 @@ function NewDriver(props: NewDriverProps) {
 
 						<Grid container spacing={2}>
 							
+
 							<Grid item xs={12} sm={6}>
 								<TextField
 									label="First Name"
@@ -376,6 +389,7 @@ function NewDriver(props: NewDriverProps) {
 									fullWidth
 									value={nic}
 									placeholder="ex: xxxxxxxxxV or xxxxxxxxxxxx "
+
 									onChange={(event) => setNIC(event.target.value)}
 								/>
 							</Grid>
@@ -386,6 +400,7 @@ function NewDriver(props: NewDriverProps) {
 									fullWidth
 									value={email}
 									placeholder="ex: abc@gmail.com"
+
 									onChange={(event) => setEmail(event.target.value)}
 								/>
 							</Grid>
@@ -395,6 +410,7 @@ function NewDriver(props: NewDriverProps) {
 									variant="outlined"
 									fullWidth
 									placeholder="ex: 07xxxxxxxx"
+
 									value={contactNo}
 									onChange={(event) => setContactNo(event.target.value)}
 								/>
@@ -406,6 +422,7 @@ function NewDriver(props: NewDriverProps) {
 									fullWidth
 									value={licenseNo}
 									placeholder="ex: Bxxxxxxxxx"
+
 									onChange={(event) => setLicenseNo(event.target.value)}
 								/>
 							</Grid>
@@ -448,6 +465,7 @@ function NewDriver(props: NewDriverProps) {
 					{/* Button to add or update driver */}
 					<Button onClick={props.isUpdate?  handleUpdateVehicle:handleAddDriver}>{props.isUpdate? "Update": "Add"}</Button>
 					{/* Button to cancel operation */}
+
 					<Button onClick={() => props.close()}>Cancel</Button>
 				</DialogActions>
 			</Dialog>

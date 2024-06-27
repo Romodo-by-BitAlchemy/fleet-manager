@@ -303,7 +303,7 @@ export default function MiniDrawer() {
 					{activeSelection === "Drivers" && <Drivers />}
 					{activeSelection === "Passengers" && <Passengers />}
 					{activeSelection === "Settings" && <Settings />}
-					{activeSelection === "Reports" && <DriverReport />}
+					{activeSelection === "Reports" && <VehicleReport/>}
 					{activeSelection === "Trips" && <Trips />}
 					{activeSelection === "Vehicles" && <Vehicles />}
 					{activeSelection === "" && <DashboardPage />}

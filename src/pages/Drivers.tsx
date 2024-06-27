@@ -10,6 +10,7 @@ import axios from "axios"; // Axios is a promise based HTTP client for the brows
 
 // StyledTableCell component for custom styling of table cells
 export const StyledTableCell = styled(TableCell)(({ /*theme*/ }) => ({
+
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: '#9A82DB',
     color: '#000000',
@@ -26,11 +27,13 @@ const Drivers: React.FC = () => {
   const [fName, setFName] = React.useState<string>("");
 	const [lName, setLName] = React.useState<string>("");
 	const [dOfBirth, setDOfBirth] = React.useState<Date>(new Date());
+
 	const [nic, setNIC] = React.useState<string>("");
 	const [email, setEmail] = React.useState<string>("");
 	const [contactNo, setContactNo] = React.useState<string>("");
 	const [licenseNo, setLicenseNo] = React.useState<string>("");
 	const [lExDate, setLExDate] = React.useState<Date>(new Date());
+
 	const [gender, setGender] = React.useState<string>("");
 	const [mediCondition, setMediCondition] = React.useState<string>("");
 	const [no, setNo] = React.useState<string>("");
@@ -43,6 +46,7 @@ const Drivers: React.FC = () => {
   const [errorMessage, setErrorMessage] = React.useState<string>("");
 
   //fetch(get) all drivers when the page loads
+
   React.useEffect(() => {
     getAllDrivers();
   }, []);
@@ -56,6 +60,7 @@ const Drivers: React.FC = () => {
     console.log("Fetching all drivers...");// show in console
 
     //fetch all drivers from the server(API) and update state with the fetched data
+
     fetch("http://localhost:3000/api/v1/driver")
      .then((res) => res.json())
      .then((data) => {
@@ -70,6 +75,7 @@ const Drivers: React.FC = () => {
   const handleClick = (event: any, id: string) => {
 
     //check if the row is already selected
+
     const selectedIndex = selected.indexOf(id);
     const newSelected: string[] = [id];
 
@@ -86,6 +92,7 @@ const isSelected = (id:string) => selected.indexOf(id) !== -1;
   // Check if a row is selected
     // If yes, fetch details of the selected driver and populate the modal form
     // Open the modal dialog for updating driver details
+
   if (selected.length === 0) {
 
 			Swal.fire({
@@ -99,6 +106,7 @@ const isSelected = (id:string) => selected.indexOf(id) !== -1;
     if(d){
       setIsNewDriverModalOpen(true);
       setNo(d.no || '');
+
       setFName(d.firstName);
       setLName(d.lastName);
       setDOfBirth(new Date(d.dob));
@@ -123,6 +131,7 @@ const isSelected = (id:string) => selected.indexOf(id) !== -1;
   if (selected.length === 0) {
 
     // Display an alert message if no driver is selected
+
     Swal.fire({
 				title: "Oops...",
 				text: "Please select a driver to delete",
@@ -130,7 +139,6 @@ const isSelected = (id:string) => selected.indexOf(id) !== -1;
 				});
     }else{
 
-      // Display a confirmation dialog before deleting the selected driver
       Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -149,6 +157,7 @@ const isSelected = (id:string) => selected.indexOf(id) !== -1;
         if(r.status === 204) {
 
           // Display an alert message if driver is deleted successfully
+
           Swal.fire({
             title: "Good job!",
             text: "Vehicle deleted successfully!",
@@ -160,6 +169,7 @@ const isSelected = (id:string) => selected.indexOf(id) !== -1;
         }
 
       }).catch((/*e)=> {
+
         Swal.fire({
           title: "Oops...",
           text: "Something went wrong !",
@@ -229,6 +239,7 @@ const closeDialog = () => {
 }
 
 //function to open the modal dialog
+
 const openDialog = () => {
   setIsNewDriverModalOpen(true);
 }
@@ -237,6 +248,7 @@ const openDialog = () => {
 /*const onChangeAvailability = (e:boolean, v:Driver) => {
   v.availability = e;
   axios.patch(`http://localhost:3000/api/v1/vehicle/${v._id}`, v).catch((/*error) => {
+
           Swal.fire({
           title: "Oops...",
           text: "Something went wrong !",
@@ -247,6 +259,7 @@ const openDialog = () => {
 }*/
 
 //function to clear the form fields
+
 const clearFields = () => {
 		setNo("");
 		setFName("");
@@ -266,6 +279,7 @@ const clearFields = () => {
 const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 
   // Filter drivers based on search term and update state with filtered data
+
   const searchTerm = e.target.value.toLowerCase();
   const filteredDrivers = alldrivers.filter(driver =>driver?.no?.toLowerCase().includes(searchTerm))
   setDrivers(filteredDrivers)
@@ -279,6 +293,7 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 
       
       
+
         <TextField
                   id="outlined-basic"
                   variant="outlined"
@@ -316,6 +331,7 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
           <TableRow>
             <StyledTableCell align="center">No</StyledTableCell>
             <StyledTableCell align="center">Date of Joined</StyledTableCell>
+
             <StyledTableCell align="center">First Name</StyledTableCell>
             <StyledTableCell align="center">Last Name</StyledTableCell>
             <StyledTableCell align="center">NIC</StyledTableCell>
@@ -340,6 +356,7 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
               key={row._id}
               hover
                     onClick={(event) => handleClick(event, row._id || '')}
+
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -358,7 +375,7 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
               <TableCell align="right">{row.licenseNo}</TableCell>
               <TableCell align="right">{new Date(row.licenseExpireDate).toLocaleDateString()}</TableCell>
               <TableCell align="right">{row.medicalIssues}</TableCell>
-              
+
             </TableRow>
           })}
         </TableBody>
@@ -383,6 +400,7 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
           </Button>
         </DialogActions>
       </Dialog>
+
     <NewDriver
         no={no}
         firstName={fName}
@@ -405,6 +423,7 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
   <Button variant="outlined" startIcon={<AddIcon/>} onClick={() => {setIsNewDriverModalOpen(true); setIsUpdate(false); clearFields()}}>Add</Button>&nbsp;&nbsp;
   <Button variant="outlined" startIcon={<CloudUploadIcon />} onClick={ () => {handleUpdateClick() ,  setIsUpdate(true)}}>Update</Button>&nbsp;&nbsp;
   <Button variant="outlined" startIcon={<DeleteIcon />} onClick={ () => handleDeleteClick()}>Delete</Button>
+
 	</Container>
 	);
 };
