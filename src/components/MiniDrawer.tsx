@@ -19,7 +19,7 @@ import {
 	Menu,
 	MenuItem,
 	Stack,
-	Tooltip,
+	
 } from "@mui/material";
 import { useSectionHeaders } from "./SectionHeader";
 import SectionHeader from "./SectionHeader";
@@ -27,7 +27,7 @@ import Drivers from "../pages/Drivers";
 import { history, AppBar, Drawer, DrawerHeader } from "./BarNavigation";
 
 import Trips from "../pages/Trips";
-import Reports from "../pages/Reports";
+//import Reports from "../pages/Reports";
 import Passengers from "../pages/Passengers";
 import Settings from "../pages/Settings";
 import DashboardPage from "../pages/DashboardPage";
@@ -36,6 +36,17 @@ import DriverReport from "../pages/reports/DriversReport";
 import PassengersReport from "../pages/reports/PassengerReportPage";
 import VehicleReport from "../pages/reports/VehicleReportPage";
 // import DashboardPage from "../pages/DashboardPage";
+import Axios, { AxiosResponse } from "axios";
+//import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {
+	Button,
+	Dialog,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+	DialogActions,
+} from "@mui/material";
 
 // Props for the MiniDrawer component
 export type MiniDrawerProps = {
@@ -47,6 +58,7 @@ export type MiniDrawerProps = {
 // Main component
 
 export default function MiniDrawer() {
+	const navigate = useNavigate();
 	const [activeSelection, setActiveSelection] = React.useState("");
 
 	const handleSectionClick = (section: string) => {
@@ -103,6 +115,28 @@ export default function MiniDrawer() {
 	const notificationCount = () => {
 		return 1 + 1;
 	};
+
+	const handleLogout = () => {
+        setOpen(true);
+    };
+
+	const handleClose1 = () => {
+        setOpen(false);
+    };
+
+	const confirmLogout = () => {
+        Axios.get('http://localhost:3000/api/v1/user/logout')
+            .then((res: AxiosResponse<{ status: boolean }>) => {
+                if (res.data.status) {
+                    //alert("User logged out successfully");
+                    console.log("User logged out successfully");
+					localStorage.removeItem('token');
+                    navigate('/login');
+                }
+            }).catch((err) => {
+                console.log(err);
+            });
+    };
 
 	return (
 		<Stack overflow={"visible"}>
@@ -187,8 +221,24 @@ export default function MiniDrawer() {
 							onClose={handleClose}
 						>
 							<MenuItem onClick={handleClose}>Manage Profile</MenuItem>
-							<MenuItem onClick={handleClose}>Logout</MenuItem>
+							<MenuItem onClick={handleLogout}>Logout</MenuItem>
 						</Menu>
+						<Dialog open={open} onClose={handleClose1}>
+                        <DialogTitle>Logout Confirmation</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                Are you sure you want to logout?
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose1} color="primary">
+                                Cancel
+                            </Button>
+                            <Button onClick={confirmLogout} color="secondary">
+                                Logout
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
 					</div>
 				</Toolbar>
 			</AppBar>
