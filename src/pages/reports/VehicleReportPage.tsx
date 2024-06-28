@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
-import DatePickerValue from "../components/DatePickerValue"; // Importing custom DatePicker component
-import VehicleTable from "../components/VehicleTable"; // Importing VehicleTable component
-import NavigationBar from "../components/NavigationBar"; // Importing NavigationBar component
-import PrintButton from "../components/DownloadButton"; // Importing DownloadButton component
+import DatePickerValue from "../../components/DatePickerValue"; // Importing custom DatePicker component
+import VehicleTable from "../../components/VehicleTable"; // Importing VehicleTable component
+import NavigationBar from "../../components/BarNavigation"; // Importing NavigationBar component
+import PrintButton from "../../components/PrintButton"; // Importing DownloadButton component
 
 // Define the VehicleReport functional component
 const VehicleReport: React.FC = () => {
