@@ -2,22 +2,15 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import { TextField, Button, Box } from "@mui/material";
+import { GoogleMap, Marker, Circle } from "@react-google-maps/api";
 
 const SetServiceArea: React.FC = () => {
 	const [radius, setRadius] = useState<number>();
-	const mapRef = useRef<HTMLDivElement>(null);
+	const [center, setCenter] = useState<google.maps.LatLng | null>(null);
+	const [map, setMap] = useState<google.maps.Map | null>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
-	let map: google.maps.Map;
-	let circle: google.maps.Circle;
 
 	useEffect(() => {
-		if (mapRef.current && !map) {
-			map = new google.maps.Map(mapRef.current, {
-				center: { lat: 6.9271, lng: 79.8612 },
-				zoom: 8,
-			});
-		}
-
 		if (inputRef.current) {
 			const autocomplete = new google.maps.places.Autocomplete(
 				inputRef.current,
@@ -25,75 +18,82 @@ const SetServiceArea: React.FC = () => {
 					componentRestrictions: { country: "LK" },
 				}
 			);
-			autocomplete.bindTo("bounds", map);
+
 			autocomplete.addListener("place_changed", () => {
 				const place = autocomplete.getPlace();
-				if (!place.geometry) {
+				if (!place.geometry || !place.geometry.location) {
 					console.log("Returned place contains no geometry");
 					return;
 				}
-				const location = place.geometry.location;
-				if (location) {
-					map.setCenter(location);
-					if (circle) circle.setMap(null);
-					circle = new google.maps.Circle({
-						strokeColor: "#FF0000",
-						strokeOpacity: 0.8,
-						strokeWeight: 2,
-						fillColor: "#FF0000",
-						fillOpacity: 0.35,
-						map,
-						center: location,
-						radius: radius,
-					});
-				}
+				setCenter(place.geometry.location);
 			});
 		}
-	}, [radius]);
-
-	const handleUpdateMap = (radiusInput: number): void => {
-		setRadius(radiusInput * 1000);
-		if (radius) circle.setMap(map);
-
-		circle = new google.maps.Circle({
-			strokeColor: "#FF0000",
-			strokeOpacity: 0.8,
-			strokeWeight: 2,
-			fillColor: "#FF0000",
-			fillOpacity: 0.35,
-			map,
-			center: map.getCenter(),
-			radius: radius,
-		});
-	};
+	}, []);
 
 	const radiusInputRef = useRef<HTMLInputElement>(null);
+
 	return (
 		<Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
 			<TextField
 				label="Start Point"
 				variant="outlined"
 				inputRef={inputRef}
+				onChange={() => {
+					if (map && center) {
+						map.fitBounds({
+							north: center.lat(),
+							south: center.lat(),
+							east: center.lng(),
+							west: center.lng(),
+						});
+					}
+				}}
 			/>
 			<TextField
 				label="Radius (KM)"
 				variant="outlined"
 				type="number"
-				onChange={(e) => handleUpdateMap(Number(e.target.value))}
+				onChange={(e) => setRadius(Number(e.target.value) * 1000)}
 				inputRef={radiusInputRef}
 			/>
 			<Button
 				variant="contained"
 				onClick={() => {
-					handleUpdateMap(Number(radiusInputRef.current));
+					if (map && center && radius) {
+						map.fitBounds({
+							north: center.lat() + radius / 111300,
+							south: center.lat() - radius / 111300,
+							east: center.lng() + radius / 111300,
+							west: center.lng() - radius / 111300,
+						});
+					}
 				}}
 			>
 				Update
 			</Button>
-			<div
-				ref={mapRef}
-				style={{ height: "400px", width: "100%" }}
-			/>
+			<div style={{ height: "400px", width: "100%" }}>
+				<GoogleMap
+					mapContainerStyle={{ height: "100%", width: "100%" }}
+					center={center || { lat: 6.9271, lng: 79.8612 }}
+					zoom={8}
+					onLoad={setMap}
+				>
+					{center && <Marker position={center} />}
+					{center && radius && (
+						<Circle
+							center={center}
+							radius={radius}
+							options={{
+								strokeColor: "#FF0000",
+								strokeOpacity: 0.8,
+								strokeWeight: 2,
+								fillColor: "#FF0000",
+								fillOpacity: 0.35,
+							}}
+						/>
+					)}
+				</GoogleMap>
+			</div>
 		</Box>
 	);
 };

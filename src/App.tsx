@@ -11,6 +11,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import SetServiceArea from "./components/SetServiceArea";
 import DriverReport from "./pages/reports/DriversReport";
+import MapPage from "./components/ViewRoutes";
 
 // Main App component
 const App: React.FC = () => {
@@ -52,8 +53,12 @@ const App: React.FC = () => {
 					/>
 					<Route
 						path="/reports/drivers"
-						element={<DriverReport/>
-						}	/>
+						element={<DriverReport />}
+					/>
+					<Route
+						path="/routes"
+						element={<MapPage />}
+					/>
 				</Routes>
 			</BrowserRouter>
 		</>
