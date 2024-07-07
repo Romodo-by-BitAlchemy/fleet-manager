@@ -271,22 +271,22 @@ export default function NavigationBar() {
 
           <Collapse in={openReports} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton component={Link} to="/reports/vehicle-details" sx={{ pl: 4 }} onClick={() => handleNestedItemClick('Vehicle Report')}>
+              <ListItemButton component={Link} to="/vehicle-details" sx={{ pl: 4 }} onClick={() => handleNestedItemClick('Vehicle Report')}>
                 <ListItemIcon><StarOutlineIcon /></ListItemIcon>
                 <ListItemText primary="Vehicles Report" />
               </ListItemButton>
 
-              <ListItemButton component={Link} to="/reports/passenger-details" sx={{ pl: 4 }} onClick={() => handleNestedItemClick('Passenger Details')}>
+              <ListItemButton component={Link} to="/passenger-details" sx={{ pl: 4 }} onClick={() => handleNestedItemClick('Passenger Details')}>
                 <ListItemIcon><StarOutlineIcon /></ListItemIcon>
                 <ListItemText primary="Passengers Report" />
               </ListItemButton>
 
-              <ListItemButton component={Link} to="/reports/driver-details" sx={{ pl: 4 }}  onClick={() => handleNestedItemClick('Driver Details')}>
+              <ListItemButton component={Link} to="/driver-details" sx={{ pl: 4 }}  onClick={() => handleNestedItemClick('Driver Details')}>
                 <ListItemIcon><StarOutlineIcon /></ListItemIcon>
                 <ListItemText primary="Drivers Report" />
               </ListItemButton>
 
-              <ListItemButton component={Link} to="/reports/issues-details" sx={{ pl: 4 }}  onClick={() => handleNestedItemClick('Issues Details')}>
+              <ListItemButton component={Link} to="/issues-details" sx={{ pl: 4 }}  onClick={() => handleNestedItemClick('Issues Details')}>
                 <ListItemIcon><StarOutlineIcon /></ListItemIcon>
                 <ListItemText primary="Issues Report" />
               </ListItemButton>

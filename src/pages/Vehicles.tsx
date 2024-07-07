@@ -4,11 +4,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-
 import NewVehilce, { Vehicle } from "../components/NewVehicle";
 import axios from "axios";
 import { StyledTableCell } from "./Drivers";
 import Swal from "sweetalert2";
+import NavigationBar from "../components/NavigationBar";
 
 /*function createData(name: string, calories: number, fat: number, carbs: number, protein: number) {
   return { name, calories, fat, carbs, protein };
@@ -18,7 +18,6 @@ import Swal from "sweetalert2";
 const Vehicles: React.FC = () => {
 
    // State variables
-
   const [selectedYear, setSelectedYear] = React.useState<number>(2024);
   const [selectedVehType, setSelectedVehType] = React.useState<string>("");
   const [selectedCondition, setSelectedCondition] = React.useState<string>("");
@@ -34,7 +33,6 @@ const Vehicles: React.FC = () => {
   const [isUpdate, setIsUpdate] =  React.useState<boolean>(false);
   
   // Fetch all vehicles when component mounts
-
   React.useEffect(() => {
     getAllVehicles();
   }, []);
@@ -44,7 +42,6 @@ const Vehicles: React.FC = () => {
 
     // Fetch all vehicles from the API
     // Update state with the fetched data
-
 
     fetch("http://localhost:3000/api/v1/vehicle")
      .then((res) => res.json())
@@ -60,7 +57,6 @@ const Vehicles: React.FC = () => {
 
     // Update selected array with the clicked row's id
    // const selectedIndex = selected.indexOf(id);
-
     const newSelected: string[] = [id];
 
     setSelected(newSelected);
@@ -76,7 +72,6 @@ const handleUpdateClick = () => {
     // If yes, fetch details of the selected vehicle and populate the modal form
     // Open the modal dialog for updating vehicle
 
-
   if (selected.length === 0) {
     Swal.fire({
       title: "Not Selected",
@@ -86,7 +81,6 @@ const handleUpdateClick = () => {
   }
   else{
     const v = vehicles.filter(v => v.id === selected[0])[0];
-
     setSelectedYear(new Date(v.productionYear).getFullYear())
     setSelectedVehType(v.type)
     setChassisNo(v.chassisNo)
@@ -108,7 +102,6 @@ const handleDeleteClick = () => {
     // If yes, prompt user for confirmation before deleting the selected vehicle
     // If confirmed, make a DELETE request to the API to delete the vehicle
 
-
   if (selected.length === 0) {
     Swal.fire({
       title: "Not Selected",
@@ -117,7 +110,6 @@ const handleDeleteClick = () => {
     });
   }
   else{
-
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -132,8 +124,7 @@ const handleDeleteClick = () => {
     axios.delete(`http://localhost:3000/api/v1/vehicle/${v.id}`).then((r) => {
       if(r.status === 204) {
         Swal.fire({
-					
-
+					title: "Good job!",
 					text: "Vehicle deleted successfully!",
 					icon: "success"
 					});
@@ -144,7 +135,6 @@ const handleDeleteClick = () => {
       }
 
     }).catch((/*e*/)=> {
-
       Swal.fire({
 				title: "Oops...",
 				text: "Something went wrong !",
@@ -181,7 +171,6 @@ const openDialog = () => {
   axios.patch(`http://localhost:3000/api/v1/vehicle/${v.id}`, v).then(()=> {
     getAllVehicles();
   }).catch((/*error) => {
-
           Swal.fire({
             title: "Oops...",
             text: "Something went wrong !",
@@ -207,7 +196,6 @@ const onChangeAvailability = (availability: boolean, vehicle: Vehicle) => {
 const clearFields = () => {
 
   // Clear all form fields
-
   setVehicleNo("")
   setChassisNo("")
   setBrand("")
@@ -230,13 +218,12 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		
       <Container maxWidth="xl" sx={{marginTop: '-60px', width: '91vw'}}>
       <br/><br/>
-   
+      <NavigationBar/>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <DialogTitle sx={{ margin: 0, fontSize: '32px', fontWeight: 'bold' }}>Vehicles</DialogTitle>
 
       
       
-
         <TextField
                   id="outlined-basic"
                   variant="outlined"
@@ -264,13 +251,11 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 
       <Table aria-label="simple table">
 
-
         <TableHead>
           <TableRow>
             <StyledTableCell align="center">Vehicle ID</StyledTableCell>
             <StyledTableCell align="right">Vehicle no.</StyledTableCell>
             <StyledTableCell align="right">Type</StyledTableCell>
-
             <StyledTableCell align="right">Chassis no.</StyledTableCell>
             <StyledTableCell align="right">Production Year</StyledTableCell>
             <StyledTableCell align="right">AC/Non AC</StyledTableCell>
@@ -290,7 +275,6 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
               key={row.id}
               hover
                     onClick={(event) => handleClick(event, row.id || '')}
-
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -300,7 +284,6 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 
               {/* Table cells */}
               <TableCell component="th" scope="row">{row.id}</TableCell>
-
               <TableCell component="th" scope="row">{row.no}</TableCell>
               <TableCell align="right">{row.type}</TableCell>
               <TableCell align="right">{row.chassisNo}</TableCell>
@@ -310,7 +293,7 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
               <TableCell align="right">{row.fuelType}</TableCell>
               <TableCell align="right">{row.noOfSeats}</TableCell>
               <TableCell align="right"><Switch checked={row.availability} onChange={(e) => onChangeAvailability(e.target.checked, row)} /></TableCell>
-
+            
             </TableRow>
           })}
         </TableBody>
@@ -318,7 +301,6 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     </TableContainer>
 
      {/* Modal dialog for adding or updating vehicle */}
-
     <NewVehilce
     id={selected[0]}
     isOpen={isNewDriverModalOpen}
@@ -341,7 +323,6 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
   <Button variant="outlined" startIcon={<AddIcon/>} onClick={() => {setIsNewDriverModalOpen(true); setIsUpdate(false); clearFields()}}>Add</Button>&nbsp;&nbsp;
   <Button variant="outlined" startIcon={<CloudUploadIcon />} onClick={ () => {handleUpdateClick() ,  setIsUpdate(true)}}>Update</Button>&nbsp;&nbsp;
   <Button variant="outlined" startIcon={<DeleteIcon />} onClick={ () => handleDeleteClick()}>Delete</Button>
-
 	</Container>
 	);
 };
