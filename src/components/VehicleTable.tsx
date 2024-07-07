@@ -103,10 +103,12 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ tableRef, startDate, endDat
   });
 
   // Event handler for changing the page
+  // Event handler for changing the page
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
+  // Event handler for changing the number of rows per page
   // Event handler for changing the number of rows per page
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
@@ -124,6 +126,7 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ tableRef, startDate, endDat
 
   // Render the VehicleTable component
   return (
+   
     <Paper sx={{ width: "100%" }}>
       <TableContainer sx={{ maxHeight: "calc(100vh - 200px)" }}>
         <Table stickyHeader aria-label="sticky table" ref={tableRef}>

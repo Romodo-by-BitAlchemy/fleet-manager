@@ -18,8 +18,10 @@ interface Column {
   label: string;
   minWidth?: number;
   align?: "right";
+  align?: "right";
 }
 
+// Define the columns for the table
 // Define the columns for the table
 const columns: readonly Column[] = [
   { id: "firstName", label: "First Name", minWidth: 170 },
@@ -38,6 +40,7 @@ const columns: readonly Column[] = [
 ];
 
 // Define the data interface for table rows
+// Define the data interface for table rows
 interface Data {
   _id: string;
   firstName: string;
@@ -55,6 +58,7 @@ interface Data {
   availability: boolean;
 }
 
+// Define the props interface for the DriverTable component
 // Define the props interface for the DriverTable component
 interface DriverTableProps {
   tableRef: React.RefObject<HTMLTableElement>;
@@ -117,10 +121,15 @@ const DriverTable: React.FC<DriverTableProps> = ({
   });
 
   // Event handler for changing the page
+  // Event handler for changing the page
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
+  // Event handler for changing the number of rows per page
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
   // Event handler for changing the number of rows per page
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -142,7 +151,22 @@ const DriverTable: React.FC<DriverTableProps> = ({
   };
 
   // Render the DriverTable component
+  const formatDate = (dateString: string) => {
+    return dayjs(dateString).format('YYYY-MM-DD');
+  };
+
+  const formatDateTime = (dateString: string) => {
+    const date = dayjs(dateString);
+    return {
+      date: date.format('YYYY-MM-DD'),
+      time: date.format('HH:mm:ss')
+    };
+  };
+
+  // Render the DriverTable component
   return (
+    <Paper sx={{ maxWidth: "100%", maxHeight: "100%" }}>
+      <TableContainer sx={{ maxHeight: "100%", maxWidth: "100%" }}>
     <Paper sx={{ maxWidth: "100%", maxHeight: "100%" }}>
       <TableContainer sx={{ maxHeight: "100%", maxWidth: "100%" }}>
         <Table stickyHeader aria-label="sticky table" ref={tableRef}>

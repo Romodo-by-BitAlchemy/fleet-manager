@@ -32,6 +32,7 @@ interface Column {
 }
 
 // Define the columns for the table
+// Define the columns for the table
 const columns: readonly Column[] = [
   { id: 'email', label: 'Email', minWidth: 170 },
   { id: 'firstName', label: 'First Name', minWidth: 170 },
@@ -46,6 +47,7 @@ const columns: readonly Column[] = [
 ];
 
 // Define the data interface for table rows
+// Define the data interface for table rows
 interface Data {
   email: string;
   firstName: string;
@@ -59,6 +61,7 @@ interface Data {
   updatedAt: string;
 }
 
+// Define the props interface for the PassengersTable component
 // Define the props interface for the PassengersTable component
 interface PassengersTableProps {
   tableRef: React.RefObject<HTMLTableElement>;
@@ -109,6 +112,7 @@ const PassengersTable: React.FC<PassengersTableProps> = ({ tableRef, startDate, 
   };
 
   // Event handler for changing the number of rows per page
+  // Event handler for changing the number of rows per page
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -123,7 +127,9 @@ const PassengersTable: React.FC<PassengersTableProps> = ({ tableRef, startDate, 
   };
 
   // Render the PassengersTable component
+  // Render the PassengersTable component
   return (
+    
     <Paper sx={{ maxWidth: '100%', maxHeight: '100%' }}>
       <TableContainer sx={{ maxHeight: '100%', maxWidth: '100%' }}>
         <Table stickyHeader aria-label="sticky table" ref={tableRef}>
@@ -136,7 +142,7 @@ const PassengersTable: React.FC<PassengersTableProps> = ({ tableRef, startDate, 
               ))}
             </TableRow>
           </TableHead>
-          <TableBody>
+                <TableBody>
             {filteredRows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => (
