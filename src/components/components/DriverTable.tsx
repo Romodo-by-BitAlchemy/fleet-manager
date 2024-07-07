@@ -10,6 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 import dayjs from 'dayjs';
 import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 
 // Define the interface for column configuration
 interface Column {
@@ -61,6 +62,17 @@ interface DriverTableProps {
   endDate: Date | null;
 }
 
+// Styled TableCell component for header
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  backgroundColor: "#BDBDBD",
+  color: theme.palette.common.black,
+  fontWeight: '700',
+  fontSize: '0.875rem',
+  height: '40px',
+  textTransform: 'uppercase',
+  borderBottom: `1px solid ${theme.palette.divider}`,
+}));
+
 // Define the DriverTable component
 const DriverTable: React.FC<DriverTableProps> = ({
   tableRef,
@@ -87,7 +99,7 @@ const DriverTable: React.FC<DriverTableProps> = ({
   // Function to fetch driver data from the server
   const fetchDrivers = () => {
     axios
-      .get("http://localhost:5000/api/drivers")
+      .get("http://localhost:3000/api/drivers")
       .then((response) => setDrivers(response.data))
       .catch((err) => {
         console.error("Error fetching drivers:", err);
@@ -137,11 +149,9 @@ const DriverTable: React.FC<DriverTableProps> = ({
           <TableHead>
             <TableRow>
               {columns.map((column) => (
-               <TableCell key={column.id} style={{ minWidth: column.minWidth }}>
-               <Typography variant="h6" component="div" sx={{ fontWeight: '300' }}>
-                 {column.label}
-               </Typography>
-             </TableCell>
+                <StyledTableCell key={column.id} style={{ minWidth: column.minWidth }}>
+                  {column.label}
+                </StyledTableCell>
               ))}
             </TableRow>
           </TableHead>
@@ -163,10 +173,10 @@ const DriverTable: React.FC<DriverTableProps> = ({
                     <TableCell>{row.medicalIssues}</TableCell>
                     <TableCell>
                       <Typography variant="body2">{formatDateTime(row.createdAt).date}</Typography>
-                        </TableCell>
+                    </TableCell>
                     <TableCell>
                       <Typography variant="body2">{formatDateTime(row.updatedAt).date}</Typography>
-</TableCell>
+                    </TableCell>
                     <TableCell>{row.availability ? 'Available' : 'Not Available'}</TableCell>
                   </TableRow>
                 );

@@ -1,11 +1,12 @@
+//Pages/IssuesReportPage.tsx
 import { useState, useRef } from "react";
-import DatePickerValue from "../Components/DatePickerValue"; // Adjust path as per your structure
-import PassengersTable from "../Components/PassengerTable"; // Adjust path as per your structure
-import NavigationBar from "../Components/NavigationBar"; // Adjust path as per your structure
-import PrintButton from "../Components/DownloadButton"; // Adjust path as per your structure
-import React from "react";
+import DatePickerValue from "../components/DatePickerValue"; // Adjust path as per your structure
+import IssuesTable from "../components/IssuesTable"; // Adjust path as per your structure
+ import NavigationBar from "../components/NavigationBar"; // Adjust path as per your structure
+import PrintButton from "../components/DownloadButton"; // Adjust path as per your structure
 
-const PassengersReport = () => {
+
+const IssuesReport = () => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const tableRef = useRef(null);
@@ -21,7 +22,7 @@ const PassengersReport = () => {
   return (
     <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column", alignItems: "center", overflow: "auto" }}>
       <NavigationBar />
-      <h1>Passenger Details Report</h1>
+      <h1>Issue Details Report</h1>
       <div style={{ display: "flex", alignItems: "center" }}>
         <div style={{ marginRight: "10px" }}>
           <DatePickerValue label="Start Date" selectedDate={startDate} onDateChange={handleStartDateChange} />
@@ -34,10 +35,10 @@ const PassengersReport = () => {
         </div>
       </div>
       <div style={{ marginTop: "10px", width: "calc(100vw - 50px)" }}>
-        <PassengersTable tableRef={tableRef} startDate={startDate} endDate={endDate} />
+        <IssuesTable tableRef={tableRef} startDate={startDate} endDate={endDate} />
       </div>
     </div>
   );
 };
 
-export default PassengersReport;
+export default IssuesReport;

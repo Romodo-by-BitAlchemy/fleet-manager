@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
-import DatePickerValue from "../Components/DatePickerValue"; // Importing custom DatePicker component
-import DriverTable from "../Components/DriverTable"; // Importing DriverTable component
-import NavigationBar from "../Components/NavigationBar"; // Importing NavigationBar component
-import PrintButton from "../Components/DownloadButton"; // Importing DownloadButton component
+import DatePickerValue from "../components/DatePickerValue"; // Importing custom DatePicker component
+import DriverTable from "../components/DriverTable"; // Importing DriverTable component
+ import NavigationBar from "../components/NavigationBar"; // Importing NavigationBar component
+import PrintButton from "../components/DownloadButton"; // Importing DownloadButton component
 
 // Define the DriverReport functional component
 const DriverReport: React.FC = () => {
@@ -36,9 +36,9 @@ const DriverReport: React.FC = () => {
       }}
     >
       {/* Navigation bar component */}
-      <NavigationBar />
+      <NavigationBar /> 
 
-      {/* Title */}
+      {/* Title*/}
       <h1>Driver Details Report</h1>
 
       {/* Date picker components for start and end dates */}

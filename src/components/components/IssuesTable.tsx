@@ -11,7 +11,20 @@ import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 import dayjs from "dayjs";
 import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
 
+
+
+// Styled TableCell component for header
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  backgroundColor: "#BDBDBD",
+  color: theme.palette.common.black,
+  fontWeight: '700',
+  fontSize: '0.875rem',
+  height: '40px',
+  textTransform: 'uppercase',
+  borderBottom: `1px solid ${theme.palette.divider}`,
+}));
 // Define the props interface for the IssuesTable component
 interface IssuesTableProps {
   tableRef: React.RefObject<HTMLTableElement>;
@@ -26,7 +39,7 @@ const columns = [
   { id: "description", label: "Description", minWidth: 170 },
   { id: "rerouting", label: "Rerouting", minWidth: 100 },
   { id: "reroutingNewVehicleNo", label: "Rerouting New Vehicle No", minWidth: 170 },
-  { id: "reroutingNewDriverNo", label: "Rerouting New Driver No", minWidth: 170 },
+  
   { id: "createdAt", label: "Registered Date", minWidth: 170 },
 ];
 
@@ -38,7 +51,6 @@ interface Issue {
   description: string;
   rerouting: boolean;
   reroutingNewVehicleNo?: string;
-  reroutingNewDriverNo?: string;
   createdAt: string;
 }
 
@@ -50,7 +62,7 @@ const IssuesTable: React.FC<IssuesTableProps> = ({ tableRef, startDate, endDate 
 
   // Fetch issue data from the server when the component mounts
   const fetchIssues = () => {
-    axios.get("http://localhost:5000/api/issues")
+    axios.get("http://localhost:3000/api/issues")
       .then((response) => {
         setIssues(response.data);
       })
@@ -108,11 +120,9 @@ const IssuesTable: React.FC<IssuesTableProps> = ({ tableRef, startDate, endDate 
           <TableHead>
             <TableRow>
               {columns.map((column) => (
-                <TableCell key={column.id} style={{ minWidth: column.minWidth }}>
-                  <Typography variant="h6" component="div" sx={{ fontWeight: '300' }}>
-                    {column.label}
-                  </Typography>
-                </TableCell>
+               <StyledTableCell key={column.id} style={{ minWidth: column.minWidth }}>
+               {column.label}
+             </StyledTableCell>
               ))}
             </TableRow>
           </TableHead>
@@ -126,7 +136,7 @@ const IssuesTable: React.FC<IssuesTableProps> = ({ tableRef, startDate, endDate 
                   <TableCell>{issue.description}</TableCell>
                   <TableCell>{issue.rerouting ? "Yes" : "No"}</TableCell>
                   <TableCell>{issue.reroutingNewVehicleNo}</TableCell>
-                  <TableCell>{issue.reroutingNewDriverNo}</TableCell>
+                  
                   <TableCell>
                     <Typography variant="body2">{formatDate(issue.createdAt).date}</Typography>
                   </TableCell>

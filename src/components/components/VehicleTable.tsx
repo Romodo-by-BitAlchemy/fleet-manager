@@ -10,6 +10,18 @@ import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 import dayjs from "dayjs";
 import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
+
+// Styled TableCell component for header
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  backgroundColor: "#BDBDBD",
+  color: theme.palette.common.black,
+  fontWeight: '700',
+  fontSize: '0.875rem',
+  height: '40px',
+  textTransform: 'uppercase',
+  borderBottom: `1px solid ${theme.palette.divider}`,
+}));
 
 // Define the props interface for the VehicleTable component
 interface VehicleTableProps {
@@ -71,7 +83,7 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ tableRef, startDate, endDat
   // Function to fetch vehicle data from the server
   const fetchVehicles = () => {
     axios
-      .get("http://localhost:5000/api/vehicles")
+      .get("http://localhost:3000/api/vehicles")
       .then((response) => {
         
         setVehicles(response.data);
@@ -118,11 +130,9 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ tableRef, startDate, endDat
           <TableHead>
             <TableRow>
               {columns.map((column) => (
-                <TableCell key={column.id} style={{ minWidth: column.minWidth }}>
-                  <Typography variant="h6" component="div" sx={{ fontWeight: '300' }}>
-                    {column.label}
-                  </Typography>
-                </TableCell>
+               <StyledTableCell key={column.id} style={{ minWidth: column.minWidth }}>
+               {column.label}
+             </StyledTableCell>
               ))}
             </TableRow>
           </TableHead>

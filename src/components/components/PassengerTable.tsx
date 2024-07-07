@@ -10,6 +10,19 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { styled } from "@mui/material/styles";
+
+
+// Styled TableCell component for header
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  backgroundColor: "#BDBDBD",
+  color: theme.palette.common.black,
+  fontWeight: '700',
+  fontSize: '0.875rem',
+  height: '40px',
+  textTransform: 'uppercase',
+  borderBottom: `1px solid ${theme.palette.divider}`,
+}));
 
 // Define the interface for column configuration
 interface Column {
@@ -62,7 +75,7 @@ const PassengersTable: React.FC<PassengersTableProps> = ({ tableRef, startDate, 
   // Fetch passenger data from the server
   const fetchPassengers = () => {
     axios
-      .get("http://localhost:5000/api/passengers")
+      .get("http://localhost:3000/api/passengers")
       .then((response) => setPassengers(response.data))
       .catch((err) => {
         console.error("Error fetching passengers:", err);
@@ -117,11 +130,9 @@ const PassengersTable: React.FC<PassengersTableProps> = ({ tableRef, startDate, 
           <TableHead>
             <TableRow>
               {columns.map((column) => (
-                <TableCell key={column.id} style={{ minWidth: column.minWidth }}>
-                  <Typography variant="h6" component="div" sx={{ fontWeight: '300' }}>
-                    {column.label}
-                  </Typography>
-                </TableCell>
+                <StyledTableCell key={column.id} style={{ minWidth: column.minWidth }}>
+                {column.label}
+              </StyledTableCell>
               ))}
             </TableRow>
           </TableHead>

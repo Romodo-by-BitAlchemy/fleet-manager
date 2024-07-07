@@ -1,4 +1,5 @@
 
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
@@ -10,12 +11,12 @@ import {
   ThemeProvider,
   createTheme,
 } from "@mui/material";
-import NavigationBar from "../Components/NavigationBar";
-import ComparisonBarChart from "../Components/IssuesDashboard";
-import BarChart from "../Components/VehiclesDashboard";
-import PieChart from "../Components/DriversDashboard";
-import DoughnutChart from "../Components/TripsDashboard";
-import LineChartForNoOfTripsDashboard from "../Components/LineChartForNoOfTripsDashboard";
+ import NavigationBar from "../components/NavigationBar";
+import ComparisonBarChart from "../components/IssuesDashboard";
+import BarChart from "../components/VehiclesDashboard";
+import PieChart from "../components/DriversDashboard";
+import DoughnutChart from "../components/TripsDashboard";
+import LineChartForNoOfTripsDashboard from "../components/LineChartForNoOfTripsDashboard";
 import { format } from "date-fns";
 
 
@@ -101,7 +102,7 @@ const DashboardPage: React.FC = () => {
   const fetchVehicleCounts = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/vehicles/counts"
+        "http://localhost:3000/api/vehicles/counts"
       );
       const { vehicles } = response.data;
       setVehicleCounts({
@@ -116,7 +117,7 @@ const DashboardPage: React.FC = () => {
 
   const fetchDriverCounts = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/drivers/counts");
+      const response = await axios.get("http://localhost:3000/api/drivers/counts");
       const { available, unavailable } = response.data.drivers;
       setDriverCounts({
         noOfTotalDrivers: response.data.drivers.total,
@@ -131,7 +132,7 @@ const DashboardPage: React.FC = () => {
   const fetchTripCounts = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/trips/counts"
+        "http://localhost:3000/api/trips/counts"
       );
       const { scheduledTrips, cancelledTrips, totalTrips } =
         response.data.trips;
@@ -148,7 +149,7 @@ const DashboardPage: React.FC = () => {
   const fetchComparisonData = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/issues/counts"
+        "http://localhost:3000/api/issues/counts"
       );
       const data = response.data;
       const years = data.map((item: any) => item.year.toString());
@@ -167,7 +168,7 @@ const DashboardPage: React.FC = () => {
   
   const fetchTripCountsDaily = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/trips/daily-completed");
+      const response = await axios.get("http://localhost:3000/api/trips/daily-completed");
       const dailyData = response.data;
 
       console.log("Raw API Response:", dailyData);

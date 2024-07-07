@@ -38,11 +38,13 @@ const BarChart: React.FC<BarChartProps> = ({
                 'rgba(233, 30, 99, 0.6)',   // Pink
               ],
               borderColor: [
-                'rgba(75, 0, 130, 1)',    // Indigo
                 'rgba(255, 193, 7, 1)',   // Amber
                 'rgba(233, 30, 99, 1)',   // Pink
+                'rgba(75, 0, 130, 1)',    // Indigo
+
+                
               ],
-              borderWidth: 1,
+              borderWidth: 2,
             }]
           },
           options: {
