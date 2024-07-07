@@ -80,7 +80,7 @@
 
 //   const fetchVehicleCounts = async () => {
 //     try {
-//       const response = await axios.get('http://localhost:5000/api/vehicles/counts');
+//       const response = await axios.get('http://localhost:3000/api/vehicles/counts');
 //       const { vehicles } = response.data;
 //       setVehicleCounts({
 //         totalVehicles: vehicles.total,
@@ -94,7 +94,7 @@
 
 //   const fetchDriverCounts = async () => {
 //     try {
-//       const response = await axios.get('http://localhost:5000/api/drivers/counts');
+//       const response = await axios.get('http://localhost:3000/api/drivers/counts');
 //       setDriverCounts(response.data);
 //     } catch (error) {
 //       console.error('Error fetching driver counts:', error);
@@ -103,7 +103,7 @@
 
 //   const fetchTripCounts = async () => {
 //     try {
-//       const response = await axios.get('http://localhost:5000/api/trips/counts');
+//       const response = await axios.get('http://localhost:3000/api/trips/counts');
 //       const { scheduledTrips, cancelledTrips, totalTrips } = response.data.trips;
 //       setTripCounts({
 //         numberOfTotalTrips: totalTrips,
@@ -117,7 +117,7 @@
 
 //   const fetchComparisonData = async () => {
 //     try {
-//       const response = await axios.get('http://localhost:5000/api/issues/counts');
+//       const response = await axios.get('http://localhost:3000/api/issues/counts');
 //       const data = response.data;
 //       const years = data.map((item: any) => item.year.toString()); // Ensure years are strings
 //       const malfunctionData = data.map((item: any) => item.malfunctions); // Correct field name
@@ -314,7 +314,7 @@ const DashboardPage: React.FC = () => {
   const fetchVehicleCounts = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/vehicles/counts"
+        "http://localhost:3000/api/vehicles/counts"
       );
       const { vehicles } = response.data;
       setVehicleCounts({
@@ -330,7 +330,7 @@ const DashboardPage: React.FC = () => {
   const fetchDriverCounts = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/drivers/counts"
+        "http://localhost:3000/api/drivers/counts"
       );
       setDriverCounts(response.data);
     } catch (error) {
@@ -341,7 +341,7 @@ const DashboardPage: React.FC = () => {
   const fetchTripCounts = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/trips/counts"
+        "http://localhost:3000/api/trips/counts"
       );
       const { scheduledTrips, cancelledTrips, totalTrips } =
         response.data.trips;
@@ -358,7 +358,7 @@ const DashboardPage: React.FC = () => {
   const fetchComparisonData = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/issues/counts"
+        "http://localhost:3000/api/issues/counts"
       );
       const data = response.data;
       const years = data.map((item: any) => item.year.toString());
@@ -377,7 +377,7 @@ const DashboardPage: React.FC = () => {
   
   const fetchTripCountsDaily = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/trips/daily-completed");
+      const response = await axios.get("http://localhost:3000/api/trips/daily-completed");
       const dailyData = response.data;
 
       console.log("Raw API Response:", dailyData);

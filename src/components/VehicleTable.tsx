@@ -81,8 +81,8 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ tableRef, startDate, endDat
   }, []);
 
   // Function to fetch vehicle data from the server
-  const fetchVehicles = () => {
-    axios
+  const fetchVehicles = async () => {
+    await axios
       .get("http://localhost:3000/api/vehicles")
       .then((response) => {
         

@@ -30,7 +30,7 @@ import Trips from "../pages/Trips";
 //import Reports from "../pages/Reports";
 import Passengers from "../pages/Passengers";
 import Settings from "../pages/Settings";
-import DashboardPage from "../pages/DashboardPage_temp";
+import DashboardPage from "../pages/DashboardPage";
 import Vehicles from "../pages/Vehicles";
 import DriverReport from "../pages/DriversReportPage";
 import PassengersReport from "../pages/PassengerReportPage";

@@ -51,7 +51,7 @@ const nuRegex = /^[0-9]{1,}$/
 // NewVehicle component
 function NewVehicle(props: NewDriverProps) {
 
-	 // State variables
+	// State variables
 	const years = Array.from({ length: 100 }, (_, index) => new Date().getFullYear() - index);
 	const [selectedYear, setSelectedYear] = React.useState<number>(props.year);
 	const [id, setId] = React.useState<string>(props.id);
@@ -69,7 +69,7 @@ function NewVehicle(props: NewDriverProps) {
 	const [brand, setBrand] = React.useState<string>(props.brand);
 	const [noOfSeats, setNoOfSeats] = React.useState<number>(props.noOfSeats);
 
-	  // Update state when props change
+	// Update state when props change
 	React.useEffect(() => {
 		setSelectedVehType(props.selVehType);
         setSelectedCondition(props.selCondition);
@@ -89,10 +89,10 @@ function NewVehicle(props: NewDriverProps) {
 		props.noOfSeats
 	]);
 
-	 // Validation function
+	// Validation function
 	const checkValidation = () : boolean => {
 
-		 // Validation checks for each field
+		// Validation checks for each field
         // Display error message using SweetAlert2 if validation fails
         // Return false if any validation fails, otherwise return true
 

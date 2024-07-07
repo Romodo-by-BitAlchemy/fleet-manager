@@ -134,10 +134,10 @@ const handleDeleteClick = () => {
         getAllVehicles();
       }
 
-    }).catch((/*e*/)=> {
+    }).catch((e)=> {
       Swal.fire({
 				title: "Oops...",
-				text: "Something went wrong !",
+				text: "Something went wrong !\n${e.message}",
 				icon: "error"
 				});
     })
