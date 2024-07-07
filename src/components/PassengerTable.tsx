@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,17 +8,30 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import axios from "axios";
+import axios from 'axios';
 import dayjs from 'dayjs';
+import { styled } from "@mui/material/styles";
+
+
+// Styled TableCell component for header
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  backgroundColor: "#BDBDBD",
+  color: theme.palette.common.black,
+  fontWeight: '700',
+  fontSize: '0.875rem',
+  height: '40px',
+  textTransform: 'uppercase',
+  borderBottom: `1px solid ${theme.palette.divider}`,
+}));
 
 // Define the interface for column configuration
 interface Column {
   id: string;
   label: string;
   minWidth?: number;
-  align?: 'right';
 }
 
+// Define the columns for the table
 // Define the columns for the table
 const columns: readonly Column[] = [
   { id: 'email', label: 'Email', minWidth: 170 },
@@ -28,11 +41,12 @@ const columns: readonly Column[] = [
   { id: 'gender', label: 'Gender', minWidth: 170 },
   { id: 'contactNo', label: 'Contact No', minWidth: 170 },
   { id: 'serviceNo', label: 'Service No', minWidth: 170 },
-  { id: 'internalExternal', label: 'Internal/External', minWidth: 170 },
-{ id : 'createdAt' , label : 'Created At', minWidth : 170},
-{ id : 'updatedAt' , label : 'Updated At', minWidth : 170}
+  { id: 'isInternal', label: 'Internal/External', minWidth: 170 }, // Adjusted to match the data structure
+  { id: 'createdAt', label: "Registered Date",  minWidth: 170 },
+  { id: 'updatedAt', label: "Updated Date", minWidth: 170 },
 ];
 
+// Define the data interface for table rows
 // Define the data interface for table rows
 interface Data {
   email: string;
@@ -42,11 +56,12 @@ interface Data {
   gender: string;
   contactNo: string;
   serviceNo: string;
-  internalExternal: boolean;
+  isInternal: boolean;
   createdAt: string;
   updatedAt: string;
 }
 
+// Define the props interface for the PassengersTable component
 // Define the props interface for the PassengersTable component
 interface PassengersTableProps {
   tableRef: React.RefObject<HTMLTableElement>;
@@ -56,18 +71,30 @@ interface PassengersTableProps {
 
 // Define the PassengersTable component
 const PassengersTable: React.FC<PassengersTableProps> = ({ tableRef, startDate, endDate }) => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [passengers, setPassengers] = React.useState<Data[]>([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [passengers, setPassengers] = useState<Data[]>([]);
 
-  // Fetch passenger data from the server when the component mounts
-  useEffect(() => {
+  // Fetch passenger data from the server
+  const fetchPassengers = () => {
     axios
-      .get("http://localhost:5000/api/passengers")
+      .get("http://localhost:3000/api/passengers")
       .then((response) => setPassengers(response.data))
       .catch((err) => {
         console.error("Error fetching passengers:", err);
       });
+  };
+
+  useEffect(() => {
+    fetchPassengers();
+
+    // Fetch data every 5 seconds
+    const interval = setInterval(() => {
+      fetchPassengers();
+    }, 5000);
+
+    // Cleanup interval to prevent memory leaks
+    return () => clearInterval(interval);
   }, []);
 
   // Filter rows based on the selected date range
@@ -78,13 +105,13 @@ const PassengersTable: React.FC<PassengersTableProps> = ({ tableRef, startDate, 
       (!endDate || registeredDate <= dayjs(endDate))
     );
   });
-  
 
   // Event handler for changing the page
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
+  // Event handler for changing the number of rows per page
   // Event handler for changing the number of rows per page
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
@@ -95,55 +122,47 @@ const PassengersTable: React.FC<PassengersTableProps> = ({ tableRef, startDate, 
     const date = dayjs(dateString);
     return {
       date: date.format('YYYY-MM-DD'),
-      time: date.format('HH:mm:ss')
+      time: date.format('HH:mm:ss'),
     };
   };
 
   // Render the PassengersTable component
+  // Render the PassengersTable component
   return (
+    
     <Paper sx={{ maxWidth: '100%', maxHeight: '100%' }}>
       <TableContainer sx={{ maxHeight: '100%', maxWidth: '100%' }}>
         <Table stickyHeader aria-label="sticky table" ref={tableRef}>
           <TableHead>
             <TableRow>
               {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
+                <StyledTableCell key={column.id} style={{ minWidth: column.minWidth }}>
+                {column.label}
+              </StyledTableCell>
               ))}
             </TableRow>
           </TableHead>
                 <TableBody>
             {filteredRows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
-                
-                
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                      <TableCell>{row.email}</TableCell>
+              .map((row, index) => (
+                <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                  <TableCell>{row.email}</TableCell>
                   <TableCell>{row.firstName}</TableCell>
                   <TableCell>{row.lastName}</TableCell>
                   <TableCell>{row.nicNo}</TableCell>
                   <TableCell>{row.gender}</TableCell>
                   <TableCell>{row.contactNo}</TableCell>
                   <TableCell>{row.serviceNo}</TableCell>
-                  <TableCell>{row.internalExternal}</TableCell>
+                  <TableCell>{row.isInternal ? 'Internal' : 'External'}</TableCell>
                   <TableCell>
                     <Typography variant="body2">{formatDate(row.createdAt).date}</Typography>
-                    <Typography variant="body2" color="textSecondary">{formatDate(row.createdAt).time}</Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="body2">{formatDate(row.updatedAt).date}</Typography>
-                    <Typography variant="body2" color="textSecondary">{formatDate(row.updatedAt).time}</Typography></TableCell>
-
-                  </TableRow>
-                );
-              })}
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
