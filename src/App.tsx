@@ -12,6 +12,7 @@ import ResetPassword from "./pages/ResetPassword";
 import SetServiceArea from "./components/SetServiceArea";
 import DriverReport from "./pages/reports/DriversReport";
 import MapPage from "./components/ViewRoutes";
+import ObjectMgr from "./pages/dev/objectsMgr";
 
 // Main App component
 const App: React.FC = () => {
@@ -58,6 +59,10 @@ const App: React.FC = () => {
 					<Route
 						path="/routes"
 						element={<MapPage />}
+					/>
+					<Route
+						path="/objects"
+						element={<ObjectMgr />}
 					/>
 				</Routes>
 			</BrowserRouter>
