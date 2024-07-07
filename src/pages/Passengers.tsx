@@ -2,6 +2,7 @@ import * as React from "react";
 import { Container, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, TextField, IconButton, InputAdornment, DialogTitle, styled, tableCellClasses, Alert, Button } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import axios from "axios";
+import NavigationBar from "../components/NavigationBar";
 
 export const StyledTableCell = styled(TableCell)(({ /*theme*/ }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -65,7 +66,7 @@ const Passengers: React.FC = () => {
   return (
     <Container maxWidth="xl" sx={{ marginTop: '-60px', width: '91vw' }}>
       <br /><br />
-
+      <NavigationBar/>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <DialogTitle sx={{ margin: 0, fontSize: '32px', fontWeight: 'bold' }}>Passengers</DialogTitle>
         <TextField
