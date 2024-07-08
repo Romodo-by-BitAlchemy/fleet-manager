@@ -29,6 +29,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import NewDriver, { Driver } from "../components/NewDriver";
 import axios from "axios";
 import { textAlign } from "@mui/system";
+//import { set } from "react-hook-form";
 
 // StyledTableCell component for custom styling of table cells
 export const StyledTableCell = styled(TableCell)(
@@ -47,6 +48,19 @@ export const StyledTableCell = styled(TableCell)(
     },
   })
 );
+
+// CustomSwitch component for custom styling of switches
+const CustomSwitch = styled(Switch)(({ theme }) => ({
+  "& .MuiSwitch-switchBase.Mui-checked": {
+    color: theme.palette.error.main,
+    "&:hover": {
+      backgroundColor: `rgba(255, 0, 0, 0.1)`,
+    },
+  },
+  "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+    backgroundColor: theme.palette.error.main,
+  },
+}));
 
 // Drivers functional component
 const Drivers: React.FC = () => {
@@ -200,7 +214,7 @@ const Drivers: React.FC = () => {
           `Driver ${isActive ? "deactivated" : "activated"}:`,
           response
         );
-        getAllDrivers(); // Refresh the driver list
+        getAllDrivers();
       })
       .catch((error) => {
         console.error(
@@ -210,6 +224,19 @@ const Drivers: React.FC = () => {
         setErrorMessage(
           `Error ${isActive ? "deactivating" : "activating"} driver`
         );
+      });
+  };
+
+  const onChangeAvailability = (availability: boolean, driver: Driver) => {
+    axios
+      .put(`http://localhost:3000/api/v1/driver/${driver._id}`, {
+        availability,
+      })
+      .then(() => {
+        getAllDrivers();
+      })
+      .catch(() => {
+        setErrorMessage("Error updating availability");
       });
   };
 
@@ -271,6 +298,9 @@ const Drivers: React.FC = () => {
                   License Exp. date
                 </StyledTableCell>
                 <StyledTableCell align="center">Medical Issues</StyledTableCell>
+                <StyledTableCell align="center">
+                  Availability (Short Term)
+                </StyledTableCell>
                 <StyledTableCell align="center">Status</StyledTableCell>
               </TableRow>
             </TableHead>
@@ -309,10 +339,18 @@ const Drivers: React.FC = () => {
                       {new Date(row.licenseExpireDate).toLocaleDateString()}
                     </TableCell>
                     <TableCell align="right">{row.medicalIssues}</TableCell>
+                    <TableCell align="right">
+                      <Switch
+                        checked={row.availability}
+                        onChange={(e) =>
+                          onChangeAvailability(e.target.checked, row)
+                        }
+                      />
+                    </TableCell>
                     <TableCell align="center">
                       <FormControlLabel
                         control={
-                          <Switch
+                          <CustomSwitch
                             checked={row.isActive}
                             onChange={() =>
                               handleStatusChange(row._id || "", row.isActive)

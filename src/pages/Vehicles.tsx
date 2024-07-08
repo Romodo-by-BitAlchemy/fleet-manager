@@ -176,7 +176,6 @@ const Vehicles: React.FC = () => {
     <Container maxWidth="xl" sx={{ marginTop: "-60px", width: "91vw" }}>
       <br />
       <br />
-
       <div
         style={{
           display: "flex",
@@ -206,17 +205,13 @@ const Vehicles: React.FC = () => {
           }}
         />
       </div>
-
-      
       {errorMessage && (
         <Alert severity="error" sx={{ marginTop: "10px" }}>
           {errorMessage}
         </Alert>
       )}
       <br></br>
-
       <div style={{ height: "400px", overflow: "auto" }}>
-
         {/* Table to display vehicles */}
         <TableContainer component={Paper} sx={{ maxHeight: "100%" }}>
           <Table aria-label="simple table" stickyHeader>
@@ -283,7 +278,6 @@ const Vehicles: React.FC = () => {
           </Table>
         </TableContainer>
       </div>
-
       {/* Confirmation dialog */}
       <Dialog
         open={isConfirmationDialogOpen}
@@ -309,8 +303,6 @@ const Vehicles: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
-
-    
       <NewVehilce
         id={selected[0]}
         isOpen={isNewDriverModalOpen}
@@ -328,8 +320,6 @@ const Vehicles: React.FC = () => {
         getAll={getAllVehicles}
       />
       <br />
-
-
       {/* Buttons to create, update or delete vehicle */}
       <Button
         variant="outlined"
@@ -360,7 +350,6 @@ const Vehicles: React.FC = () => {
       >
         Delete
       </Button>
-      
     </Container>
   );
 };
