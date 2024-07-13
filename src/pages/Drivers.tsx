@@ -245,6 +245,7 @@ const Drivers: React.FC = () => {
     <Container maxWidth="xl" sx={{ marginTop: "-60px", width: "91vw" }}>
       <br />
       <br />
+      <NavigationBar/>
       <div
         style={{
           display: "flex",
