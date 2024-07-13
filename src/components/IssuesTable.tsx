@@ -1,3 +1,4 @@
+//components/IssuesTable.tsx
 import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -12,6 +13,8 @@ import dayjs from "dayjs";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 
+
+
 // Styled TableCell component for header
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   backgroundColor: "#BDBDBD",
@@ -22,9 +25,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   textTransform: 'uppercase',
   borderBottom: `1px solid ${theme.palette.divider}`,
 }));
-
-// Define the props interface for the VehicleTable component
-interface VehicleTableProps {
+// Define the props interface for the IssuesTable component
+interface IssuesTableProps {
   tableRef: React.RefObject<HTMLTableElement>;
   startDate: Date | null;
   endDate: Date | null;
@@ -32,69 +34,57 @@ interface VehicleTableProps {
 
 // Define the columns for the table
 const columns = [
-  { id: "no", label: "Vehicle No", minWidth: 170 },
-  { id: "type", label: "Vehicle Type", minWidth: 100 },
-  { id: "chassisNo", label: "Chassis No", minWidth: 170 },
-  { id: "brand", label: "Brand", minWidth: 170 },
-  { id: "fuelType", label: "Fuel Type", minWidth: 170 },
-  { id: "noOfSeats", label: "No of Seats", minWidth: 170 },
-  { id: "productionYear", label: "Production Year", minWidth: 170 },
-  { id: "acNonAc", label: "AC/Non-AC", minWidth: 170 },
-  { id: "availability", label: "Availability", minWidth: 170 },
-  { id: "createdAt", label: "Registered Date",  minWidth: 170 },
-  { id: "updatedAt", label: "Updated Date", minWidth: 170 },
+  { id: "nameOfTheIssues", label: "Name of the Issues", minWidth: 170 },
+  { id: "type", label: "Types of Issues", minWidth: 100 },
+  { id: "description", label: "Description", minWidth: 170 },
+  { id: "rerouting", label: "Rerouting", minWidth: 100 },
+  { id: "reroutingNewVehicleNo", label: "Rerouting New Vehicle No", minWidth: 170 },
+  
+  { id: "createdAt", label: "Registered Date", minWidth: 170 },
 ];
 
 // Define the data interface for table rows
-interface Vehicle {
+interface Issue {
   _id: string;
-  no: string; // Ensure this matches the schema property name
+  nameOfTheIssues: string;
   type: string;
-  chassisNo: string;
-  brand: string;
-  fuelType: string;
-  noOfSeats: number;
-  productionYear: number;
-  ac: boolean; // Ensure this matches the schema property name
-  availability: boolean;
+  description: string;
+  rerouting: boolean;
+  reroutingNewVehicleNo?: string;
   createdAt: string;
-  updatedAt: string;
 }
 
-// Define the VehicleTable component
-const VehicleTable: React.FC<VehicleTableProps> = ({ tableRef, startDate, endDate }) => {
+// Define the IssuesTable component
+const IssuesTable: React.FC<IssuesTableProps> = ({ tableRef, startDate, endDate }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [issues, setIssues] = useState<Issue[]>([]);
 
-  // Fetch vehicle data from the server when the component mounts
-  useEffect(() => {
-    fetchVehicles();
-
-    // Fetch data every 5 seconds
-    const interval = setInterval(() => {
-      fetchVehicles();
-    }, 5000);
-
-    // Cleanup interval to prevent memory leaks
-    return () => clearInterval(interval);
-  }, []);
-
-  // Function to fetch vehicle data from the server
-  const fetchVehicles = async () => {
-    await axios
-      .get("http://localhost:3000/api/vehicles")
+  // Fetch issue data from the server when the component mounts
+  const fetchIssues = () => {
+    axios.get("http://localhost:3000/api/issues")
       .then((response) => {
-        
-        setVehicles(response.data);
+        setIssues(response.data);
       })
       .catch((err) => {
-        console.error("Error fetching vehicles:", err);
+        console.error("Error fetching issues:", err);
       });
   };
 
+  // Fetch issue data from the server initially and on component mount
+  useEffect(() => {
+    fetchIssues();
+
+    // Polling interval to fetch updated data every 10 seconds (adjust as needed)
+    const interval = setInterval(() => {
+      fetchIssues();
+    }, 5000); // Every 5 seconds
+
+    return () => clearInterval(interval); // Clean up interval on component unmount
+  }, []);
+
   // Filter rows based on the selected date range
-  const filteredRows = vehicles.filter((row) => {
+  const filteredRows = issues.filter((row) => {
     const registeredDate = dayjs(row.createdAt);
     return (
       (!startDate || registeredDate >= dayjs(startDate)) &&
@@ -103,12 +93,10 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ tableRef, startDate, endDat
   });
 
   // Event handler for changing the page
-  // Event handler for changing the page
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
-  // Event handler for changing the number of rows per page
   // Event handler for changing the number of rows per page
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
@@ -124,9 +112,8 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ tableRef, startDate, endDat
     };
   };
 
-  // Render the VehicleTable component
+  // Render the IssuesTable component
   return (
-   
     <Paper sx={{ width: "100%" }}>
       <TableContainer sx={{ maxHeight: "calc(100vh - 200px)" }}>
         <Table stickyHeader aria-label="sticky table" ref={tableRef}>
@@ -140,24 +127,22 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ tableRef, startDate, endDat
             </TableRow>
           </TableHead>
           <TableBody>
-          {filteredRows
-  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-  .map((vehicle, index) => (
-    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-      <TableCell>{vehicle.no}</TableCell>
-      <TableCell>{vehicle.type}</TableCell>
-      <TableCell>{vehicle.chassisNo}</TableCell>
-      <TableCell>{vehicle.brand}</TableCell>
-      <TableCell>{vehicle.fuelType}</TableCell>
-      <TableCell>{vehicle.noOfSeats}</TableCell>
-      <TableCell>{vehicle.productionYear}</TableCell>
-      <TableCell>{vehicle.ac ? "AC" : "Non-AC"}</TableCell>
-      <TableCell>{vehicle.availability ? "Yes" : "No"}</TableCell>
-      <TableCell><Typography variant="body2">{formatDate(vehicle.createdAt).date}</Typography></TableCell>
-      <TableCell><Typography variant="body2">{formatDate(vehicle.updatedAt).date}</Typography></TableCell>
-    </TableRow>
-  ))}
-</TableBody>
+            {filteredRows
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((issue, index) => (
+                <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                  <TableCell>{issue.nameOfTheIssues}</TableCell>
+                  <TableCell>{issue.type}</TableCell>
+                  <TableCell>{issue.description}</TableCell>
+                  <TableCell>{issue.rerouting ? "Yes" : "No"}</TableCell>
+                  <TableCell>{issue.reroutingNewVehicleNo}</TableCell>
+                  
+                  <TableCell>
+                    <Typography variant="body2">{formatDate(issue.createdAt).date}</Typography>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
@@ -173,4 +158,4 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ tableRef, startDate, endDat
   );
 };
 
-export default VehicleTable;
+export default IssuesTable;

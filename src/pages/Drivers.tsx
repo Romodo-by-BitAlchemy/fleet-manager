@@ -29,6 +29,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import NewDriver, { Driver } from "../components/NewDriver";
 import axios from "axios";
 import { textAlign } from "@mui/system";
+import NavigationBar from "../components/NavigationBar";
 //import { set } from "react-hook-form";
 
 // StyledTableCell component for custom styling of table cells

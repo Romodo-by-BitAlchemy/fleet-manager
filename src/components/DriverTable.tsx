@@ -1,87 +1,181 @@
-import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
+import React, { useEffect } from "react";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import axios from "axios";
+import dayjs from 'dayjs';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 
+// Define the interface for column configuration
 interface Column {
   id: string;
   label: string;
   minWidth?: number;
-  align?: 'right';
+  align?: "right";
+  align?: "right";
 }
 
+// Define the columns for the table
+// Define the columns for the table
 const columns: readonly Column[] = [
-  { id: 'firstName', label: 'First Name', minWidth: 170 },
-  { id: 'lastName', label: 'Last Name', minWidth: 170 },
-  { id: 'nicNo', label: 'NIC No', minWidth: 170 },
-  { id: 'gender', label: 'Gender', minWidth: 170 },
-  { id: 'dateOfBirth', label: 'Date of Birth', minWidth: 170 },
-  { id: 'contactNo', label: 'Contact No', minWidth: 170 },
-  { id: 'email', label: 'Email', minWidth: 170 },
-  { id: 'licenseNo', label: 'License No', minWidth: 170 },
-  { id: 'expiryDate', label: 'Expiry Date', minWidth: 170 },
-  { id: 'medicalIssues', label: 'Medical Issues', minWidth: 170 },
-  { id: 'registeredDate', label: 'Registered Date', minWidth: 170 },
+  { id: "firstName", label: "First Name", minWidth: 170 },
+  { id: "lastName", label: "Last Name", minWidth: 170 },
+  { id: "nic", label: "NIC No", minWidth: 170 },
+  { id: "gender", label: "Gender", minWidth: 170 },
+  { id: "dob", label: "Date of Birth", minWidth: 170 },
+  { id: "contactNo", label: "Contact No", minWidth: 170 },
+  { id: "email", label: "Email", minWidth: 170 },
+  { id: "licenseNo", label: "License No", minWidth: 170 },
+  { id: "licenseExpireDate", label: "Expiry Date", minWidth: 170 },
+  { id: "medicalIssues", label: "Medical Issues", minWidth: 170 },
+  { id: "createdAt", label: "Registered Date", minWidth: 170 },
+  { id: "updatedAt", label: "Updated Date", minWidth: 170 },
+  { id: "availability", label: "Availability", minWidth: 170 },
 ];
 
+// Define the data interface for table rows
+// Define the data interface for table rows
 interface Data {
+  _id: string;
   firstName: string;
   lastName: string;
-  nicNo: string;
+  nic: string;
   gender: string;
-  dateOfBirth: string;
+  dob: string;
   contactNo: string;
   email: string;
   licenseNo: string;
-  expiryDate: string;
+  licenseExpireDate: string;
   medicalIssues: string;
-  registeredDate: string;
+  createdAt: string;
+  updatedAt: string;
+  availability: boolean;
 }
 
+// Define the props interface for the DriverTable component
+// Define the props interface for the DriverTable component
 interface DriverTableProps {
   tableRef: React.RefObject<HTMLTableElement>;
-  rows: Data[];
   startDate: Date | null;
   endDate: Date | null;
 }
 
-const DriverTable: React.FC<DriverTableProps> = ({ tableRef, rows, startDate, endDate }) => {
+// Styled TableCell component for header
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  backgroundColor: "#BDBDBD",
+  color: theme.palette.common.black,
+  fontWeight: '700',
+  fontSize: '0.875rem',
+  height: '40px',
+  textTransform: 'uppercase',
+  borderBottom: `1px solid ${theme.palette.divider}`,
+}));
+
+// Define the DriverTable component
+const DriverTable: React.FC<DriverTableProps> = ({
+  tableRef,
+  startDate,
+  endDate,
+}) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [drivers, setDrivers] = React.useState<Data[]>([]);
 
-  const filteredRows = rows.filter(row => {
-    const registeredDate = new Date(row.registeredDate);
-    return (!startDate || registeredDate >= startDate) && (!endDate || registeredDate <= endDate);
+  // Fetch driver data from the server when the component mounts
+  useEffect(() => {
+    fetchDrivers();
+
+    // Fetch data every 5 seconds
+    const interval = setInterval(() => {
+      fetchDrivers();
+    }, 5000);
+
+    // Cleanup interval to prevent memory leaks
+    return () => clearInterval(interval);
+  }, []);
+
+  // Function to fetch driver data from the server
+  const fetchDrivers = () => {
+    axios
+      .get("http://localhost:3000/api/drivers")
+      .then((response) => setDrivers(response.data))
+      .catch((err) => {
+        console.error("Error fetching drivers:", err);
+        // Handle error state in your component (e.g., set an error flag, show an error message)
+      });
+  };
+
+  // Filter rows based on the selected date range
+  const filteredRows = drivers.filter((row) => {
+    const registeredDate = dayjs(row.createdAt);
+    return (
+      (!startDate || registeredDate >= dayjs(startDate)) &&
+      (!endDate || registeredDate <= dayjs(endDate))
+    );
   });
 
+  // Event handler for changing the page
+  // Event handler for changing the page
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // Event handler for changing the number of rows per page
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+  // Event handler for changing the number of rows per page
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
+  const formatDate = (dateString: string) => {
+    return dayjs(dateString).format('YYYY-MM-DD');
+  };
+
+  const formatDateTime = (dateString: string) => {
+    const date = dayjs(dateString);
+    return {
+      date: date.format('YYYY-MM-DD'),
+      time: date.format('HH:mm:ss')
+    };
+  };
+
+  // Render the DriverTable component
+  const formatDate = (dateString: string) => {
+    return dayjs(dateString).format('YYYY-MM-DD');
+  };
+
+  const formatDateTime = (dateString: string) => {
+    const date = dayjs(dateString);
+    return {
+      date: date.format('YYYY-MM-DD'),
+      time: date.format('HH:mm:ss')
+    };
+  };
+
+  // Render the DriverTable component
   return (
-    <Paper sx={{maxwidth: '100', maxHeight: '100'}}>
-      <TableContainer sx={{maxHeight: '100', maxWidth: '100'}}>
+    <Paper sx={{ maxWidth: "100%", maxHeight: "100%" }}>
+      <TableContainer sx={{ maxHeight: "100%", maxWidth: "100%" }}>
+    <Paper sx={{ maxWidth: "100%", maxHeight: "100%" }}>
+      <TableContainer sx={{ maxHeight: "100%", maxWidth: "100%" }}>
         <Table stickyHeader aria-label="sticky table" ref={tableRef}>
           <TableHead>
             <TableRow>
               {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
+                <StyledTableCell key={column.id} style={{ minWidth: column.minWidth }}>
                   {column.label}
-                </TableCell>
+                </StyledTableCell>
               ))}
             </TableRow>
           </TableHead>
@@ -91,15 +185,23 @@ const DriverTable: React.FC<DriverTableProps> = ({ tableRef, rows, startDate, en
               .map((row, index) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                    {columns.map((column) => {
-                      const value = row[column.id as keyof Data];
-                      const formattedValue = typeof value === 'string' ? value : (value as string).toString();
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {formattedValue}
-                        </TableCell>
-                      );
-                    })}
+                    <TableCell>{row.firstName}</TableCell>
+                    <TableCell>{row.lastName}</TableCell>
+                    <TableCell>{row.nic}</TableCell>
+                    <TableCell>{row.gender}</TableCell>
+                    <TableCell>{formatDate(row.dob)}</TableCell>
+                    <TableCell>{row.contactNo}</TableCell>
+                    <TableCell>{row.email}</TableCell>
+                    <TableCell>{row.licenseNo}</TableCell>
+                    <TableCell>{formatDate(row.licenseExpireDate)}</TableCell>
+                    <TableCell>{row.medicalIssues}</TableCell>
+                    <TableCell>
+                      <Typography variant="body2">{formatDateTime(row.createdAt).date}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="body2">{formatDateTime(row.updatedAt).date}</Typography>
+                    </TableCell>
+                    <TableCell>{row.availability ? 'Available' : 'Not Available'}</TableCell>
                   </TableRow>
                 );
               })}

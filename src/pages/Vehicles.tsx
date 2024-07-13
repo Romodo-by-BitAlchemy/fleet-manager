@@ -28,6 +28,7 @@ import NewVehilce, { Vehicle } from "../components/NewVehicle";
 import axios from "axios";
 import { StyledTableCell } from "./Drivers";
 import Swal from "sweetalert2";
+import NavigationBar from "../components/NavigationBar";
 
 // Define the Vehicles component
 const Vehicles: React.FC = () => {
@@ -176,6 +177,7 @@ const Vehicles: React.FC = () => {
     <Container maxWidth="xl" sx={{ marginTop: "-60px", width: "91vw" }}>
       <br />
       <br />
+      <NavigationBar/>
       <div
         style={{
           display: "flex",

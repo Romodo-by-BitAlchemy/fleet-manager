@@ -1,7 +1,6 @@
 //import { DialerSip } from "@mui/icons-material";
 
 // Import necessary components and modules
-
 import { Dialog ,  Grid, Button, DialogTitle, DialogContentText, DialogContent, TextField, MenuItem, DialogActions } from "@mui/material";
 import * as React from "react";
 import axios from "axios";
@@ -12,7 +11,6 @@ export interface Vehicle  {
   //id: ReactNode;
     //map(arg0: (row: any) => import("react/jsx-runtime").JSX.Element): React.ReactNode;
 	id:string,
-
     no: string,
     type: string,
     chassisNo: string,
@@ -24,6 +22,8 @@ export interface Vehicle  {
     noOfSeats: number
 }
 
+
+// Define interface for NewDriverProps
 interface NewDriverProps {
 	isOpen:boolean,
 	year:number,
@@ -42,7 +42,7 @@ interface NewDriverProps {
 
 }
 
-
+// Regular expressions for validation
 const vehicleNoRegex = /^([a-zA-Z]{1,3}|((?!0*-)[0-9]{1,3}))-[0-9]{4}(?<!0{4})/;
 const chassisNoRegex = /^[a-zA-Z0-9 ]{6,}$/;
 const brandRegex = /^[a-zA-Z0-9.,-\s]{6,}$/;
@@ -51,8 +51,7 @@ const nuRegex = /^[0-9]{1,}$/
 // NewVehicle component
 function NewVehicle(props: NewDriverProps) {
 
-	 // State variables
-
+	// State variables
 	const years = Array.from({ length: 100 }, (_, index) => new Date().getFullYear() - index);
 	const [selectedYear, setSelectedYear] = React.useState<number>(props.year);
 	const [id, setId] = React.useState<string>(props.id);
@@ -70,7 +69,7 @@ function NewVehicle(props: NewDriverProps) {
 	const [brand, setBrand] = React.useState<string>(props.brand);
 	const [noOfSeats, setNoOfSeats] = React.useState<number>(props.noOfSeats);
 
-	  // Update state when props change
+	// Update state when props change
 	React.useEffect(() => {
 		setSelectedVehType(props.selVehType);
         setSelectedCondition(props.selCondition);
@@ -90,13 +89,12 @@ function NewVehicle(props: NewDriverProps) {
 		props.noOfSeats
 	]);
 
-	 // Validation function
+	// Validation function
 	const checkValidation = () : boolean => {
 
-		 // Validation checks for each field
+		// Validation checks for each field
         // Display error message using SweetAlert2 if validation fails
         // Return false if any validation fails, otherwise return true
-
 
 		if (!vehicleNoRegex.test(vehicleNo)) {
 			Swal.fire({
@@ -175,7 +173,6 @@ function NewVehicle(props: NewDriverProps) {
         // Display success or error message using SweetAlert2
         // Close dialog and clear fields after successful addition
 
-
 		if (checkValidation()) {
 			const vehicle = {
 			no: vehicleNo,
@@ -218,7 +215,6 @@ function NewVehicle(props: NewDriverProps) {
         // Display success or error message using SweetAlert2
         // Close dialog and clear fields after successful update
 
-
 		if (checkValidation()) {
 		const vehicle = {
 			no: vehicleNo,
@@ -236,7 +232,6 @@ function NewVehicle(props: NewDriverProps) {
 			console.log(response);
 
 				if (response.status === 200) {
-
 					Swal.fire({
 					title: "Good job!",
 					text: "Vehicle update successfully!",
@@ -247,7 +242,6 @@ function NewVehicle(props: NewDriverProps) {
 				props.getAll();
 				}
 			}).catch((/*error*/) => {
-
 			Swal.fire({
 				title: "Oops...",
 				text: "Something went wrong !",
@@ -265,7 +259,6 @@ function NewVehicle(props: NewDriverProps) {
         setChassisNo("");
         setBrand("");
         setNoOfSeats(0);
-
 		setSelectedFuelType("")
     }
 	return (
@@ -275,14 +268,12 @@ function NewVehicle(props: NewDriverProps) {
 			<Dialog open={props.isOpen} onClose={() =>  props.close()} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
 				<DialogTitle id="alert-dialog-title">
 					{"Vehicle Details"}
-
 				</DialogTitle>
 				<DialogContent>
 					<br />
 					<DialogContentText id="alert-dialog-description">
 						{/* Form fields for adding or updating vehicle */}
                         {/* Display input fields using Grid layout */}
-
 						<Grid container spacing={2}>
 							<Grid item xs={12} sm={6}>
 								<TextField
@@ -391,7 +382,6 @@ function NewVehicle(props: NewDriverProps) {
 					{/* Add or Update button */}
 					<Button onClick={props.isUpdate?  handleUpdateVehicle:handleAddVehicle}>{props.isUpdate? "Update": "Add"}</Button>
 					{/* Cancel button */}
-
 					<Button onClick={() => props.close()}>Cancel</Button>
 				</DialogActions>
 			</Dialog>
@@ -400,4 +390,3 @@ function NewVehicle(props: NewDriverProps) {
 }
 
 export default NewVehicle
-

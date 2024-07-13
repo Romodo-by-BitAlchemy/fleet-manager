@@ -1,10 +1,9 @@
 //DatePickerValue.tsx
-import * as React from 'react';
-import * as dayjs from 'dayjs';
-import { Dayjs } from 'dayjs';
+import React from 'react';
+import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DatePicker } from '@mui/x-date-pickers';
 
 interface DatePickerProps {
   label: string;
@@ -27,7 +26,6 @@ const DatePickerValue: React.FC<DatePickerProps> = ({ label, selectedDate, onDat
           label={label}
           value={value}
           onChange={handleDateChange}
-          
         />
       </div>
     </LocalizationProvider>

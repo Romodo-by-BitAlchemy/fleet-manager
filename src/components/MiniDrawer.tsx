@@ -35,9 +35,10 @@ import Passengers from "../pages/Passengers";
 import Settings from "../pages/Settings";
 import DashboardPage from "../pages/DashboardPage";
 import Vehicles from "../pages/Vehicles";
-import DriverReport from "../pages/reports/DriversReport";
-import PassengersReport from "../pages/reports/PassengerReportPage";
-import VehicleReport from "../pages/reports/VehicleReportPage";
+import DriverReport from "../pages/DriversReportPage";
+import PassengersReport from "../pages/PassengerReportPage";
+import VehicleReport from "../pages/VehicleReportPage";
+// import DashboardPage from "../pages/DashboardPage";
 import Axios, { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 
