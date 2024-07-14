@@ -1,10 +1,7 @@
-//DownloadButton.tsx
 import React from 'react';
 import Button from '@mui/material/Button';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-
-// Base64 encoded Times New Roman font (if needed)
 
 interface PrintButtonProps {
   tableRef: React.RefObject<HTMLTableElement>;
@@ -17,24 +14,29 @@ const PrintButton: React.FC<PrintButtonProps> = ({ tableRef }) => {
       return;
     }
 
-    html2canvas(tableRef.current).then((canvas) => {
+    const scale = 2; // Increase scale for better quality
+    const tableElement = tableRef.current;
+
+    html2canvas(tableElement, { scale: scale }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('l', 'in', 'a3');
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'px',
+        format: [canvas.width, canvas.height]
+      });
 
-  
-      pdf.setFont('times'); // Set font to Times New Roman
-      pdf.setFontSize(12); // Set font size
-
-      const width = pdf.internal.pageSize.getWidth();
-      const height = pdf.internal.pageSize.getHeight();
-      pdf.addImage(imgData, 'PNG', 0, 0, width, height);
+      pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height, '', 'FAST');
       pdf.save('Table_of_content.pdf');
     });
   };
 
   return (
     <div>
-      <Button variant="contained" onClick={handleDownloadPDF} style={{ backgroundColor: 'blue', color: 'black' }}>
+      <Button 
+        variant="contained" 
+        onClick={handleDownloadPDF} 
+        style={{ backgroundColor: 'blue', color: 'black' }}
+      >
         Download
       </Button>
     </div>
