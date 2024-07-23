@@ -43,7 +43,7 @@
 		"remove": "^0.1.5",
 		"styled-components": "^6.1.8",
 		"sweetalert2": "^11.10.8",
-		"terser": "5.28.1"
+		"terser": "5.31.1"
 	},
 	"devDependencies": {
 		"@types/google.maps": "^3.55.4",
