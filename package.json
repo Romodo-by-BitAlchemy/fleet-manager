@@ -39,7 +39,7 @@
 		"react-dom": ">=18.2.0",
 		"react-hook-form": "^7.51.0",
 		"react-router": "6.22.2",
-		"react-router-dom": "^6.22.1",
+		"react-router-dom": "^6.24.0",
 		"remove": "^0.1.5",
 		"styled-components": "^6.1.8",
 		"sweetalert2": "^11.10.8",
