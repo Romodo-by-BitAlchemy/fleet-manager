@@ -1,5 +1,5 @@
 import * as React from "react";
-import {  Container, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, Button, /*Switch,*/ DialogTitle, styled, tableCellClasses, TextField, IconButton , InputAdornment , DialogContent, DialogActions , Dialog , Alert } from "@mui/material";
+import {  Container, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, Button, /*Switch,*/ DialogTitle, styled, tableCellClasses, TextField, IconButton , InputAdornment , DialogContent, DialogActions , Dialog , Alert, FormControlLabel , Switch } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
@@ -8,6 +8,7 @@ import NewDriver, { Driver } from "../components/NewDriver";
 import axios from "axios"; // Axios is a promise based HTTP client for the browser and node.js
 import NavigationBar from "../components/NavigationBar";
 //import Swal from "sweetalert2"; // import sweetalert2 for display alert messages  
+import { textAlign } from "@mui/system";
 
 // StyledTableCell component for custom styling of table cells
 export const StyledTableCell = styled(TableCell)(({ /*theme*/ }) => ({
@@ -17,6 +18,7 @@ export const StyledTableCell = styled(TableCell)(({ /*theme*/ }) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
+    textAlign
   },
 }));
 
@@ -63,6 +65,7 @@ const Drivers: React.FC = () => {
         setDrivers(data.data);
         setAllDrivers(data.data)
       });
+      
   }
 
   
@@ -81,100 +84,7 @@ const Drivers: React.FC = () => {
 //function to check if a row is selected
 const isSelected = (id:string) => selected.indexOf(id) !== -1;
 
-//function to handle update button click
-/*const handleUpdateClick = () => {
-
-  // Check if a row is selected
-    // If yes, fetch details of the selected driver and populate the modal form
-    // Open the modal dialog for updating driver details
-  if (selected.length === 0) {
-
-			Swal.fire({
-				title: "Oops...",
-				text: "Please select a driver to update",
-				icon: "error"
-				});
-  }
-  else{
-    const d = drivers.filter(v => v._id === selected[0])[0];
-    if(d){
-      setIsNewDriverModalOpen(true);
-      setNo(d.no || '');
-      setFName(d.firstName);
-      setLName(d.lastName);
-      setDOfBirth(new Date(d.dob));
-      setNIC(d.nic)
-      setEmail(d.email)
-      setContactNo(d.contactNo)
-      setLicenseNo(d.licenseNo)
-      setLExDate(new Date(d.licenseExpireDate))
-      setGender(d.gender)
-      setMediCondition(d.medicalIssues)
-    }
-  }
-
-}
-
-//function to handle delete button click
-/*const handleDeleteClick = () => {
-
-  // Check if a row is selected
-    // If yes, prompt user for confirmation before deleting the selected driver
-    // If confirmed, make a DELETE request to the API to delete the driver
-  if (selected.length === 0) {
-
-    // Display an alert message if no driver is selected
-    Swal.fire({
-				title: "Oops...",
-				text: "Please select a driver to delete",
-				icon: "error"
-				});
-    }else{
-
-      // Display a confirmation dialog before deleting the selected driver
-      Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-
-    if (result.isConfirmed) {
-      
-      // If user confirms, make a DELETE request to the API to delete the selected driver
-      const d = drivers.filter(v => v._id === selected[0])[0];
-      axios.delete(`http://localhost:3000/api/v1/driver/${d._id}`).then((r) => {
-        if(r.status === 204) {
-
-          // Display an alert message if driver is deleted successfully
-          Swal.fire({
-            title: "Good job!",
-            text: "Vehicle deleted successfully!",
-            icon: "success"
-            });
-          setSelected([]);
-          setDrivers([]);
-          getAllDrivers();
-        }
-
-      }).catch((/*e)=> {
-        Swal.fire({
-          title: "Oops...",
-          text: "Something went wrong !",
-          icon: "error"
-          });
-      })
-      }
-
-});
-}
-}
-*/
-
-
+// Function to handle delete button click
 const handleDeleteClick = () => {
   if (selected.length === 0) {
     setErrorMessage("Please select a driver to delete");
@@ -234,18 +144,6 @@ const openDialog = () => {
   setIsNewDriverModalOpen(true);
 }
 
-//function to handle availability switch change
-/*const onChangeAvailability = (e:boolean, v:Driver) => {
-  v.availability = e;
-  axios.patch(`http://localhost:3000/api/v1/vehicle/${v._id}`, v).catch((/*error) => {
-          Swal.fire({
-          title: "Oops...",
-          text: "Something went wrong !",
-          icon: "error"
-				});
-        });
-
-}*/
 
 //function to clear the form fields
 const clearFields = () => {
@@ -271,6 +169,19 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
   const filteredDrivers = alldrivers.filter(driver =>driver?.no?.toLowerCase().includes(searchTerm))
   setDrivers(filteredDrivers)
 }
+
+const handleStatusChange = (id: string, isActive: boolean) => {
+  axios.put(`http://localhost:3000/api/v1/driver/${id}`, { isActive: !isActive })
+    .then((response) => {
+      console.log(`Driver ${isActive ? 'deactivated' : 'activated'}:`, response);
+      getAllDrivers(); // Refresh the driver list
+    })
+    .catch((error) => {
+      console.error(`Error ${isActive ? 'deactivating' : 'activating'} driver:`, error);
+      setErrorMessage(`Error ${isActive ? 'deactivating' : 'activating'} driver`);
+    });
+};
+
 	return (
 		<Container maxWidth="xl" sx={{marginTop: '-60px', width: '91vw'}}>
       <br/><br/>
@@ -327,19 +238,20 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
             <StyledTableCell align="center">License No</StyledTableCell>
             <StyledTableCell align="center">License Exp. date</StyledTableCell>
             <StyledTableCell align="center">Medical Isuues</StyledTableCell>
-           
+            <StyledTableCell align="center">Status</StyledTableCell>
 
           </TableRow>
         </TableHead>
         
         <TableBody>
-        
-
           {drivers.map((row) => {
             const isItemSelected = isSelected(row._id || '');
-            return <TableRow
-              key={row._id}
-              hover
+            
+            return (
+            
+            <TableRow
+                    key={row._id}
+                    hover
                     onClick={(event) => handleClick(event, row._id || '')}
                     role="checkbox"
                     aria-checked={isItemSelected}
@@ -359,8 +271,19 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
               <TableCell align="right">{row.licenseNo}</TableCell>
               <TableCell align="right">{new Date(row.licenseExpireDate).toLocaleDateString()}</TableCell>
               <TableCell align="right">{row.medicalIssues}</TableCell>
-              
+              <TableCell align="center">
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={row.isActive}
+                            onChange={() => handleStatusChange(row._id || '', row.isActive)}
+                          />
+                        }
+                        label={row.isActive ? 'Active' : 'Inactive'}
+                      />
+                    </TableCell>
             </TableRow>
+            );
           })}
         </TableBody>
       </Table>
@@ -369,9 +292,7 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
           
 
     <Dialog open={isConfirmationDialogOpen} onClose={() => setIsConfirmationDialogOpen(false)}>
-        <DialogTitle>
-       
-          Confirmation</DialogTitle>
+        <DialogTitle>Confirmation</DialogTitle>
         <DialogContent>
           <div> Are you sure you want to delete this driver?</div>
         </DialogContent>
@@ -384,6 +305,7 @@ const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
           </Button>
         </DialogActions>
       </Dialog>
+      
     <NewDriver
         no={no}
         firstName={fName}

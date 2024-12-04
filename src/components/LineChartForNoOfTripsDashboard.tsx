@@ -9,19 +9,32 @@ interface LineChartForNoOfTripsDashboardProps {
 }
 
 const colorPalette = [
-  'rgba(255, 99, 132, 1)',
-  'rgba(54, 162, 235, 1)',
-  'rgba(255, 206, 86, 1)',
-  'rgba(75, 192, 192, 1)',
-  'rgba(153, 102, 255, 1)',
-  'rgba(255, 159, 64, 1)',
-  'rgba(199, 199, 199, 1)',
-  'rgba(83, 102, 255, 1)',
-  'rgba(183, 102, 255, 1)',
-  'rgba(53, 159, 64, 1)',
-  'rgba(255, 0, 0, 1)',
-  'rgba(0, 255, 0, 1)',
+  'rgba(255, 99, 132, 1)',  // Red
+  'rgba(54, 162, 235, 1)',  // Blue
+  'rgba(255, 206, 86, 1)',  // Yellow
+  'rgba(75, 192, 192, 1)',  // Teal
+  'rgba(153, 102, 255, 1)', // Purple
+  'rgba(255, 159, 64, 1)',  // Orange
+  'rgba(199, 199, 199, 1)', // Grey
+  'rgba(83, 102, 255, 1)',  // Light Blue
+  'rgba(183, 102, 255, 1)', // Lavender
+  'rgba(53, 159, 64, 1)',   // Green
+  'rgba(255, 0, 0, 1)',     // Bright Red
+  'rgba(0, 255, 0, 1)',     // Bright Green
+  'rgba(0, 0, 255, 1)',     // Bright Blue
+  'rgba(128, 0, 128, 1)',   // Dark Purple
+  'rgba(255, 165, 0, 1)',   // Amber
+  'rgba(0, 255, 255, 1)',   // Cyan
+  'rgba(255, 192, 203, 1)', // Pink
+  'rgba(128, 128, 0, 1)',   // Olive
+  'rgba(165, 42, 42, 1)',   // Brown
+  'rgba(0, 128, 128, 1)',   // Dark Teal
+  'rgba(210, 105, 30, 1)',  // Chocolate
+  'rgba(255, 69, 0, 1)',    // Orange Red
+  'rgba(238, 130, 238, 1)', // Violet
+  'rgba(105, 105, 105, 1)', // Dim Grey
 ];
+
 
 const LineChartForNoOfTripsDashboard: React.FC<LineChartForNoOfTripsDashboardProps> = ({ completedTripCounts }) => {
   const groupedData: { [key: string]: { day: number; count: number }[] } = {};
